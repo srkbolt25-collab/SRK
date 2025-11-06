@@ -1,8 +1,12 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import Layout from "@/components/Layout"
 import { 
   ChevronLeft, 
@@ -15,63 +19,359 @@ import {
   RotateCcw,
   Award,
   Zap,
-  Check
+  Check,
+  MessageCircle,
+  FileText,
+  CheckCircle,
+  Download,
+  X
 } from "lucide-react"
+import { findProductByName, findProductById, getCategoryRoute, type HusainiProduct } from "@/data/husaini-products"
+import { useRFQ } from "@/contexts/RFQContext"
 
 export default function ProductDetailsPage() {
+  const searchParams = useSearchParams()
   const [selectedImage, setSelectedImage] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [isWishlisted, setIsWishlisted] = useState(false)
+  const [product, setProduct] = useState<HusainiProduct | null>(null)
+  const [isRFQPopupOpen, setIsRFQPopupOpen] = useState(false)
+  const [isDataSheetPopupOpen, setIsDataSheetPopupOpen] = useState(false)
+  const [dataSheetForm, setDataSheetForm] = useState({
+    name: "",
+    number: "",
+    address: ""
+  })
+  const { addToRFQ } = useRFQ()
 
-  // Sample fastener product data inspired by Husaini Brothers
-  const product = {
-    id: 1,
-    name: "DIN 933 / 931 Hexagon Bolt",
-    category: "BOLTS",
-    price: 2499,
-    originalPrice: 3499,
-    inStock: true,
-    stockCount: 45,
-    rating: 4.8,
-    reviews: 127,
-    images: [
-      "https://www.husainibrothers.com/cdn/images/200/5921504842_1635755736.jpg",
-      "https://www.husainibrothers.com/cdn/images/200/5921504842_1635755736.jpg",
-      "https://www.husainibrothers.com/cdn/images/200/5921504842_1635755736.jpg",
-    ],
-    description: "Premium quality DIN 933/931 Hexagon Bolts suitable for industrial and construction applications.",
-    specifications: {
-      standard: "DIN 933 / 931",
-      material: "Steel / Stainless Steel",
-      grades: ["Grade 4.6", "Grade 8.8", "Grade 10.9"],
-      sizes: ["M6 to M42"],
-      coating: ["Zinc Plated", "Hot Dip Galvanized", "Black"],
-      tensileStrength: "High Strength",
-    },
-    features: [
-      "Precision engineered for perfect fit",
-      "Meets international standards",
-      "Available in multiple grades",
-      "Corrosion resistant options",
-      "Bulk quantities available",
-      "Fast delivery",
-    ],
-    uses: [
-      "Construction & Structural Steel",
-      "Industrial Manufacturing",
-      "Oil & Petrochemical",
-      "Automotive Industry",
-      "Infrastructure Projects",
-    ],
-    badges: ["ISO Certified", "Made to Last", "Premium Quality"],
+  useEffect(() => {
+    // Get product info from URL parameters
+    const productName = searchParams.get('name')
+    const productId = searchParams.get('id')
+    const category = searchParams.get('category')
+
+    let foundProduct: HusainiProduct | undefined
+
+    if (productId) {
+      foundProduct = findProductById(productId)
+    } else if (productName) {
+      foundProduct = findProductByName(productName, category || undefined)
+    }
+
+    // Fallback to default product if not found
+    if (!foundProduct) {
+      foundProduct = findProductByName("DIN 933 / 931 Hexagon Bolt", "BOLTS") || undefined
+    }
+
+    if (foundProduct) {
+      setProduct(foundProduct)
+    }
+  }, [searchParams])
+
+  if (!product) {
+    return (
+      <Layout>
+        <div className="pt-8 pb-16 bg-gray-50">
+          <div className="container mx-auto px-4 text-center">
+            <p className="text-gray-600">Loading product details...</p>
+          </div>
+        </div>
+      </Layout>
+    )
   }
 
+  // Function to generate WhatsApp URL with product information
+  const handleWhatsAppClick = () => {
+    const phoneNumber = "919321362064"
+    const message = `Hello! I'm interested in this product:\n\nProduct Name: ${product.name}\nCategory: ${product.category}\nStandard: ${product.standard || 'N/A'}\n\nPlease provide more information, pricing, and availability.`
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
+    window.open(whatsappUrl, '_blank')
+  }
+
+  const productImages = [product.image, product.image, product.image] // Use same image for all thumbnails
+
   const nextImage = () => {
-    setSelectedImage((prev) => (prev + 1) % product.images.length)
+    setSelectedImage((prev) => (prev + 1) % productImages.length)
   }
 
   const prevImage = () => {
-    setSelectedImage((prev) => (prev - 1 + product.images.length) % product.images.length)
+    setSelectedImage((prev) => (prev - 1 + productImages.length) % productImages.length)
+  }
+
+  const handleAddToRFQ = () => {
+    addToRFQ(product.name, product.image)
+    setIsRFQPopupOpen(true)
+  }
+
+  const handleDownloadDataSheet = () => {
+    setIsDataSheetPopupOpen(true)
+  }
+
+  const generateDataSheet = async () => {
+    if (!product) return
+
+    // Validation
+    if (!dataSheetForm.name.trim() || !dataSheetForm.number.trim() || !dataSheetForm.address.trim()) {
+      alert("Please fill in all fields (Name, Number, Address)")
+      return
+    }
+
+    // Store the download information in database
+    try {
+      await fetch('/api/datasheet-downloads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: dataSheetForm.name,
+          number: dataSheetForm.number,
+          address: dataSheetForm.address,
+          productName: product.name,
+          productCategory: product.category,
+          productStandard: product.standard || product.specifications?.standard || '',
+          productMaterial: product.material || product.specifications?.material || '',
+        }),
+      })
+    } catch (error) {
+      console.error('Error recording data sheet download:', error)
+      // Continue with download even if recording fails
+    }
+
+    // Create HTML content for data sheet
+    const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Product Data Sheet - ${product.name}</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .header {
+      border-bottom: 3px solid #dc2626;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    h1 {
+      color: #dc2626;
+      font-size: 28px;
+      margin: 10px 0;
+      text-align: center;
+    }
+    .company-info {
+      text-align: center;
+      color: #666;
+      margin-bottom: 30px;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    .section-title {
+      background-color: #dc2626;
+      color: white;
+      padding: 10px 15px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+    .info-row {
+      display: flex;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .info-label {
+      font-weight: bold;
+      width: 200px;
+      color: #333;
+    }
+    .info-value {
+      flex: 1;
+      color: #666;
+    }
+    .specs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 2px solid #eee;
+      text-align: center;
+      color: #666;
+      font-size: 12px;
+    }
+    @media print {
+      body { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <h1>SRK BOLT</h1>
+      <p class="company-info">Leading Fasteners Suppliers in India, Since 1998</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Customer Information</div>
+    <div class="info-row">
+      <div class="info-label">Name:</div>
+      <div class="info-value">${dataSheetForm.name}</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Contact Number:</div>
+      <div class="info-value">${dataSheetForm.number}</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Address:</div>
+      <div class="info-value">${dataSheetForm.address}</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Date:</div>
+      <div class="info-value">${new Date().toLocaleDateString()}</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Product Information</div>
+    <div class="info-row">
+      <div class="info-label">Product Name:</div>
+      <div class="info-value">${product.name}</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Category:</div>
+      <div class="info-value">${product.category}</div>
+    </div>
+    ${product.standard ? `
+    <div class="info-row">
+      <div class="info-label">Standard:</div>
+      <div class="info-value">${product.standard}</div>
+    </div>
+    ` : ''}
+    ${product.material ? `
+    <div class="info-row">
+      <div class="info-label">Material:</div>
+      <div class="info-value">${product.material}</div>
+    </div>
+    ` : ''}
+    ${product.sizes ? `
+    <div class="info-row">
+      <div class="info-label">Sizes:</div>
+      <div class="info-value">${product.sizes}</div>
+    </div>
+    ` : ''}
+  </div>
+
+  <div class="section">
+    <div class="section-title">Technical Specifications</div>
+    ${product.specifications?.standard ? `
+    <div class="info-row">
+      <div class="info-label">Standard:</div>
+      <div class="info-value">${product.specifications.standard}</div>
+    </div>
+    ` : ''}
+    ${product.specifications?.material ? `
+    <div class="info-row">
+      <div class="info-label">Material:</div>
+      <div class="info-value">${product.specifications.material}</div>
+    </div>
+    ` : ''}
+    ${product.specifications?.sizes ? `
+    <div class="info-row">
+      <div class="info-label">Sizes:</div>
+      <div class="info-value">${product.specifications.sizes}</div>
+    </div>
+    ` : ''}
+    ${product.specifications?.grades && product.specifications.grades.length > 0 ? `
+    <div class="info-row">
+      <div class="info-label">Grades:</div>
+      <div class="info-value">${product.specifications.grades.join(", ")}</div>
+    </div>
+    ` : ''}
+    ${product.specifications?.coating && product.specifications.coating.length > 0 ? `
+    <div class="info-row">
+      <div class="info-label">Coating:</div>
+      <div class="info-value">${product.specifications.coating.join(", ")}</div>
+    </div>
+    ` : ''}
+    ${product.specifications?.tensileStrength ? `
+    <div class="info-row">
+      <div class="info-label">Tensile Strength:</div>
+      <div class="info-value">${product.specifications.tensileStrength}</div>
+    </div>
+    ` : ''}
+    ${product.specifications?.threadType ? `
+    <div class="info-row">
+      <div class="info-label">Thread Type:</div>
+      <div class="info-value">${product.specifications.threadType}</div>
+    </div>
+    ` : ''}
+  </div>
+
+  ${product.description ? `
+  <div class="section">
+    <div class="section-title">Product Description</div>
+    <p style="line-height: 1.6; color: #666;">${product.description}</p>
+  </div>
+  ` : ''}
+
+  ${product.features && product.features.length > 0 ? `
+  <div class="section">
+    <div class="section-title">Key Features</div>
+    <ul style="line-height: 1.8; color: #666;">
+      ${product.features.map(feature => `<li>${feature}</li>`).join('')}
+    </ul>
+  </div>
+  ` : ''}
+
+  ${product.uses && product.uses.length > 0 ? `
+  <div class="section">
+    <div class="section-title">Applications & Uses</div>
+    <ul style="line-height: 1.8; color: #666;">
+      ${product.uses.map(use => `<li>${use}</li>`).join('')}
+    </ul>
+  </div>
+  ` : ''}
+
+  <div class="footer">
+    <p><strong>SRK BOLT</strong></p>
+    <p>Contact: +91-9321362064 | Email: sales@srkbolt.com</p>
+    <p>Website: www.srkbolt.com</p>
+    <p style="margin-top: 20px;">This data sheet is generated on ${new Date().toLocaleString()}</p>
+  </div>
+</body>
+</html>
+    `
+
+    // Create a blob and download
+    const blob = new Blob([htmlContent], { type: 'text/html' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `SRK_Bolt_DataSheet_${product.name.replace(/[^a-z0-9]/gi, '_')}_${Date.now()}.html`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+
+    // Close popup and show success message
+    setIsDataSheetPopupOpen(false)
+    setDataSheetForm({ name: "", number: "", address: "" })
+    
+    // Show success message
+    alert("Data sheet downloaded successfully!")
   }
 
   return (
@@ -84,7 +384,7 @@ export default function ProductDetailsPage() {
             <span>/</span>
             <a href="/products" className="hover:text-red-600">Products</a>
             <span>/</span>
-            <a href="/bolts" className="hover:text-red-600">{product.category}</a>
+            <a href={getCategoryRoute(product.category)} className="hover:text-red-600">{product.category}</a>
             <span>/</span>
             <span className="text-gray-800 font-medium">{product.name}</span>
           </div>
@@ -94,16 +394,16 @@ export default function ProductDetailsPage() {
             <div className="space-y-6">
               {/* Main Image */}
               <div className="relative bg-white rounded-lg shadow-lg overflow-hidden">
-                <div className="aspect-square flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+                <div className="aspect-square flex items-center justify-center bg-linear-to-br from-gray-100 to-gray-200">
                   <img 
-                    src={product.images[selectedImage]} 
+                    src={productImages[selectedImage]} 
                     alt={product.name}
                     className="h-96 w-96 object-contain"
                   />
                 </div>
 
                 {/* Navigation Buttons */}
-                {product.images.length > 1 && (
+                {productImages.length > 1 && (
                   <>
                     <button 
                       onClick={prevImage}
@@ -122,18 +422,19 @@ export default function ProductDetailsPage() {
 
                 {/* Badges */}
                 <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                  {product.badges.map((badge, i) => (
-                    <span key={i} className="bg-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                      {badge}
+                  <span className="bg-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                    {product.standard || product.category}
+                  </span>
+                  <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                    In Stock
                     </span>
-                  ))}
                 </div>
               </div>
 
               {/* Thumbnail Images */}
-              {product.images.length > 1 && (
+              {productImages.length > 1 && (
                 <div className="grid grid-cols-4 gap-3">
-                  {product.images.map((image, idx) => (
+                  {productImages.map((image, idx) => (
                     <button
                       key={idx}
                       onClick={() => setSelectedImage(idx)}
@@ -159,44 +460,55 @@ export default function ProductDetailsPage() {
                     {product.category}
                   </span>
                   <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-                    In Stock: {product.stockCount}
+                    In Stock
                   </span>
                 </div>
 
                 <h1 className="text-4xl font-bold text-gray-900 mb-4">{product.name}</h1>
 
-                {/* Rating */}
+                {/* Product Standard */}
+                {product.standard && (
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="flex items-center gap-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Zap key={i} className={`w-5 h-5 ${i < Math.floor(product.rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`} />
-                    ))}
+                    <span className="text-lg font-semibold text-gray-700">Standard:</span>
+                    <span className="text-lg text-gray-900">{product.standard}</span>
                   </div>
-                  <span className="text-lg font-bold text-gray-800">{product.rating}</span>
-                  <span className="text-gray-600">({product.reviews} reviews)</span>
-                </div>
+                )}
               </div>
 
               {/* Specifications */}
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">Specifications</h3>
                 <div className="space-y-3">
+                  {product.specifications.standard && (
                   <div className="flex justify-between border-b pb-2">
                     <span className="text-gray-600 font-medium">Standard:</span>
                     <span className="text-gray-900">{product.specifications.standard}</span>
                   </div>
+                  )}
+                  {product.specifications.material && (
                   <div className="flex justify-between border-b pb-2">
                     <span className="text-gray-600 font-medium">Material:</span>
                     <span className="text-gray-900">{product.specifications.material}</span>
                   </div>
+                  )}
+                  {product.specifications.sizes && (
                   <div className="flex justify-between border-b pb-2">
                     <span className="text-gray-600 font-medium">Sizes:</span>
-                    <span className="text-gray-900">{product.specifications.sizes[0]}</span>
+                      <span className="text-gray-900">{product.specifications.sizes}</span>
                   </div>
-                  <div className="flex justify-between">
+                  )}
+                  {product.specifications.grades && product.specifications.grades.length > 0 && (
+                    <div className="flex justify-between border-b pb-2">
                     <span className="text-gray-600 font-medium">Grades:</span>
                     <span className="text-gray-900">{product.specifications.grades.join(", ")}</span>
                   </div>
+                  )}
+                  {product.specifications.coating && product.specifications.coating.length > 0 && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 font-medium">Coating:</span>
+                      <span className="text-gray-900">{product.specifications.coating.join(", ")}</span>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -206,7 +518,7 @@ export default function ProductDetailsPage() {
                 <ul className="space-y-2">
                   {product.features.map((feature, i) => (
                     <li key={i} className="flex items-center gap-3 text-gray-700">
-                      <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
+                      <Check className="w-5 h-5 text-green-600 shrink-0" />
                       {feature}
                     </li>
                   ))}
@@ -229,10 +541,20 @@ export default function ProductDetailsPage() {
                   </div>
                 </div>
 
-                <Button className="w-full bg-red-600 hover:bg-red-700 text-white py-3 text-lg flex items-center justify-center gap-2" onClick={() => window.location.href = '/rfq'}>
+                <div className="space-y-3">
+                  <Button className="w-full bg-red-600 hover:bg-red-700 text-white py-3 text-lg flex items-center justify-center gap-2" onClick={handleAddToRFQ}>
                   <ShoppingCart className="w-5 h-5" />
                   Add to RFQ
                 </Button>
+                  <Button className="w-full bg-green-500 hover:bg-green-600 text-white py-3 text-lg flex items-center justify-center gap-2" onClick={handleWhatsAppClick}>
+                    <MessageCircle className="w-5 h-5" />
+                    Contact via WhatsApp
+                  </Button>
+                  <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 text-lg flex items-center justify-center gap-2" onClick={handleDownloadDataSheet}>
+                    <Download className="w-5 h-5" />
+                    Download Data Sheet
+                  </Button>
+                </div>
               </div>
 
               {/* Trust Badges */}
@@ -270,15 +592,27 @@ export default function ProductDetailsPage() {
                 <p className="text-gray-700 leading-relaxed">
                   {product.description}
                 </p>
-                <div>
+                
+                {/* Material Specifications */}
+                {(product.specifications?.material || product.material || product.specifications?.coating || product.coating || product.specifications?.grades || product.grades || product.specifications?.tensileStrength) && (
+                  <div className="mt-6">
                   <h4 className="font-bold text-gray-900 mb-3">Material Specifications:</h4>
                   <ul className="space-y-2 text-gray-700">
-                    <li>• Available in steel or stainless steel options</li>
-                    <li>• Multiple coating options: Zinc Plated, Hot Dip Galvanized, Black</li>
-                    <li>• High tensile strength for demanding applications</li>
-                    <li>• Meets international quality standards</li>
+                      {(product.specifications?.material || product.material) && (
+                        <li>• Material: {product.specifications?.material || product.material}</li>
+                      )}
+                      {((product.specifications?.coating && product.specifications.coating.length > 0) || (product.coating && product.coating.length > 0)) && (
+                        <li>• Coating options: {((product.specifications?.coating && product.specifications.coating.length > 0) ? product.specifications.coating : product.coating || []).join(", ")}</li>
+                      )}
+                      {((product.specifications?.grades && product.specifications.grades.length > 0) || (product.grades && product.grades.length > 0)) && (
+                        <li>• Available grades: {((product.specifications?.grades && product.specifications.grades.length > 0) ? product.specifications.grades : product.grades || []).join(", ")}</li>
+                      )}
+                      {product.specifications?.tensileStrength && (
+                        <li>• Tensile strength: {product.specifications.tensileStrength}</li>
+                      )}
                   </ul>
                 </div>
+                )}
               </TabsContent>
 
               <TabsContent value="uses" className="space-y-4">
@@ -286,7 +620,7 @@ export default function ProductDetailsPage() {
                 <div className="grid grid-cols-2 gap-4">
                   {product.uses.map((use, i) => (
                     <div key={i} className="flex items-center gap-3 bg-red-50 p-4 rounded-lg">
-                      <Award className="w-5 h-5 text-red-600 flex-shrink-0" />
+                      <Award className="w-5 h-5 text-red-600 shrink-0" />
                       <span className="text-gray-800">{use}</span>
                     </div>
                   ))}
@@ -298,15 +632,15 @@ export default function ProductDetailsPage() {
                 <div className="space-y-4 text-gray-700">
                   <div>
                     <h4 className="font-bold mb-2">Shipping:</h4>
-                    <p>Free shipping on orders over ₹2,499. Standard delivery takes 5-7 business days.</p>
+                    <p>{(product as any).shippingInfo || "Free shipping on orders over ₹2,499. Standard delivery takes 5-7 business days."}</p>
                   </div>
                   <div>
                     <h4 className="font-bold mb-2">Returns:</h4>
-                    <p>30-day return policy with no questions asked. Products must be in original condition.</p>
+                    <p>{(product as any).returnsInfo || "30-day return policy with no questions asked. Products must be in original condition."}</p>
                   </div>
                   <div>
                     <h4 className="font-bold mb-2">Warranty:</h4>
-                    <p>All products come with manufacturer's warranty. Contact us for warranty details.</p>
+                    <p>{(product as any).warrantyInfo || "All products come with manufacturer's warranty. Contact us for warranty details."}</p>
                   </div>
                 </div>
               </TabsContent>
@@ -314,6 +648,129 @@ export default function ProductDetailsPage() {
           </div>
         </div>
       </div>
+
+      {/* RFQ Added Popup */}
+      {isRFQPopupOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-2xl p-8 max-w-md w-full text-center">
+            <div className="mb-6 flex justify-center">
+              <CheckCircle className="w-24 h-24 text-green-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              Product Added to RFQ!
+            </h2>
+            <p className="text-gray-600 text-lg mb-2">
+              {product.name}
+            </p>
+            <p className="text-gray-500 text-sm mb-6">
+              The product has been added to your RFQ list. You can continue shopping or proceed to checkout.
+            </p>
+            <div className="space-y-3">
+              <button
+                onClick={() => setIsRFQPopupOpen(false)}
+                className="w-full bg-red-600 hover:bg-red-700 text-white py-2 text-lg font-bold rounded-md transition-colors"
+              >
+                Continue Shopping
+              </button>
+              <button
+                onClick={() => window.location.href = '/rfq'}
+                className="w-full bg-green-600 hover:bg-green-700 text-white py-2 text-lg font-bold rounded-md transition-colors"
+              >
+                Go to RFQ
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Download Data Sheet Popup */}
+      {isDataSheetPopupOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-2xl p-8 max-w-lg w-full">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900">
+                Download Data Sheet
+              </h2>
+              <button
+                onClick={() => setIsDataSheetPopupOpen(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            
+            <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+              <p className="text-sm font-semibold text-gray-700 mb-2">Product Details (Auto-filled):</p>
+              <p className="text-sm text-gray-600 mb-1"><strong>Name:</strong> {product.name}</p>
+              <p className="text-sm text-gray-600 mb-1"><strong>Category:</strong> {product.category}</p>
+              {product.standard && (
+                <p className="text-sm text-gray-600 mb-1"><strong>Standard:</strong> {product.standard}</p>
+              )}
+              {product.material && (
+                <p className="text-sm text-gray-600"><strong>Material:</strong> {product.material}</p>
+              )}
+            </div>
+
+            <form onSubmit={(e) => { e.preventDefault(); generateDataSheet(); }} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Name *</Label>
+                <Input
+                  id="name"
+                  value={dataSheetForm.name}
+                  onChange={(e) => setDataSheetForm(prev => ({ ...prev, name: e.target.value }))}
+                  placeholder="Enter your name"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="number">Contact Number *</Label>
+                <Input
+                  id="number"
+                  type="tel"
+                  value={dataSheetForm.number}
+                  onChange={(e) => setDataSheetForm(prev => ({ ...prev, number: e.target.value }))}
+                  placeholder="Enter your contact number"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="address">Address *</Label>
+                <Textarea
+                  id="address"
+                  value={dataSheetForm.address}
+                  onChange={(e) => setDataSheetForm(prev => ({ ...prev, address: e.target.value }))}
+                  placeholder="Enter your complete address"
+                  rows={3}
+                  required
+                />
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    setIsDataSheetPopupOpen(false)
+                    setDataSheetForm({ name: "", number: "", address: "" })
+                  }}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Download Data Sheet
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </Layout>
   )
 }

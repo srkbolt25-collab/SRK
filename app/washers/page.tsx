@@ -2,10 +2,14 @@
 
 import Layout from "@/components/Layout"
 import { useState, useEffect } from "react"
-import { ChevronLeft, ChevronRight, ExternalLink, Shield, Settings, Factory } from "lucide-react"
+import { ChevronLeft, ChevronRight, ExternalLink, Shield, Settings, Factory, MessageCircle, FileText, CheckCircle } from "lucide-react"
+import { useRFQ } from "@/contexts/RFQContext"
 
 export default function WashersPage() {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [isRFQPopupOpen, setIsRFQPopupOpen] = useState(false)
+  const [rfqProductName, setRfqProductName] = useState("")
+  const { addToRFQ } = useRFQ()
   
   const slides = [
     {
@@ -41,6 +45,14 @@ export default function WashersPage() {
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
+  }
+
+  // Function to generate WhatsApp URL with product information
+  const handleWhatsAppClick = (product: { name: string; category: string }) => {
+    const phoneNumber = "919321362064" // WhatsApp number with country code
+    const message = `Hello! I'm interested in this product:\n\nProduct Name: ${product.name}\nCategory: ${product.category}\n\nPlease provide more information about this product.`
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
+    window.open(whatsappUrl, '_blank')
   }
 
   // Washers product data
@@ -210,10 +222,34 @@ export default function WashersPage() {
                       <span>Load Distribution</span>
                     </div>
                   </div>
-                  <button className="w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors font-semibold flex items-center justify-center">
-                    <ExternalLink className="w-4 h-4 mr-2" />
-                    View Details
-                  </button>
+                  <div className="space-y-2">
+                    <div className="flex gap-2">
+                      <button 
+                        onClick={() => window.location.href = `/view-details?name=${encodeURIComponent(product.name)}&category=WASHERS`}
+                        className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-medium py-2 px-3 rounded-md transition-colors duration-200 flex items-center justify-center"
+                      >
+                        <FileText className="w-3 h-3 mr-1" />
+                        VIEW-DETAIL
+                      </button>
+                      <button 
+                        onClick={() => handleWhatsAppClick(product)}
+                        className="flex-1 bg-green-500 hover:bg-green-600 text-white text-xs font-medium py-2 px-3 rounded-md transition-colors duration-200 flex items-center justify-center"
+                      >
+                        <MessageCircle className="w-3 h-3 mr-1" />
+                        WHATSAPP
+                      </button>
+                    </div>
+                    <button 
+                      onClick={() => {
+                        setRfqProductName(product.name);
+                        setIsRFQPopupOpen(true);
+                        addToRFQ(product.name, product.image);
+                      }}
+                      className="w-full bg-red-600 hover:bg-red-700 text-white text-xs font-medium py-2 px-3 rounded-md transition-colors duration-200"
+                    >
+                      ADD TO RFQ
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -285,6 +321,40 @@ export default function WashersPage() {
           </div>
         </div>
       </section>
+
+      {/* RFQ Added Popup */}
+      {isRFQPopupOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-2xl p-8 max-w-md w-full text-center">
+            <div className="mb-6 flex justify-center">
+              <CheckCircle className="w-24 h-24 text-green-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              Product Added to RFQ!
+            </h2>
+            <p className="text-gray-600 text-lg mb-2">
+              {rfqProductName}
+            </p>
+            <p className="text-gray-500 text-sm mb-6">
+              The product has been added to your RFQ list. You can continue shopping or proceed to checkout.
+            </p>
+            <div className="space-y-3">
+              <button
+                onClick={() => setIsRFQPopupOpen(false)}
+                className="w-full bg-red-600 hover:bg-red-700 text-white py-2 text-lg font-bold rounded-md transition-colors"
+              >
+                Continue Shopping
+              </button>
+              <button
+                onClick={() => window.location.href = '/rfq'}
+                className="w-full bg-green-600 hover:bg-green-700 text-white py-2 text-lg font-bold rounded-md transition-colors"
+              >
+                Go to RFQ
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   )
 }

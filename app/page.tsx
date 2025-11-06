@@ -12,6 +12,7 @@ import {
   FileText,
   Phone,
   CheckCircle,
+  MessageCircle,
 } from "lucide-react"
 import { useRFQ } from "@/contexts/RFQContext"
 
@@ -189,6 +190,14 @@ export default function SRKBoltHomepage() {
 
   const { rfqCount, addToRFQ } = useRFQ();
 
+  // Function to generate WhatsApp URL with product information
+  const handleWhatsAppClick = (product: Product) => {
+    const phoneNumber = "919321362064" // WhatsApp number with country code
+    const message = `Hello! I'm interested in this product:\n\nProduct Name: ${product.name}\nCategory: ${selectedCategory}\n\nPlease provide more information about this product.`
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
+    window.open(whatsappUrl, '_blank')
+  }
+
   return (
     <Layout>
       {/* Hero Section - Image Slider */}
@@ -299,25 +308,32 @@ export default function SRKBoltHomepage() {
                 
                 {/* Buttons */}
                 <div className="p-3 pt-0">
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 mb-2">
                     <button 
-                      onClick={() => window.location.href = '/view-details'}
+                      onClick={() => window.location.href = `/view-details?name=${encodeURIComponent(product.name)}&category=${selectedCategory}`}
                       className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-medium py-2 px-3 rounded-md transition-colors duration-200 flex items-center justify-center"
                     >
                       <FileText className="w-3 h-3 mr-1" />
                       VIEW-DETAIL
                     </button>
                     <button 
-                      onClick={() => {
-                        setRfqProductName(product.name);
-                        setIsRFQPopupOpen(true);
-                        addToRFQ(product.name);
-                      }}
-                      className="flex-1 bg-red-600 hover:bg-red-700 text-white text-xs font-medium py-2 px-3 rounded-md transition-colors duration-200"
+                      onClick={() => handleWhatsAppClick(product)}
+                      className="flex-1 bg-green-500 hover:bg-green-600 text-white text-xs font-medium py-2 px-3 rounded-md transition-colors duration-200 flex items-center justify-center"
                     >
-                      ADD TO RFQ
+                      <MessageCircle className="w-3 h-3 mr-1" />
+                      WHATSAPP
                     </button>
                   </div>
+                  <button 
+                    onClick={() => {
+                      setRfqProductName(product.name);
+                      setIsRFQPopupOpen(true);
+                      addToRFQ(product.name);
+                    }}
+                    className="w-full bg-red-600 hover:bg-red-700 text-white text-xs font-medium py-2 px-3 rounded-md transition-colors duration-200"
+                  >
+                    ADD TO RFQ
+                  </button>
                 </div>
               </div>
             ))}

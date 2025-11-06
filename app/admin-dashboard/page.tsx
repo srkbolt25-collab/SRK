@@ -10,7 +10,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
-import Navbar from "@/components/Navbar"
+import TopBar from "@/components/TopBar"
+import MainHeader from "@/components/MainHeader"
 import Footer from "@/components/Footer"
 import { useToast } from "@/contexts/ToastContext"
 import { 
@@ -28,25 +29,43 @@ import {
   TrendingUp,
   Users,
   ShoppingCart,
-  Loader2
+  Loader2,
+  Download,
+  FileText
 } from "lucide-react"
 
 interface Product {
   _id?: string
   name: string
   description: string
-  price: number
   category: string
   inStock: boolean
   images: string[]
-  ingredients: string[]
-  allergens: string[]
-  features?: string[]
-  weight: string
-  origin: string
-  premium: boolean
-  createdAt: string
-  updatedAt: string
+  imageLink?: string
+  standard?: string
+  material?: string
+  grades?: string[]
+  sizes?: string
+  coating?: string[]
+  features: string[]
+  uses: string[]
+  technicalInformation?: string
+  shippingInfo?: string
+  returnsInfo?: string
+  warrantyInfo?: string
+  specifications: {
+    standard?: string
+    material?: string
+    grades?: string[]
+    sizes?: string
+    coating?: string[]
+    tensileStrength?: string
+    threadType?: string
+    finish?: string[]
+  }
+  premium?: boolean
+  createdAt?: string
+  updatedAt?: string
 }
 
 export default function AdminDashboard() {
@@ -61,35 +80,59 @@ export default function AdminDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [checkingAuth, setCheckingAuth] = useState(true)
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
+  const [dataSheetDownloads, setDataSheetDownloads] = useState<any[]>([])
+  const [loadingDownloads, setLoadingDownloads] = useState(false)
+  const [rfqEnquiries, setRfqEnquiries] = useState<any[]>([])
+  const [loadingEnquiries, setLoadingEnquiries] = useState(false)
+  const [selectedEnquiry, setSelectedEnquiry] = useState<any | null>(null)
+  const [isEnquiryViewOpen, setIsEnquiryViewOpen] = useState(false)
   const [editFormData, setEditFormData] = useState({
     name: "",
     description: "",
-    price: "",
     category: "",
     inStock: true,
     premium: false,
     images: [] as File[],
-    ingredients: [""],
-    allergens: [""],
+    imageLink: "",
+    standard: "",
+    material: "",
+    sizes: "",
+    grades: [""],
+    coating: [""],
     features: [""],
-    weight: "",
-    origin: ""
+    uses: [""],
+    technicalInformation: "",
+    shippingInfo: "Free shipping on orders over ₹2,499. Standard delivery takes 5-7 business days.",
+    returnsInfo: "30-day return policy with no questions asked. Products must be in original condition.",
+    warrantyInfo: "All products come with manufacturer's warranty. Contact us for warranty details.",
+    tensileStrength: "",
+    threadType: "",
+    finish: [""]
   })
   
   // Form state for adding new product
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    price: "",
     category: "",
     inStock: true,
     premium: false,
     images: [] as File[],
-    ingredients: [""],
-    allergens: [""],
+    imageLink: "",
+    standard: "",
+    material: "",
+    sizes: "",
+    grades: [""],
+    coating: [""],
     features: [""],
-    weight: "",
-    origin: ""
+    uses: [""],
+    technicalInformation: "",
+    shippingInfo: "Free shipping on orders over ₹2,499. Standard delivery takes 5-7 business days.",
+    returnsInfo: "30-day return policy with no questions asked. Products must be in original condition.",
+    warrantyInfo: "All products come with manufacturer's warranty. Contact us for warranty details.",
+    tensileStrength: "",
+    threadType: "",
+    finish: [""]
   })
   const [uploadingImages, setUploadingImages] = useState(false)
   const [uploadedImageUrls, setUploadedImageUrls] = useState<string[]>([])
@@ -112,6 +155,8 @@ export default function AdminDashboard() {
       if (currentTime - sessionTime < sessionDuration) {
         setIsAuthenticated(true)
         fetchProducts()
+        fetchDataSheetDownloads()
+        fetchRFQEnquiries()
       } else {
         // Session expired
         localStorage.removeItem("adminLoggedIn")
@@ -122,6 +167,55 @@ export default function AdminDashboard() {
       router.push("/admin-login")
     }
     setCheckingAuth(false)
+  }
+
+  const fetchDataSheetDownloads = async () => {
+    try {
+      setLoadingDownloads(true)
+      const response = await fetch('/api/datasheet-downloads')
+      if (response.ok) {
+        const data = await response.json()
+        setDataSheetDownloads(data)
+      } else {
+        throw new Error('Failed to fetch data sheet downloads')
+      }
+    } catch (error) {
+      console.error('Error fetching data sheet downloads:', error)
+      toast({
+        title: "Error",
+        description: "Failed to fetch data sheet downloads",
+        variant: "destructive"
+      })
+    } finally {
+      setLoadingDownloads(false)
+    }
+  }
+
+  const fetchRFQEnquiries = async () => {
+    try {
+      setLoadingEnquiries(true)
+      const response = await fetch('/api/rfq-enquiries')
+      if (response.ok) {
+        const data = await response.json()
+        setRfqEnquiries(data)
+      } else {
+        throw new Error('Failed to fetch RFQ enquiries')
+      }
+    } catch (error) {
+      console.error('Error fetching RFQ enquiries:', error)
+      toast({
+        title: "Error",
+        description: "Failed to fetch RFQ enquiries",
+        variant: "destructive"
+      })
+    } finally {
+      setLoadingEnquiries(false)
+    }
+  }
+
+  const handleViewEnquiry = (enquiry: any) => {
+    setSelectedEnquiry(enquiry)
+    setIsEnquiryViewOpen(true)
   }
 
   const handleLogout = () => {
@@ -271,16 +365,25 @@ export default function AdminDashboard() {
     setEditFormData({
       name: product.name,
       description: product.description,
-      price: product.price.toString(),
       category: product.category,
       inStock: product.inStock,
-      premium: product.premium,
+      premium: product.premium || false,
       images: [],
-      ingredients: product.ingredients && product.ingredients.length > 0 ? product.ingredients : [""],
-      allergens: product.allergens && product.allergens.length > 0 ? product.allergens : [""],
+      imageLink: product.imageLink || "",
+      standard: product.standard || product.specifications?.standard || "",
+      material: product.material || product.specifications?.material || "",
+      sizes: product.sizes || product.specifications?.sizes || "",
+      grades: product.grades && product.grades.length > 0 ? product.grades : (product.specifications?.grades && product.specifications.grades.length > 0 ? product.specifications.grades : [""]),
+      coating: product.coating && product.coating.length > 0 ? product.coating : (product.specifications?.coating && product.specifications.coating.length > 0 ? product.specifications.coating : [""]),
       features: product.features && product.features.length > 0 ? product.features : [""],
-      weight: product.weight || "",
-      origin: product.origin || ""
+      uses: product.uses && product.uses.length > 0 ? product.uses : [""],
+      technicalInformation: product.technicalInformation || "",
+      shippingInfo: product.shippingInfo || "Free shipping on orders over ₹2,499. Standard delivery takes 5-7 business days.",
+      returnsInfo: product.returnsInfo || "30-day return policy with no questions asked. Products must be in original condition.",
+      warrantyInfo: product.warrantyInfo || "All products come with manufacturer's warranty. Contact us for warranty details.",
+      tensileStrength: product.specifications?.tensileStrength || "",
+      threadType: product.specifications?.threadType || "",
+      finish: product.specifications?.finish && product.specifications.finish.length > 0 ? product.specifications.finish : [""]
     })
     setActiveTab("add-product")
   }
@@ -327,7 +430,7 @@ export default function AdminDashboard() {
     if (!editingProduct) return
 
     // Validation
-    if (!editFormData.name.trim() || !editFormData.description.trim() || !editFormData.price || !editFormData.category) {
+    if (!editFormData.name.trim() || !editFormData.description.trim() || !editFormData.category) {
       toast({
         title: "Error",
         description: "Please fill in all required fields",
@@ -339,19 +442,42 @@ export default function AdminDashboard() {
     try {
       setSubmitting(true)
 
+      // Combine uploaded images and image link
+      const finalImages = uploadedImageUrls.length > 0 
+        ? uploadedImageUrls 
+        : editFormData.imageLink 
+          ? [editFormData.imageLink] 
+          : editingProduct.images
+
       const productData = {
         name: editFormData.name,
         description: editFormData.description,
-        price: parseFloat(editFormData.price),
         category: editFormData.category,
         inStock: editFormData.inStock,
         premium: editFormData.premium,
-        images: editingProduct.images, // Keep existing images for now
-        ingredients: editFormData.ingredients.filter(ing => ing.trim() !== ""),
-        allergens: editFormData.allergens.filter(all => all.trim() !== ""),
+        images: finalImages,
+        imageLink: editFormData.imageLink || undefined,
+        standard: editFormData.standard || undefined,
+        material: editFormData.material || undefined,
+        sizes: editFormData.sizes || undefined,
+        grades: editFormData.grades.filter(g => g.trim() !== ""),
+        coating: editFormData.coating.filter(c => c.trim() !== ""),
         features: editFormData.features.filter(feat => feat.trim() !== ""),
-        weight: editFormData.weight,
-        origin: editFormData.origin,
+        uses: editFormData.uses.filter(use => use.trim() !== ""),
+        technicalInformation: editFormData.technicalInformation || undefined,
+        shippingInfo: editFormData.shippingInfo || undefined,
+        returnsInfo: editFormData.returnsInfo || undefined,
+        warrantyInfo: editFormData.warrantyInfo || undefined,
+        specifications: {
+          standard: editFormData.standard || undefined,
+          material: editFormData.material || undefined,
+          sizes: editFormData.sizes || undefined,
+          grades: editFormData.grades.filter(g => g.trim() !== ""),
+          coating: editFormData.coating.filter(c => c.trim() !== ""),
+          tensileStrength: editFormData.tensileStrength || undefined,
+          threadType: editFormData.threadType || undefined,
+          finish: editFormData.finish.filter(f => f.trim() !== "")
+        },
         updatedAt: new Date().toISOString()
       }
 
@@ -375,16 +501,25 @@ export default function AdminDashboard() {
         setEditFormData({
           name: "",
           description: "",
-          price: "",
           category: "",
           inStock: true,
           premium: false,
           images: [],
-          ingredients: [""],
-          allergens: [""],
+          imageLink: "",
+          standard: "",
+          material: "",
+          sizes: "",
+          grades: [""],
+          coating: [""],
           features: [""],
-          weight: "",
-          origin: ""
+          uses: [""],
+          technicalInformation: "",
+          shippingInfo: "Free shipping on orders over ₹2,499. Standard delivery takes 5-7 business days.",
+          returnsInfo: "30-day return policy with no questions asked. Products must be in original condition.",
+          warrantyInfo: "All products come with manufacturer's warranty. Contact us for warranty details.",
+          tensileStrength: "",
+          threadType: "",
+          finish: [""]
         })
         fetchProducts()
       } else {
@@ -412,16 +547,25 @@ export default function AdminDashboard() {
     setEditFormData({
       name: "",
       description: "",
-      price: "",
       category: "",
       inStock: true,
       premium: false,
       images: [],
-      ingredients: [""],
-      allergens: [""],
+      imageLink: "",
+      standard: "",
+      material: "",
+      sizes: "",
+      grades: [""],
+      coating: [""],
       features: [""],
-      weight: "",
-      origin: ""
+      uses: [""],
+      technicalInformation: "",
+      shippingInfo: "Free shipping on orders over ₹2,499. Standard delivery takes 5-7 business days.",
+      returnsInfo: "30-day return policy with no questions asked. Products must be in original condition.",
+      warrantyInfo: "All products come with manufacturer's warranty. Contact us for warranty details.",
+      tensileStrength: "",
+      threadType: "",
+      finish: [""]
     })
   }
 
@@ -429,10 +573,10 @@ export default function AdminDashboard() {
     e.preventDefault()
     
     // Validation
-    if (!formData.name || !formData.description || !formData.price || !formData.category) {
+    if (!formData.name || !formData.description || !formData.category) {
       toast({
         title: "Validation Error",
-        description: "Please fill in all required fields",
+        description: "Please fill in all required fields (Name, Description, Category)",
         variant: "destructive"
       })
       return
@@ -441,19 +585,42 @@ export default function AdminDashboard() {
     try {
       setSubmitting(true)
       
+      // Combine uploaded images and image link
+      const finalImages = uploadedImageUrls.length > 0 
+        ? uploadedImageUrls 
+        : formData.imageLink 
+          ? [formData.imageLink] 
+          : []
+
       const productData = {
         name: formData.name,
         description: formData.description,
-        price: parseFloat(formData.price),
         category: formData.category,
         inStock: formData.inStock,
         premium: formData.premium,
-        images: uploadedImageUrls, // Use uploaded Cloudinary URLs
-        ingredients: formData.ingredients.filter(ing => ing.trim() !== ""),
-        allergens: formData.allergens.filter(all => all.trim() !== ""),
+        images: finalImages,
+        imageLink: formData.imageLink || undefined,
+        standard: formData.standard || undefined,
+        material: formData.material || undefined,
+        sizes: formData.sizes || undefined,
+        grades: formData.grades.filter(g => g.trim() !== ""),
+        coating: formData.coating.filter(c => c.trim() !== ""),
         features: formData.features.filter(feat => feat.trim() !== ""),
-        weight: formData.weight,
-        origin: formData.origin,
+        uses: formData.uses.filter(use => use.trim() !== ""),
+        technicalInformation: formData.technicalInformation || undefined,
+        shippingInfo: formData.shippingInfo || undefined,
+        returnsInfo: formData.returnsInfo || undefined,
+        warrantyInfo: formData.warrantyInfo || undefined,
+        specifications: {
+          standard: formData.standard || undefined,
+          material: formData.material || undefined,
+          sizes: formData.sizes || undefined,
+          grades: formData.grades.filter(g => g.trim() !== ""),
+          coating: formData.coating.filter(c => c.trim() !== ""),
+          tensileStrength: formData.tensileStrength || undefined,
+          threadType: formData.threadType || undefined,
+          finish: formData.finish.filter(f => f.trim() !== "")
+        }
       }
 
       const response = await fetch('/api/products', {
@@ -469,16 +636,25 @@ export default function AdminDashboard() {
         setFormData({
           name: "",
           description: "",
-          price: "",
           category: "",
           inStock: true,
           premium: false,
           images: [],
-          ingredients: [""],
-          allergens: [""],
+          imageLink: "",
+          standard: "",
+          material: "",
+          sizes: "",
+          grades: [""],
+          coating: [""],
           features: [""],
-          weight: "",
-          origin: ""
+          uses: [""],
+          technicalInformation: "",
+          shippingInfo: "Free shipping on orders over ₹2,499. Standard delivery takes 5-7 business days.",
+          returnsInfo: "30-day return policy with no questions asked. Products must be in original condition.",
+          warrantyInfo: "All products come with manufacturer's warranty. Contact us for warranty details.",
+          tensileStrength: "",
+          threadType: "",
+          finish: [""]
         })
         setUploadedImageUrls([]) // Clear uploaded images
 
@@ -514,14 +690,14 @@ export default function AdminDashboard() {
     return matchesSearch && matchesCategory
   })
 
-  const categories = ["all", "Dark Chocolate", "Milk Chocolate", "White Chocolate", "Truffles", "Gift Sets"]
+  const categories = ["all", "BOLTS", "NUTS", "WASHERS", "SCREWS", "HOOK & EYE", "RIVETS", "ATTACHMENTS", "OTHER"]
 
   // Show loading while checking authentication
   if (checkingAuth) {
     return (
-      <div className="min-h-screen bg-[#fff5d6] flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto mb-4" />
+          <Loader2 className="h-8 w-8 animate-spin text-red-600 mx-auto mb-4" />
           <p className="text-gray-600">Checking authentication...</p>
         </div>
       </div>
@@ -534,18 +710,19 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-[#fff5d6]">
-      <Navbar />
+    <div className="min-h-screen bg-gray-50">
+      <TopBar />
+      <MainHeader />
       
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8 flex justify-between items-center">
           <div>
-            <h1 className="text-4xl font-bold bg-linear-to-r from-primary via-accent to-amber-300 bg-clip-text text-transparent mb-2">
+            <h1 className="text-4xl font-bold text-red-600 mb-2">
               Admin Dashboard
             </h1>
             <p className="text-lg text-gray-600">
-              Manage your chocolate products and track inventory
+              Manage your fastener products and track inventory
             </p>
           </div>
           <Button 
@@ -559,19 +736,19 @@ export default function AdminDashboard() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card className="bg-white/80 backdrop-blur-sm">
+          <Card className="bg-white shadow-md">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">Total Products</p>
-                  <p className="text-2xl font-bold text-primary">{products.length}</p>
+                  <p className="text-2xl font-bold text-red-600">{products.length}</p>
                 </div>
-                <Package className="h-8 w-8 text-primary" />
+                <Package className="h-8 w-8 text-red-600" />
               </div>
             </CardContent>
           </Card>
           
-          <Card className="bg-white/80 backdrop-blur-sm">
+          <Card className="bg-white shadow-md">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -583,7 +760,7 @@ export default function AdminDashboard() {
             </CardContent>
           </Card>
           
-          <Card className="bg-white/80 backdrop-blur-sm">
+          <Card className="bg-white shadow-md">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -595,14 +772,14 @@ export default function AdminDashboard() {
             </CardContent>
           </Card>
           
-          <Card className="bg-white/80 backdrop-blur-sm">
+          <Card className="bg-white shadow-md">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Avg. Price</p>
-                  <p className="text-2xl font-bold text-purple-600">₹{(products.reduce((sum, p) => sum + p.price, 0) / products.length).toFixed(0)}</p>
+                  <p className="text-sm font-medium text-gray-600">Out of Stock</p>
+                  <p className="text-2xl font-bold text-orange-600">{products.filter(p => !p.inStock).length}</p>
                 </div>
-                <ShoppingCart className="h-8 w-8 text-purple-600" />
+                <Package className="h-8 w-8 text-orange-600" />
               </div>
             </CardContent>
           </Card>
@@ -610,7 +787,7 @@ export default function AdminDashboard() {
 
         {/* Main Content */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="add-product" className="flex items-center gap-2">
               <Plus className="h-4 w-4" />
               Add Product
@@ -619,11 +796,19 @@ export default function AdminDashboard() {
               <Package className="h-4 w-4" />
               Manage Products
             </TabsTrigger>
+            <TabsTrigger value="datasheet-downloads" className="flex items-center gap-2">
+              <Download className="h-4 w-4" />
+              Data Sheet Downloads
+            </TabsTrigger>
+            <TabsTrigger value="rfq-enquiries" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              RFQ Enquiries
+            </TabsTrigger>
           </TabsList>
 
           {/* Add Product Tab */}
           <TabsContent value="add-product">
-            <Card className="bg-white/80 backdrop-blur-sm">
+            <Card className="bg-white shadow-md">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   {editingProduct ? (
@@ -641,46 +826,66 @@ export default function AdminDashboard() {
               </CardHeader>
               <CardContent>
                 <form onSubmit={editingProduct ? handleEditSubmit : handleSubmit} className="space-y-6">
-                  {/* Basic Information */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Product Name *</Label>
-                      <Input
-                        id="name"
-                        value={editingProduct ? editFormData.name : formData.name}
-                        onChange={(e) => editingProduct ? handleEditInputChange("name", e.target.value) : handleInputChange("name", e.target.value)}
-                        placeholder="Enter product name"
-                        required
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="price">Price (₹) *</Label>
-                      <Input
-                        id="price"
-                        type="number"
-                        step="0.01"
-                        value={editingProduct ? editFormData.price : formData.price}
-                        onChange={(e) => editingProduct ? handleEditInputChange("price", e.target.value) : handleInputChange("price", e.target.value)}
-                        placeholder="0.00"
-                        required
-                      />
-                    </div>
-                  </div>
-
+                  {/* Title */}
                   <div className="space-y-2">
-                    <Label htmlFor="description">Description *</Label>
-                    <Textarea
-                      id="description"
-                      value={editingProduct ? editFormData.description : formData.description}
-                      onChange={(e) => editingProduct ? handleEditInputChange("description", e.target.value) : handleInputChange("description", e.target.value)}
-                      placeholder="Enter product description"
-                      rows={3}
+                    <Label htmlFor="name">Title *</Label>
+                    <Input
+                      id="name"
+                      value={editingProduct ? editFormData.name : formData.name}
+                      onChange={(e) => editingProduct ? handleEditInputChange("name", e.target.value) : handleInputChange("name", e.target.value)}
+                      placeholder="e.g., DIN 933 / 931 Hexagon Bolt"
                       required
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                  {/* Standard */}
+                  <div className="space-y-2">
+                    <Label htmlFor="standard">Standard:</Label>
+                    <Input
+                      id="standard"
+                      value={editingProduct ? editFormData.standard : formData.standard}
+                      onChange={(e) => editingProduct ? handleEditInputChange("standard", e.target.value) : handleInputChange("standard", e.target.value)}
+                      placeholder="e.g., DIN 933 / 931"
+                    />
+                  </div>
+
+                  {/* Specifications Section */}
+                  <div className="border-t pt-6">
+                    <h3 className="text-lg font-semibold mb-4">Specifications</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                      <div className="space-y-2">
+                        <Label htmlFor="spec-standard">Standard:</Label>
+                        <Input
+                          id="spec-standard"
+                          value={editingProduct ? editFormData.standard : formData.standard}
+                          onChange={(e) => editingProduct ? handleEditInputChange("standard", e.target.value) : handleInputChange("standard", e.target.value)}
+                          placeholder="e.g., DIN 933 / 931"
+                        />
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="material">Material:</Label>
+                        <Input
+                          id="material"
+                          value={editingProduct ? editFormData.material : formData.material}
+                          onChange={(e) => editingProduct ? handleEditInputChange("material", e.target.value) : handleInputChange("material", e.target.value)}
+                          placeholder="e.g., Steel / Stainless Steel"
+                        />
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="sizes">Sizes:</Label>
+                        <Input
+                          id="sizes"
+                          value={editingProduct ? editFormData.sizes : formData.sizes}
+                          onChange={(e) => editingProduct ? handleEditInputChange("sizes", e.target.value) : handleInputChange("sizes", e.target.value)}
+                          placeholder="e.g., M6 to M42"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                     <div className="space-y-2">
                       <Label htmlFor="category">Category *</Label>
                       <Select value={editingProduct ? editFormData.category : formData.category} onValueChange={(value) => editingProduct ? handleEditInputChange("category", value) : handleInputChange("category", value)}>
@@ -688,11 +893,14 @@ export default function AdminDashboard() {
                           <SelectValue placeholder="Select category" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="Dark Chocolate">Dark Chocolate</SelectItem>
-                          <SelectItem value="Milk Chocolate">Milk Chocolate</SelectItem>
-                          <SelectItem value="White Chocolate">White Chocolate</SelectItem>
-                          <SelectItem value="Truffles">Truffles</SelectItem>
-                          <SelectItem value="Gift Sets">Gift Sets</SelectItem>
+                          <SelectItem value="BOLTS">BOLTS</SelectItem>
+                          <SelectItem value="NUTS">NUTS</SelectItem>
+                          <SelectItem value="WASHERS">WASHERS</SelectItem>
+                          <SelectItem value="SCREWS">SCREWS</SelectItem>
+                          <SelectItem value="HOOK & EYE">HOOK & EYE</SelectItem>
+                          <SelectItem value="RIVETS">RIVETS</SelectItem>
+                          <SelectItem value="ATTACHMENTS">ATTACHMENTS</SelectItem>
+                          <SelectItem value="OTHER">OTHER</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -704,42 +912,139 @@ export default function AdminDashboard() {
                           id="premium"
                           checked={editingProduct ? editFormData.premium : formData.premium}
                           onChange={(e) => editingProduct ? handleEditInputChange("premium", e.target.checked) : handleInputChange("premium", e.target.checked)}
-                          className="rounded border-gray-300 text-primary focus:ring-primary"
+                          className="rounded border-gray-300 text-red-600 focus:ring-red-600"
                         />
                         <Label htmlFor="premium" className="text-sm font-medium">
                           Premium Product
                         </Label>
                       </div>
-                      <p className="text-xs text-gray-500">Premium products will be featured in the Savron Premium section</p>
+                      <p className="text-xs text-gray-500">Premium products will be featured prominently</p>
+                    </div>
                     </div>
                     
-                    <div className="space-y-2">
-                      <Label htmlFor="weight">Weight</Label>
-                      <Input
-                        id="weight"
-                        value={editingProduct ? editFormData.weight : formData.weight}
-                        onChange={(e) => editingProduct ? handleEditInputChange("weight", e.target.value) : handleInputChange("weight", e.target.value)}
-                        placeholder="e.g., 250g"
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="origin">Origin</Label>
-                      <Input
-                        id="origin"
-                        value={editingProduct ? editFormData.origin : formData.origin}
-                        onChange={(e) => editingProduct ? handleEditInputChange("origin", e.target.value) : handleInputChange("origin", e.target.value)}
-                        placeholder="e.g., Belgium"
-                      />
+                      {/* Grades */}
+                      <div className="space-y-2">
+                        <Label>Grades:</Label>
+                        {editingProduct ? editFormData.grades.map((grade, index) => (
+                          <div key={index} className="flex gap-2">
+                            <Input
+                              value={grade}
+                              onChange={(e) => handleEditArrayFieldChange("grades", index, e.target.value)}
+                              placeholder="e.g., Grade 8.8"
+                            />
+                            {editFormData.grades.length > 1 && (
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => removeEditArrayField("grades", index)}
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            )}
+                          </div>
+                        )) : formData.grades.map((grade, index) => (
+                          <div key={index} className="flex gap-2">
+                            <Input
+                              value={grade}
+                              onChange={(e) => handleArrayFieldChange("grades", index, e.target.value)}
+                              placeholder="e.g., Grade 8.8"
+                            />
+                            {formData.grades.length > 1 && (
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => removeArrayField("grades", index)}
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            )}
+                          </div>
+                        ))}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => editingProduct ? addEditArrayField("grades") : addArrayField("grades")}
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Grade
+                        </Button>
+                      </div>
+                      
+                      {/* Coating */}
+                      <div className="space-y-2">
+                        <Label>Coating:</Label>
+                        {editingProduct ? editFormData.coating.map((coat, index) => (
+                          <div key={index} className="flex gap-2">
+                            <Input
+                              value={coat}
+                              onChange={(e) => handleEditArrayFieldChange("coating", index, e.target.value)}
+                              placeholder="e.g., Zinc Plated"
+                            />
+                            {editFormData.coating.length > 1 && (
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => removeEditArrayField("coating", index)}
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            )}
+                          </div>
+                        )) : formData.coating.map((coat, index) => (
+                          <div key={index} className="flex gap-2">
+                            <Input
+                              value={coat}
+                              onChange={(e) => handleArrayFieldChange("coating", index, e.target.value)}
+                              placeholder="e.g., Zinc Plated"
+                            />
+                            {formData.coating.length > 1 && (
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => removeArrayField("coating", index)}
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            )}
+                          </div>
+                        ))}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => editingProduct ? addEditArrayField("coating") : addArrayField("coating")}
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Coating
+                        </Button>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Images Upload */}
+                  {/* Image Link or Upload */}
                   <div className="space-y-4">
-                    <Label>Product Images & Videos</Label>
+                    <Label>Image Link or Upload Image</Label>
+                    
+                    {/* Image Link Input */}
+                    <div className="space-y-2">
+                      <Label htmlFor="imageLink">Image URL (Optional)</Label>
+                      <Input
+                        id="imageLink"
+                        type="url"
+                        value={editingProduct ? editFormData.imageLink : formData.imageLink}
+                        onChange={(e) => editingProduct ? handleEditInputChange("imageLink", e.target.value) : handleInputChange("imageLink", e.target.value)}
+                        placeholder="https://example.com/image.jpg"
+                      />
+                      <p className="text-xs text-gray-500">Enter image URL or upload image below</p>
+                    </div>
                     
                     {/* File Upload Area */}
-                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition-colors">
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-red-600 transition-colors">
                       <input
                         type="file"
                         multiple
@@ -752,7 +1057,7 @@ export default function AdminDashboard() {
                       <label htmlFor="image-upload" className="cursor-pointer">
                         {uploadingImages ? (
                           <div className="flex flex-col items-center">
-                            <Loader2 className="h-8 w-8 animate-spin text-primary mb-2" />
+                            <Loader2 className="h-8 w-8 animate-spin text-red-600 mb-2" />
                             <p className="text-sm text-gray-600">Uploading to Cloudinary...</p>
                           </div>
                         ) : (
@@ -807,40 +1112,40 @@ export default function AdminDashboard() {
                     )}
                   </div>
 
-                  {/* Ingredients */}
+                  {/* Finish (Optional) */}
                   <div className="space-y-2">
-                    <Label>Ingredients</Label>
-                    {editingProduct ? editFormData.ingredients.map((ingredient, index) => (
+                    <Label>Finish (Optional)</Label>
+                    {editingProduct ? editFormData.finish.map((fin, index) => (
                       <div key={index} className="flex gap-2">
                         <Input
-                          value={ingredient}
-                          onChange={(e) => handleEditArrayFieldChange("ingredients", index, e.target.value)}
-                          placeholder="Ingredient"
+                          value={fin}
+                          onChange={(e) => handleEditArrayFieldChange("finish", index, e.target.value)}
+                          placeholder="e.g., Chrome Plated"
                         />
-                        {editFormData.ingredients.length > 1 && (
+                        {editFormData.finish.length > 1 && (
                           <Button
                             type="button"
                             variant="outline"
                             size="sm"
-                            onClick={() => removeEditArrayField("ingredients", index)}
+                            onClick={() => removeEditArrayField("finish", index)}
                           >
                             <X className="h-4 w-4" />
                           </Button>
                         )}
                       </div>
-                    )) : formData.ingredients.map((ingredient, index) => (
+                    )) : formData.finish.map((fin, index) => (
                       <div key={index} className="flex gap-2">
                         <Input
-                          value={ingredient}
-                          onChange={(e) => handleArrayFieldChange("ingredients", index, e.target.value)}
-                          placeholder="Ingredient"
+                          value={fin}
+                          onChange={(e) => handleArrayFieldChange("finish", index, e.target.value)}
+                          placeholder="e.g., Chrome Plated"
                         />
-                        {formData.ingredients.length > 1 && (
+                        {formData.finish.length > 1 && (
                           <Button
                             type="button"
                             variant="outline"
                             size="sm"
-                            onClick={() => removeArrayField("ingredients", index)}
+                            onClick={() => removeArrayField("finish", index)}
                           >
                             <X className="h-4 w-4" />
                           </Button>
@@ -851,61 +1156,10 @@ export default function AdminDashboard() {
                       type="button"
                       variant="outline"
                       size="sm"
-                      onClick={() => editingProduct ? addEditArrayField("ingredients") : addArrayField("ingredients")}
+                      onClick={() => editingProduct ? addEditArrayField("finish") : addArrayField("finish")}
                     >
                       <Plus className="h-4 w-4 mr-2" />
-                      Add Ingredient
-                    </Button>
-                  </div>
-
-                  {/* Allergens */}
-                  <div className="space-y-2">
-                    <Label>Allergens</Label>
-                    {editingProduct ? editFormData.allergens.map((allergen, index) => (
-                      <div key={index} className="flex gap-2">
-                        <Input
-                          value={allergen}
-                          onChange={(e) => handleEditArrayFieldChange("allergens", index, e.target.value)}
-                          placeholder="Allergen"
-                        />
-                        {editFormData.allergens.length > 1 && (
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="sm"
-                            onClick={() => removeEditArrayField("allergens", index)}
-                          >
-                            <X className="h-4 w-4" />
-                          </Button>
-                        )}
-                      </div>
-                    )) : formData.allergens.map((allergen, index) => (
-                      <div key={index} className="flex gap-2">
-                        <Input
-                          value={allergen}
-                          onChange={(e) => handleArrayFieldChange("allergens", index, e.target.value)}
-                          placeholder="Allergen"
-                        />
-                        {formData.allergens.length > 1 && (
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="sm"
-                            onClick={() => removeArrayField("allergens", index)}
-                          >
-                            <X className="h-4 w-4" />
-                          </Button>
-                        )}
-                      </div>
-                    ))}
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => editingProduct ? addEditArrayField("allergens") : addArrayField("allergens")}
-                    >
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add Allergen
+                      Add Finish
                     </Button>
                   </div>
 
@@ -917,7 +1171,7 @@ export default function AdminDashboard() {
                         <Input
                           value={feature}
                           onChange={(e) => handleEditArrayFieldChange("features", index, e.target.value)}
-                          placeholder="Key feature"
+                          placeholder="e.g., Precision engineered for perfect fit"
                         />
                         {editFormData.features.length > 1 && (
                           <Button
@@ -935,7 +1189,7 @@ export default function AdminDashboard() {
                         <Input
                           value={feature}
                           onChange={(e) => handleArrayFieldChange("features", index, e.target.value)}
-                          placeholder="Key feature"
+                          placeholder="e.g., Precision engineered for perfect fit"
                         />
                         {formData.features.length > 1 && (
                           <Button
@@ -958,6 +1212,120 @@ export default function AdminDashboard() {
                       <Plus className="h-4 w-4 mr-2" />
                       Add Feature
                     </Button>
+                  </div>
+
+                  {/* Product Description */}
+                  <div className="space-y-2">
+                    <Label htmlFor="description">Product Description *</Label>
+                    <Textarea
+                      id="description"
+                      value={editingProduct ? editFormData.description : formData.description}
+                      onChange={(e) => editingProduct ? handleEditInputChange("description", e.target.value) : handleInputChange("description", e.target.value)}
+                      placeholder="Enter product description"
+                      rows={4}
+                      required
+                    />
+                  </div>
+
+                  {/* Technical Information */}
+                  <div className="space-y-2">
+                    <Label htmlFor="technicalInformation">Technical Information</Label>
+                    <Textarea
+                      id="technicalInformation"
+                      value={editingProduct ? editFormData.technicalInformation : formData.technicalInformation}
+                      onChange={(e) => editingProduct ? handleEditInputChange("technicalInformation", e.target.value) : handleInputChange("technicalInformation", e.target.value)}
+                      placeholder="Enter technical information and specifications"
+                      rows={4}
+                    />
+                  </div>
+
+                  {/* Uses & Applications */}
+                  <div className="space-y-2">
+                    <Label>Uses & Applications</Label>
+                    {editingProduct ? editFormData.uses.map((use, index) => (
+                      <div key={index} className="flex gap-2">
+                        <Input
+                          value={use}
+                          onChange={(e) => handleEditArrayFieldChange("uses", index, e.target.value)}
+                          placeholder="e.g., Construction & Structural Steel"
+                        />
+                        {editFormData.uses.length > 1 && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => removeEditArrayField("uses", index)}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
+                    )) : formData.uses.map((use, index) => (
+                      <div key={index} className="flex gap-2">
+                        <Input
+                          value={use}
+                          onChange={(e) => handleArrayFieldChange("uses", index, e.target.value)}
+                          placeholder="e.g., Construction & Structural Steel"
+                        />
+                        {formData.uses.length > 1 && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => removeArrayField("uses", index)}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => editingProduct ? addEditArrayField("uses") : addArrayField("uses")}
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Use Case
+                    </Button>
+                  </div>
+
+                  {/* Shipping & Returns */}
+                  <div className="border-t pt-6 space-y-4">
+                    <h3 className="text-lg font-semibold mb-4">Shipping & Returns</h3>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="shippingInfo">Shipping:</Label>
+                      <Textarea
+                        id="shippingInfo"
+                        value={editingProduct ? editFormData.shippingInfo : formData.shippingInfo}
+                        onChange={(e) => editingProduct ? handleEditInputChange("shippingInfo", e.target.value) : handleInputChange("shippingInfo", e.target.value)}
+                        placeholder="Free shipping on orders over ₹2,499. Standard delivery takes 5-7 business days."
+                        rows={2}
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="returnsInfo">Returns:</Label>
+                      <Textarea
+                        id="returnsInfo"
+                        value={editingProduct ? editFormData.returnsInfo : formData.returnsInfo}
+                        onChange={(e) => editingProduct ? handleEditInputChange("returnsInfo", e.target.value) : handleInputChange("returnsInfo", e.target.value)}
+                        placeholder="30-day return policy with no questions asked. Products must be in original condition."
+                        rows={2}
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="warrantyInfo">Warranty:</Label>
+                      <Textarea
+                        id="warrantyInfo"
+                        value={editingProduct ? editFormData.warrantyInfo : formData.warrantyInfo}
+                        onChange={(e) => editingProduct ? handleEditInputChange("warrantyInfo", e.target.value) : handleInputChange("warrantyInfo", e.target.value)}
+                        placeholder="All products come with manufacturer's warranty. Contact us for warranty details."
+                        rows={2}
+                      />
+                    </div>
                   </div>
 
                   {/* Stock Status */}
@@ -1000,7 +1368,7 @@ export default function AdminDashboard() {
 
           {/* Products Management Tab */}
           <TabsContent value="products">
-            <Card className="bg-white/80 backdrop-blur-sm">
+            <Card className="bg-white shadow-md">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Package className="h-5 w-5" />
@@ -1033,7 +1401,7 @@ export default function AdminDashboard() {
               <CardContent>
                 {loading ? (
                   <div className="flex items-center justify-center py-8">
-                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                    <Loader2 className="h-8 w-8 animate-spin text-red-600" />
                     <span className="ml-2">Loading products...</span>
                   </div>
                 ) : (
@@ -1056,15 +1424,39 @@ export default function AdminDashboard() {
                             </div>
                             <p className="text-gray-600 mb-2 text-sm sm:text-base">{product.description}</p>
                             <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-500">
-                              <span>Price: ₹{product.price.toLocaleString('en-IN')}</span>
-                              {product.weight && <span>Weight: {product.weight}</span>}
-                              {product.origin && <span>Origin: {product.origin}</span>}
+                              {(product.standard || product.specifications?.standard) && (
+                                <span>Standard: {product.standard || product.specifications?.standard}</span>
+                              )}
+                              {(product.material || product.specifications?.material) && (
+                                <span>Material: {product.material || product.specifications?.material}</span>
+                              )}
+                              {(product.sizes || product.specifications?.sizes) && (
+                                <span>Sizes: {product.sizes || product.specifications?.sizes}</span>
+                              )}
+                              {product.createdAt && (
                               <span>Added: {new Date(product.createdAt).toLocaleDateString()}</span>
+                              )}
                             </div>
-                            {product.ingredients && product.ingredients.length > 0 && (
+                            {((product.grades && product.grades.length > 0) || (product.specifications?.grades && product.specifications.grades.length > 0)) && (
                               <div className="mt-2">
-                                <p className="text-xs sm:text-sm font-medium">Ingredients:</p>
-                                <p className="text-xs sm:text-sm text-gray-600">{product.ingredients.join(", ")}</p>
+                                <p className="text-xs sm:text-sm font-medium">Grades:</p>
+                                <p className="text-xs sm:text-sm text-gray-600">
+                                  {(product.grades && product.grades.length > 0 ? product.grades : product.specifications?.grades || []).join(", ")}
+                                </p>
+                              </div>
+                            )}
+                            {((product.coating && product.coating.length > 0) || (product.specifications?.coating && product.specifications.coating.length > 0)) && (
+                              <div className="mt-2">
+                                <p className="text-xs sm:text-sm font-medium">Coating:</p>
+                                <p className="text-xs sm:text-sm text-gray-600">
+                                  {(product.coating && product.coating.length > 0 ? product.coating : product.specifications?.coating || []).join(", ")}
+                                </p>
+                              </div>
+                            )}
+                            {product.features && product.features.length > 0 && (
+                              <div className="mt-2">
+                                <p className="text-xs sm:text-sm font-medium">Features:</p>
+                                <p className="text-xs sm:text-sm text-gray-600">{product.features.join(", ")}</p>
                               </div>
                             )}
                           </div>
@@ -1094,8 +1486,305 @@ export default function AdminDashboard() {
               </CardContent>
             </Card>
           </TabsContent>
+
+          {/* Data Sheet Downloads Tab */}
+          <TabsContent value="datasheet-downloads">
+            <Card className="bg-white shadow-md">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Download className="h-5 w-5" />
+                  Data Sheet Downloads
+                </CardTitle>
+                <p className="text-sm text-gray-600 mt-2">
+                  View all data sheet download requests from customers
+                </p>
+              </CardHeader>
+              <CardContent>
+                {loadingDownloads ? (
+                  <div className="flex items-center justify-center py-8">
+                    <Loader2 className="h-8 w-8 animate-spin text-red-600" />
+                    <span className="ml-2">Loading downloads...</span>
+                  </div>
+                ) : dataSheetDownloads.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500">
+                    <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>No data sheet downloads yet</p>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse">
+                      <thead>
+                        <tr className="bg-gray-50 border-b">
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">S.No</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Name</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Contact</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Address</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Product Name</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Category</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Standard</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Material</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Downloaded At</th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {dataSheetDownloads.map((download, index) => (
+                          <tr key={download._id || index} className="hover:bg-gray-50">
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                              {index + 1}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                              {download.name}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
+                              {download.number}
+                            </td>
+                            <td className="px-4 py-3 text-sm text-gray-600 max-w-xs truncate" title={download.address}>
+                              {download.address}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                              {download.productName}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
+                              <Badge variant="outline">{download.productCategory}</Badge>
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
+                              {download.productStandard || '-'}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
+                              {download.productMaterial || '-'}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
+                              {download.downloadedAt 
+                                ? new Date(download.downloadedAt).toLocaleString('en-IN', {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                  })
+                                : '-'}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* RFQ Enquiries Tab */}
+          <TabsContent value="rfq-enquiries">
+            <Card className="bg-white shadow-md">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <FileText className="h-5 w-5" />
+                  RFQ Enquiries
+                </CardTitle>
+                <p className="text-sm text-gray-600 mt-2">
+                  View all Request for Quotation enquiries from customers
+                </p>
+              </CardHeader>
+              <CardContent>
+                {loadingEnquiries ? (
+                  <div className="flex items-center justify-center py-8">
+                    <Loader2 className="h-8 w-8 animate-spin text-red-600" />
+                    <span className="ml-2">Loading enquiries...</span>
+                  </div>
+                ) : rfqEnquiries.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500">
+                    <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>No RFQ enquiries yet</p>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse">
+                      <thead>
+                        <tr className="bg-gray-50 border-b">
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">S.No</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Name</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Email</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Company</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Mobile</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">City</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Products</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Date</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {rfqEnquiries.map((enquiry, index) => (
+                          <tr key={enquiry._id || index} className="hover:bg-gray-50">
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                              {index + 1}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                              {enquiry.fullName}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
+                              {enquiry.email}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
+                              {enquiry.companyName || '-'}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
+                              {enquiry.mobileNumber}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
+                              {enquiry.city || '-'}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
+                              <Badge variant="outline">{enquiry.totalItems || enquiry.products?.length || 0} items</Badge>
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
+                              {enquiry.enquiryDate || enquiry.createdAt
+                                ? new Date(enquiry.enquiryDate || enquiry.createdAt).toLocaleString('en-IN', {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                  })
+                                : '-'}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleViewEnquiry(enquiry)}
+                                className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                              >
+                                <Eye className="h-4 w-4 mr-1" />
+                                View
+                              </Button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
         </Tabs>
       </div>
+
+      {/* Enquiry View Popup */}
+      {isEnquiryViewOpen && selectedEnquiry && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b px-8 py-6 flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-900">
+                RFQ Enquiry Details
+              </h2>
+              <button
+                onClick={() => {
+                  setIsEnquiryViewOpen(false)
+                  setSelectedEnquiry(null)
+                }}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            
+            <div className="p-8 space-y-6">
+              {/* Customer Information */}
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Customer Information</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-gray-600">Full Name</p>
+                    <p className="text-base font-medium text-gray-900">{selectedEnquiry.fullName}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Email</p>
+                    <p className="text-base font-medium text-gray-900">{selectedEnquiry.email}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Mobile Number</p>
+                    <p className="text-base font-medium text-gray-900">{selectedEnquiry.mobileNumber}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Company Name</p>
+                    <p className="text-base font-medium text-gray-900">{selectedEnquiry.companyName || '-'}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Address</p>
+                    <p className="text-base font-medium text-gray-900">{selectedEnquiry.address}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">City</p>
+                    <p className="text-base font-medium text-gray-900">{selectedEnquiry.city || '-'}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Country</p>
+                    <p className="text-base font-medium text-gray-900">{selectedEnquiry.country || '-'}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Enquiry Date</p>
+                    <p className="text-base font-medium text-gray-900">
+                      {selectedEnquiry.enquiryDate || selectedEnquiry.createdAt
+                        ? new Date(selectedEnquiry.enquiryDate || selectedEnquiry.createdAt).toLocaleString('en-IN')
+                        : '-'}
+                    </p>
+                  </div>
+                </div>
+                {selectedEnquiry.comments && (
+                  <div className="mt-4">
+                    <p className="text-sm text-gray-600">Comments</p>
+                    <p className="text-base text-gray-900 mt-1">{selectedEnquiry.comments}</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Products List */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Products ({selectedEnquiry.totalItems || selectedEnquiry.products?.length || 0} items)
+                </h3>
+                <div className="space-y-4">
+                  {selectedEnquiry.products && selectedEnquiry.products.length > 0 ? (
+                    selectedEnquiry.products.map((product: any, index: number) => (
+                      <div key={product.id || index} className="border rounded-lg p-4 flex gap-4">
+                        <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center shrink-0">
+                          <img
+                            src={product.image || '/placeholder.jpg'}
+                            alt={product.name}
+                            className="w-16 h-16 object-contain"
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium text-gray-900 mb-1">{product.name}</p>
+                          <div className="flex items-center gap-4 text-sm text-gray-600">
+                            <span>Quantity: <strong className="text-gray-900">{product.quantity || 1}</strong></span>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-gray-500 text-center py-4">No products found</p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div className="sticky bottom-0 bg-gray-50 border-t px-8 py-4 flex justify-end gap-3">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setIsEnquiryViewOpen(false)
+                  setSelectedEnquiry(null)
+                }}
+              >
+                Close
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
       
       <Footer />
     </div>

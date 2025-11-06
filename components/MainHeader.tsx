@@ -5,7 +5,7 @@ import { Search, Phone, MessageCircle, ShoppingCart, Mail } from "lucide-react"
 import { useRFQ } from "@/contexts/RFQContext"
 
 export default function MainHeader() {
-  const { rfqCount } = useRFQ()
+  const { rfqCount, isHydrated } = useRFQ()
 
   return (
     <header className="bg-white shadow-lg">
@@ -47,7 +47,7 @@ export default function MainHeader() {
             <Link href="/rfq" className="flex items-center space-x-2 text-red-600 hover:text-red-700 relative cursor-pointer">
               <ShoppingCart className="w-5 h-5" />
               <span className="text-sm font-semibold">RFQ List</span>
-              {rfqCount > 0 && (
+              {isHydrated && rfqCount > 0 && (
                 <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center animate-bounce">
                   {rfqCount}
                 </span>

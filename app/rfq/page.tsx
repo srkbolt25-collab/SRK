@@ -28,41 +28,66 @@ export default function RFQPage() {
     }))
   }
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault()
-    console.log("RFQ Submitted:", formData, rfqProducts)
-    // Show success modal
-    setShowSuccessModal(true)
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setFormData({
-        fullName: "",
-        email: "",
-        address: "",
-        companyName: "",
-        country: "United Arab Emirates",
-        city: "",
-        mobileNumber: "",
-        comments: "",
+    
+    // Validate required fields
+    if (!formData.fullName || !formData.email || !formData.address || !formData.mobileNumber) {
+      alert("Please fill in all required fields")
+      return
+    }
+
+    if (rfqProducts.length === 0) {
+      alert("Please add at least one product to your RFQ")
+      return
+    }
+
+    try {
+      // Store the enquiry in database
+      const response = await fetch('/api/rfq-enquiries', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fullName: formData.fullName,
+          email: formData.email,
+          address: formData.address,
+          companyName: formData.companyName,
+          country: formData.country,
+          city: formData.city,
+          mobileNumber: formData.mobileNumber,
+          comments: formData.comments,
+          products: rfqProducts
+        }),
       })
-      setShowSuccessModal(false)
-      clearRFQ()
-    }, 3000)
+
+      if (response.ok) {
+        // Show success modal
+        setShowSuccessModal(true)
+        // Clear form and RFQ immediately (don't wait)
+        setFormData({
+          fullName: "",
+          email: "",
+          address: "",
+          companyName: "",
+          country: "United Arab Emirates",
+          city: "",
+          mobileNumber: "",
+          comments: "",
+        })
+        clearRFQ()
+      } else {
+        alert("Failed to submit enquiry. Please try again.")
+      }
+    } catch (error) {
+      console.error('Error submitting RFQ:', error)
+      alert("An error occurred. Please try again.")
+    }
   }
 
   const closeModal = () => {
     setShowSuccessModal(false)
-    setFormData({
-      fullName: "",
-      email: "",
-      address: "",
-      companyName: "",
-      country: "United Arab Emirates",
-      city: "",
-      mobileNumber: "",
-      comments: "",
-    })
-    clearRFQ()
   }
 
   return (
@@ -322,19 +347,22 @@ export default function RFQPage() {
               <CheckCircle className="w-24 h-24 text-green-600" />
             </div>
             <h2 className="text-3xl font-bold text-gray-900 mb-3">
-              Enquiry Placed!
+              Enquiry Placed Successfully!
             </h2>
-            <p className="text-gray-600 text-lg mb-2">
+            <p className="text-gray-600 text-lg mb-4">
               Thank you for your request
             </p>
-            <p className="text-gray-500 text-sm mb-6">
+            <p className="text-gray-500 text-sm mb-8">
               We have received your quotation request for {rfqProducts.reduce((sum, p) => sum + p.quantity, 0)} product(s). Our team will contact you shortly with the pricing and availability information.
             </p>
 
-            {/* Close Button */}
+            {/* Continue Shopping Button */}
             <Button
-              onClick={closeModal}
-              className="w-full bg-green-600 hover:bg-green-700 text-white py-3 text-lg font-bold"
+              onClick={() => {
+                closeModal()
+                window.location.href = '/'
+              }}
+              className="w-full bg-red-600 hover:bg-red-700 text-white py-3 text-lg font-bold"
             >
               Continue Shopping
             </Button>
