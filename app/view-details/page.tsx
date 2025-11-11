@@ -324,7 +324,7 @@ export default function ProductDetailsPage() {
                   </span>
                   <span className="bg-[#2E1F44] text-white px-3 py-1 rounded-full text-xs font-semibold tracking-wide shadow-md">
                     In Stock
-                  </span>
+                    </span>
                 </div>
               </div>
 
@@ -365,7 +365,7 @@ export default function ProductDetailsPage() {
 
                 {/* Product Standard */}
                 {product.standard && (
-                  <div className="flex items-center gap-3 mb-6">
+                <div className="flex items-center gap-3 mb-6">
                     <span className="text-lg font-semibold text-[#2E1F44]/80">Standard:</span>
                     <span className="text-lg text-[#2E1F44] font-semibold">{product.standard}</span>
                   </div>
@@ -382,25 +382,25 @@ export default function ProductDetailsPage() {
                       <span className="text-[#2E1F44] font-medium text-right max-w-[60%]">
                         {product.equivalentStandard || product.specifications?.equivalentStandard || product.standard || product.specifications?.standard}
                       </span>
-                    </div>
+                  </div>
                   )}
                   {product.specifications.material && (
                     <div className="flex justify-between border-b border-dashed border-[#E4E1F0] pb-2">
                       <span className="text-[#2E1F44]/70 font-semibold">Material:</span>
                       <span className="text-[#2E1F44] font-medium text-right max-w-[60%]">{product.specifications.material}</span>
-                    </div>
+                  </div>
                   )}
                   {product.specifications.sizes && (
                     <div className="flex justify-between border-b border-dashed border-[#E4E1F0] pb-2">
                       <span className="text-[#2E1F44]/70 font-semibold">Sizes:</span>
                       <span className="text-[#2E1F44] font-medium text-right max-w-[60%]">{product.specifications.sizes}</span>
-                    </div>
+                  </div>
                   )}
                   {product.specifications.grades && product.specifications.grades.length > 0 && (
                     <div className="flex justify-between border-b border-dashed border-[#E4E1F0] pb-2">
                       <span className="text-[#2E1F44]/70 font-semibold">Grades:</span>
                       <span className="text-[#2E1F44] font-medium text-right max-w-[60%]">{product.specifications.grades.join(", ")}</span>
-                    </div>
+                  </div>
                   )}
                   {product.specifications.coating && product.specifications.coating.length > 0 && (
                     <div className="flex justify-between border-b border-dashed border-[#E4E1F0] pb-2">
@@ -461,9 +461,9 @@ export default function ProductDetailsPage() {
                     className="w-full bg-[#A02222] hover:bg-[#2E1F44] text-white py-3 text-lg flex items-center justify-center gap-2 shadow-[0_10px_24px_rgba(160,34,34,0.25)]"
                     onClick={handleAddToRFQ}
                   >
-                    <ShoppingCart className="w-5 h-5" />
-                    Add to RFQ
-                  </Button>
+                  <ShoppingCart className="w-5 h-5" />
+                  Add to RFQ
+                </Button>
                   <Button
                     className="w-full bg-[#25D366] hover:bg-[#20BD5B] text-white py-3 text-lg flex items-center justify-center gap-2"
                     onClick={handleWhatsAppClick}
@@ -522,8 +522,8 @@ export default function ProductDetailsPage() {
                       {product.specifications?.tensileStrength && (
                         <li>• Tensile strength: {product.specifications.tensileStrength}</li>
                       )}
-                    </ul>
-                  </div>
+                  </ul>
+                </div>
                 )}
               </TabsContent>
 

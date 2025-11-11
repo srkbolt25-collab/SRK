@@ -297,11 +297,11 @@ export default function SRKBoltHomepage() {
                 <div className="text-4xl font-bold mb-2">25+</div>
                 <div className="text-sm">Years Industry Experience</div>
               </div>
-              <div className="bg-[#2E1F44] text-white p-8 rounded-[10px] text-center shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]">
+              <div className="bg-[#1F1F1F] text-white p-8 rounded-[10px] text-center shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]">
                 <div className="text-4xl font-bold mb-2">5k</div>
                 <div className="text-sm">SKU's In Stock</div>
               </div>
-              <div className="bg-[#2E1F44] text-white p-8 rounded-[10px] text-center shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]">
+              <div className="bg-[#1F1F1F] text-white p-8 rounded-[10px] text-center shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]">
                 <div className="text-4xl font-bold mb-2">50k</div>
                 <div className="text-sm">Sq.ft Warehouse</div>
               </div>
