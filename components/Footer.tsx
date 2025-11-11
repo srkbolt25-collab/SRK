@@ -5,7 +5,7 @@ import LogoSRK from "@/public/logoSRK.jpeg"
 
 export default function Footer() {
   return (
-    <footer className="bg-[#2E1F44] text-white">
+    <footer className="bg-[#1F1F1F] text-white">
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -173,7 +173,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom Footer */}
-      <div className="border-t border-[#25183A] bg-[#25183A]">
+      <div className="border-t border-[#2A2A2A] bg-[#1A1A1A]">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-[#CCCCCC] text-sm">
