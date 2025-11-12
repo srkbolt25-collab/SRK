@@ -300,7 +300,7 @@ export default function SRKBoltHomepage() {
                 const categoryUrl = selectedCategory.toLowerCase().replace(/\s+/g, '-').replace(/&/g, '')
                 window.location.href = `/${categoryUrl}`
               }}
-              className="bg-red-600 hover:bg-red-700 text-white px-12 py-4 rounded-lg font-bold text-lg transition-all transform hover:scale-110 shadow-lg hover:shadow-xl"
+              className="bg-[#A02222] hover:bg-[#2E1F44] text-white px-12 py-4 rounded-lg font-bold text-lg transition-all transform hover:scale-110 shadow-lg hover:shadow-xl"
             >
               Visit More {selectedCategory} Products
               <ChevronRight className="w-6 h-6 ml-3" />
