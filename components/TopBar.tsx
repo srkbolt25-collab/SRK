@@ -12,7 +12,6 @@ export default function TopBar() {
           <Link href="/brands" className="transition-colors hover:text-[#FFD5D5] hover:underline">Our Brands</Link>
           <Link href="/blogs" className="transition-colors hover:text-[#FFD5D5] hover:underline">Blogs</Link>
           <Link href="/careers" className="transition-colors hover:text-[#FFD5D5] hover:underline">Careers</Link>
-          <Link href="/join-us" className="transition-colors hover:text-[#FFD5D5] hover:underline">Join Us</Link>
         </div>
       </div>
     </div>
