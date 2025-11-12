@@ -1,14 +1,22 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import Layout from "@/components/Layout"
+import type { LucideIcon } from "lucide-react"
 import {
   ChevronRight,
   ChevronLeft,
+  Bolt,
+  Nut,
+  CircleDashed,
   Wrench,
+  Link2,
+  CircleDot,
   Settings,
+  Layers,
   FileText,
   Phone,
   CheckCircle,
@@ -59,15 +67,19 @@ export default function SRKBoltHomepage() {
     setCurrentSlide((prev: number) => (prev - 1 + slides.length) % slides.length)
   }
 
-  const categories = [
-    { name: "BOLTS", icon: Wrench },
-    { name: "NUTS", icon: Settings },
-    { name: "WASHERS", icon: Settings },
-    { name: "SCREWS", icon: Wrench },
-    { name: "HOOK & EYE", icon: Settings },
-    { name: "RIVETS", icon: Settings },
-    { name: "ATTACHMENTS", icon: Settings },
-    { name: "OTHER", icon: Settings },
+  type CategoryIcon =
+    | { kind: "image"; src: string; alt: string }
+    | { kind: "icon"; component: LucideIcon }
+
+  const categories: Array<{ name: CategoryKey; icon: CategoryIcon }> = [
+    { name: "BOLTS", icon: { kind: "image", src: "/icons8-bolt-64.png", alt: "Bolts Icon" } },
+    { name: "NUTS", icon: { kind: "image", src: "/icons8-nut-64 (1).png", alt: "Nuts Icon" } },
+    { name: "WASHERS", icon: { kind: "image", src: "/gasket.png", alt: "Washers Icon" } },
+    { name: "SCREWS", icon: { kind: "image", src: "/screw (2).png", alt: "Screws Icon" } },
+    { name: "HOOK & EYE", icon: { kind: "image", src: "/hookandeye.png", alt: "Hook and Eye Icon" } },
+    { name: "RIVETS", icon: { kind: "image", src: "/rivet.png", alt: "Rivets Icon" } },
+    { name: "ATTACHMENTS", icon: { kind: "icon", component: Settings } },
+    { name: "OTHER", icon: { kind: "icon", component: Layers } },
   ]
 
   const { rfqCount, addToRFQ } = useRFQ()
@@ -156,23 +168,55 @@ export default function SRKBoltHomepage() {
           
           {/* Product Categories Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 mb-12">
-            {categories.map((category, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedCategory(category.name as CategoryKey)}
-                className={`p-4 rounded-xl text-center cursor-pointer transition-all duration-300 border ${
-                  selectedCategory === category.name
+            {categories.map((category, index) => {
+              const isSelected = selectedCategory === category.name
+              return (
+                <button
+                  key={index}
+                  onClick={() => setSelectedCategory(category.name as CategoryKey)}
+                  className={`group p-4 rounded-xl text-center cursor-pointer transition-all duration-300 border ${
+                    isSelected
                     ? 'bg-[#A02222] text-white border-[#A02222] shadow-lg'
-                    : 'bg-[#EDEDED] text-[#2E1F44] border-transparent hover:border-[#A02222]'
-                }`}
-              >
-                <category.icon className="w-8 h-8 mx-auto mb-2" />
-                <p className="text-sm font-semibold">{category.name}</p>
-                {selectedCategory === category.name && (
-                  <div className="w-2 h-2 bg-white rounded-full mx-auto mt-2"></div>
-                )}
-              </button>
-            ))}
+                    : 'bg-[#EDEDED] text-[#2E1F44] border-transparent hover:border-[#A02222]/40 hover:shadow-md'
+                  }`}
+                >
+                  <div
+                    className={`w-12 h-12 mx-auto mb-3 rounded-full flex items-center justify-center transition-all duration-300 ${
+                      isSelected
+                        ? 'bg-white border border-[#A02222]/40 shadow-[0_6px_14px_rgba(160,34,34,0.35)]'
+                        : 'bg-[#FCE9E9] border border-[#A02222]/20 shadow-[0_2px_6px_rgba(160,34,34,0.12)]'
+                    }`}
+                  >
+                    {category.icon.kind === "image" ? (
+                      <div className="relative flex items-center justify-center w-full h-full">
+                        <Image
+                          src={category.icon.src}
+                          alt={category.icon.alt}
+                          width={36}
+                          height={36}
+                          className={`w-8 h-8 object-contain transition-transform duration-300 ${
+                            isSelected ? 'group-hover:scale-[1.08]' : 'group-hover:scale-[1.05]'
+                          }`}
+                          style={{ filter: "brightness(0) saturate(100%)" }}
+                        />
+                      </div>
+                    ) : (
+                      <category.icon.component
+                        className={`w-6 h-6 transition-transform duration-300 ${
+                          isSelected
+                            ? 'text-black group-hover:scale-[1.08]'
+                            : 'text-black group-hover:scale-[1.05]'
+                        }`}
+                      />
+                    )}
+                  </div>
+                  <p className="text-sm font-semibold">{category.name}</p>
+                  {isSelected && (
+                    <div className="w-2 h-2 bg-white rounded-full mx-auto mt-2"></div>
+                  )}
+                </button>
+              )
+            })}
           </div>
           
           {/* Product Grid */}

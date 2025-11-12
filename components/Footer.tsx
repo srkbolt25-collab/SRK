@@ -159,7 +159,7 @@ export default function Footer() {
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-[#FFD5D5] shrink-0" />
                 <div>
-                  <p className="text-white/80 text-sm">sales@srkbolts.com</p>
+                  <p className="text-white/80 text-sm">sales@srkbolt.com</p>
                 </div>
               </div>
               

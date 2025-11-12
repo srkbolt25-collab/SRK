@@ -71,11 +71,11 @@ export default function OtherFastenersPage() {
                   key={product.id}
                   className="group bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-xl transition-all duration-300 hover:-translate-y-1 p-6 flex flex-col items-center text-center gap-4 h-full"
                 >
-                  <div className="w-full h-40 bg-[#F1EFFA] rounded-lg flex items-center justify-center overflow-hidden">
+                  <div className="w-full h-64 bg-[#F1EFFA] rounded-lg flex items-center justify-center overflow-hidden px-4">
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="max-h-24 w-auto object-contain transition-transform duration-500 group-hover:scale-105"
+                      className="max-h-48 w-auto object-contain transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
                   <h3 className="text-lg font-semibold text-[#2E1F44]">{product.name}</h3>
