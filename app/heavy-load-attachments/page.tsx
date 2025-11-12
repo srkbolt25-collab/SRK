@@ -90,6 +90,13 @@ export default function HeavyLoadAttachmentsPage() {
                   <p className="text-xl md:text-2xl drop-shadow-lg">
                     {slide.subtitle}
                   </p>
+                  <a
+                    href="/srk-fastener.pdf"
+                    download
+                    className="mt-6 inline-flex items-center gap-2 bg-white text-[#A02222] px-6 py-2.5 rounded-lg font-semibold border border-white hover:bg-[#A02222] hover:text-white transition-colors shadow-lg"
+                  >
+                    See Products
+                  </a>
                 </div>
               </div>
             </div>
@@ -110,18 +117,6 @@ export default function HeavyLoadAttachmentsPage() {
           <ChevronRight className="w-8 h-8" />
         </button>
         
-        {/* Slide Indicators */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-3 z-10">
-          {slides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentSlide(index)}
-              className={`w-4 h-4 rounded-full transition-all duration-300 ${
-                index === currentSlide ? 'bg-white' : 'bg-white/50 hover:bg-white/75'
-              }`}
-            />
-          ))}
-        </div>
       </section>
 
       {/* Heavy Load Attachments Content */}

@@ -175,7 +175,7 @@ export default function MainHeader() {
                     setIsDropdownOpen(false)
                   }
                 }}
-                placeholder="Search by product name, standard, or model number..."
+                placeholder="Search by product name, standard"
                 className="w-full px-4 py-2 border border-[#E5E5E5] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#A02222] placeholder:text-[#777777]"
                 aria-label="Search products by name, standard or model number"
               />

@@ -11,6 +11,13 @@ export default function ContactPage() {
               Tell us what you need and our fastener specialists will get back within one business day with solutions, pricing, and
               availability tailored to your project.
             </p>
+            <a
+              href="/srk-fastener.pdf"
+              download
+              className="inline-flex items-center gap-2 bg-[#A02222] text-white px-6 py-2.5 rounded-lg font-semibold border border-[#A02222] hover:bg-white hover:text-[#A02222] transition-colors shadow-lg"
+            >
+              See Products
+            </a>
           </div>
           
           <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">

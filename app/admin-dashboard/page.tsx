@@ -71,6 +71,25 @@ interface Product {
   updatedAt?: string
 }
 
+interface Blog {
+  _id?: string
+  title: string
+  category: string
+  content: string
+  coverImage?: string
+  publishedAt?: string
+  createdAt?: string
+  updatedAt?: string
+}
+
+const emptyBlogForm = {
+  title: "",
+  content: "",
+  coverImage: "",
+  publishedAt: "",
+  category: "",
+}
+
 export default function AdminDashboard() {
   const { toast } = useToast()
   const router = useRouter()
@@ -89,6 +108,11 @@ export default function AdminDashboard() {
   const [loadingEnquiries, setLoadingEnquiries] = useState(false)
   const [selectedEnquiry, setSelectedEnquiry] = useState<any | null>(null)
   const [isEnquiryViewOpen, setIsEnquiryViewOpen] = useState(false)
+  const [blogs, setBlogs] = useState<Blog[]>([])
+  const [loadingBlogs, setLoadingBlogs] = useState(false)
+  const [submittingBlog, setSubmittingBlog] = useState(false)
+  const [editingBlog, setEditingBlog] = useState<Blog | null>(null)
+  const [blogForm, setBlogForm] = useState(emptyBlogForm)
   const [editFormData, setEditFormData] = useState({
     name: "",
     description: "",
@@ -169,6 +193,7 @@ export default function AdminDashboard() {
         fetchProducts()
         fetchDataSheetDownloads()
         fetchRFQEnquiries()
+        fetchBlogs()
       } else {
         // Session expired
         localStorage.removeItem("adminLoggedIn")
@@ -222,6 +247,27 @@ export default function AdminDashboard() {
       })
     } finally {
       setLoadingEnquiries(false)
+    }
+  }
+
+  const fetchBlogs = async () => {
+    try {
+      setLoadingBlogs(true)
+      const response = await fetch("/api/blogs")
+      if (!response.ok) {
+        throw new Error("Failed to fetch blogs")
+      }
+      const data = await response.json()
+      setBlogs(data)
+    } catch (error) {
+      console.error("Error fetching blogs:", error)
+      toast({
+        title: "Error",
+        description: "Failed to fetch blogs",
+        variant: "destructive",
+      })
+    } finally {
+      setLoadingBlogs(false)
     }
   }
 
@@ -393,6 +439,110 @@ export default function AdminDashboard() {
         ? (prev[field as keyof typeof prev] as string[]).filter((_: string, i: number) => i !== index)
         : prev[field as keyof typeof prev]
     }))
+  }
+
+  const handleBlogInputChange = (field: string, value: string) => {
+    setBlogForm((prev) => ({
+      ...prev,
+      [field]: value,
+    }))
+  }
+
+  const handleBlogSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      setSubmittingBlog(true)
+      const payload = {
+        ...blogForm,
+        publishedAt: blogForm.publishedAt || new Date().toISOString(),
+      }
+
+      const method = editingBlog ? "PUT" : "POST"
+      const endpoint = editingBlog ? `/api/blogs/${editingBlog._id}` : "/api/blogs"
+
+      const response = await fetch(endpoint, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || "Failed to save blog")
+      }
+
+      toast({
+        title: editingBlog ? "Blog Updated" : "Blog Added",
+        description: editingBlog ? "Blog post updated successfully" : "Blog post created successfully",
+        variant: "success",
+      })
+
+      setBlogForm(emptyBlogForm)
+      setEditingBlog(null)
+      fetchBlogs()
+    } catch (error) {
+      console.error("Error saving blog:", error)
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to save blog post",
+        variant: "destructive",
+      })
+    } finally {
+      setSubmittingBlog(false)
+    }
+  }
+
+  const handleEditBlog = (blog: Blog) => {
+    setEditingBlog(blog)
+    setBlogForm({
+      title: blog.title || "",
+      content: blog.content || "",
+      coverImage: blog.coverImage || "",
+      publishedAt: blog.publishedAt ? new Date(blog.publishedAt).toISOString().slice(0, 10) : "",
+      category: blog.category || "",
+    })
+    setActiveTab("blogs")
+  }
+
+  const cancelBlogEdit = () => {
+    setEditingBlog(null)
+    setBlogForm(emptyBlogForm)
+  }
+
+  const handleDeleteBlog = async (blogId?: string) => {
+    if (!blogId) return
+    const confirmed = confirm("Are you sure you want to delete this blog post?")
+    if (!confirmed) return
+
+    try {
+      const response = await fetch(`/api/blogs/${blogId}`, {
+        method: "DELETE",
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || "Failed to delete blog")
+      }
+
+      toast({
+        title: "Blog Deleted",
+        description: "Blog post removed successfully",
+        variant: "success",
+      })
+      if (editingBlog?._id === blogId) {
+        cancelBlogEdit()
+      }
+      fetchBlogs()
+    } catch (error) {
+      console.error("Error deleting blog:", error)
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to delete blog post",
+        variant: "destructive",
+      })
+    }
   }
 
   // Edit functions
@@ -860,7 +1010,7 @@ export default function AdminDashboard() {
 
         {/* Main Content */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="add-product" className="flex items-center gap-2">
               <Plus className="h-4 w-4" />
               Add Product
@@ -876,6 +1026,10 @@ export default function AdminDashboard() {
             <TabsTrigger value="rfq-enquiries" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               RFQ Enquiries
+            </TabsTrigger>
+            <TabsTrigger value="blogs" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              Blogs
             </TabsTrigger>
           </TabsList>
 
@@ -1787,6 +1941,188 @@ export default function AdminDashboard() {
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Blogs Tab */}
+          <TabsContent value="blogs">
+            <div className="grid gap-6 lg:grid-cols-2">
+              <Card className="bg-white shadow-md">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    {editingBlog ? (
+                      <>
+                        <Edit className="h-5 w-5" />
+                        Edit Blog: {editingBlog.title}
+                      </>
+                    ) : (
+                      <>
+                        <Plus className="h-5 w-5" />
+                        Add Blog Post
+                      </>
+                    )}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handleBlogSubmit} className="space-y-5">
+                    <div className="space-y-2">
+                      <Label htmlFor="blog-title">Title</Label>
+                      <Input
+                        id="blog-title"
+                        value={blogForm.title}
+                        onChange={(e) => handleBlogInputChange("title", e.target.value)}
+                        placeholder="Enter blog title"
+                        required
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="blog-content">Content</Label>
+                      <Textarea
+                        id="blog-content"
+                        value={blogForm.content}
+                        onChange={(e) => handleBlogInputChange("content", e.target.value)}
+                        placeholder="Full blog content"
+                        rows={8}
+                        required
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="blog-cover">Image Link</Label>
+                      <Input
+                        id="blog-cover"
+                        value={blogForm.coverImage}
+                        onChange={(e) => handleBlogInputChange("coverImage", e.target.value)}
+                        placeholder="https://example.com/blog-cover.jpg"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="blog-date">Date</Label>
+                      <Input
+                        id="blog-date"
+                        type="date"
+                        value={blogForm.publishedAt}
+                        onChange={(e) => handleBlogInputChange("publishedAt", e.target.value)}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="blog-category">Category</Label>
+                      <Input
+                        id="blog-category"
+                        value={blogForm.category}
+                        onChange={(e) => handleBlogInputChange("category", e.target.value)}
+                        placeholder="e.g., Engineering Insights"
+                        required
+                      />
+                    </div>
+
+                    {editingBlog && (
+                      <Button type="button" variant="outline" className="w-full" onClick={cancelBlogEdit}>
+                        <X className="h-4 w-4 mr-2" />
+                        Cancel Editing
+                      </Button>
+                    )}
+
+                    <Button type="submit" disabled={submittingBlog} className="w-full">
+                      {submittingBlog ? (
+                        <>
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                          Saving...
+                        </>
+                      ) : (
+                        <>
+                          <Save className="h-4 w-4 mr-2" />
+                          Publish Blog
+                        </>
+                      )}
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-white shadow-md">
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <div>
+                    <CardTitle className="flex items-center gap-2">
+                      <FileText className="h-5 w-5" />
+                      Recent Blogs
+                    </CardTitle>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Manage published insights and announcements.
+                    </p>
+                  </div>
+                  <Button variant="outline" size="sm" onClick={fetchBlogs} disabled={loadingBlogs}>
+                    <Loader2 className={`h-4 w-4 mr-2 ${loadingBlogs ? "animate-spin" : ""}`} />
+                    Refresh
+                  </Button>
+                </CardHeader>
+                <CardContent>
+                  {loadingBlogs ? (
+                    <div className="flex items-center justify-center py-10 text-gray-500">
+                      <Loader2 className="h-6 w-6 animate-spin mr-2" />
+                      Loading blogs...
+                    </div>
+                  ) : blogs.length === 0 ? (
+                    <div className="text-center py-10 text-gray-500">
+                      No blog posts yet. Create your first article using the form.
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {blogs.map((blog) => {
+                        const previewSource = (blog.content && blog.content.trim().length > 0 ? blog.content : (blog as any).excerpt || "") || ""
+                        const preview = previewSource.length > 200 ? `${previewSource.slice(0, 200)}…` : previewSource
+                        const formattedDate = blog.publishedAt
+                          ? new Date(blog.publishedAt).toLocaleDateString("en-IN", {
+                              month: "long",
+                              day: "numeric",
+                              year: "numeric",
+                            })
+                          : "Unpublished"
+
+                        return (
+                          <div key={blog._id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+                              <div className="flex-1 min-w-0">
+                                <p className="text-xs uppercase tracking-[0.3em] text-[#A02222] font-semibold mb-2">
+                                  {blog.category}
+                                </p>
+                                <h3 className="text-lg font-semibold text-[#2E1F44] break-words">{blog.title}</h3>
+                                <p className="text-sm text-[#2E1F44]/70 mt-2 whitespace-pre-line break-words">{preview}</p>
+                                <div className="flex flex-wrap items-center gap-4 text-xs text-[#2E1F44]/60 mt-3">
+                                  <span>{formattedDate}</span>
+                                  {blog.coverImage && (
+                                    <a
+                                      href={blog.coverImage}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className="text-[#A02222] hover:underline break-all"
+                                    >
+                                      {blog.coverImage}
+                                    </a>
+                                  )}
+                                </div>
+                              </div>
+                              <div className="flex flex-row lg:flex-col gap-2 shrink-0">
+                                <Button variant="outline" size="sm" onClick={() => handleEditBlog(blog)}>
+                                  <Edit className="h-4 w-4 mr-1" />
+                                  Edit
+                                </Button>
+                                <Button variant="destructive" size="sm" onClick={() => handleDeleteBlog(blog._id)}>
+                                  <Trash2 className="h-4 w-4 mr-1" />
+                                  Delete
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
         </Tabs>
       </div>

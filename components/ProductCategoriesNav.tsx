@@ -8,12 +8,12 @@ export default function ProductCategoriesNav() {
   return (
     <nav className="bg-[#A02222] text-white sticky top-0 z-40 shadow-lg">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-start overflow-x-auto space-x-8 py-3 whitespace-nowrap scrollbar-hide">
-          <Link href="/products" className="flex items-center gap-1 hover:text-[#FFD5D5] transition-colors font-semibold">
+        <div className="flex items-center gap-6 py-3 text-sm font-semibold">
+          <Link href="/products" className="flex items-center gap-1 whitespace-nowrap hover:text-[#FFD5D5] transition-colors font-semibold">
             <span>ALL PRODUCTS</span>
             <ChevronRight className="w-4 h-4" />
           </Link>
-          <Link href="/bolts" className="flex items-center gap-1 hover:text-[#FFD5D5] transition-colors">
+          <Link href="/bolts" className="flex items-center gap-1 whitespace-nowrap hover:text-[#FFD5D5] transition-colors">
             <Image
               src="/icons8-bolt-64.png"
               alt="Bolts Icon"
@@ -23,7 +23,7 @@ export default function ProductCategoriesNav() {
             />
             <span>BOLTS</span>
           </Link>
-          <Link href="/nuts" className="flex items-center gap-1 hover:text-[#FFD5D5] transition-colors">
+          <Link href="/nuts" className="flex items-center gap-1 whitespace-nowrap hover:text-[#FFD5D5] transition-colors">
             <Image
               src="/icons8-nut-64%20(1).png"
               alt="Nuts Icon"
@@ -33,7 +33,7 @@ export default function ProductCategoriesNav() {
             />
             <span>NUTS</span>
           </Link>
-          <Link href="/washers" className="flex items-center gap-1 hover:text-[#FFD5D5] transition-colors">
+          <Link href="/washers" className="flex items-center gap-1 whitespace-nowrap hover:text-[#FFD5D5] transition-colors">
             <Image
               src="/gasket.png"
               alt="Washers Icon"
@@ -43,7 +43,7 @@ export default function ProductCategoriesNav() {
             />
             <span>WASHERS</span>
           </Link>
-          <Link href="/screws" className="flex items-center gap-1 hover:text-[#FFD5D5] transition-colors">
+          <Link href="/screws" className="flex items-center gap-1 whitespace-nowrap hover:text-[#FFD5D5] transition-colors">
             <Image
               src="/screw%20(2).png"
               alt="Screws Icon"
@@ -53,7 +53,7 @@ export default function ProductCategoriesNav() {
             />
             <span>SCREWS</span>
           </Link>
-          <Link href="/hook-eye" className="flex items-center gap-1 hover:text-[#FFD5D5] transition-colors">
+          <Link href="/hook-eye" className="flex items-center gap-1 whitespace-nowrap hover:text-[#FFD5D5] transition-colors">
             <Image
               src="/hookandeye.png"
               alt="Hook & Eye Icon"
@@ -63,7 +63,7 @@ export default function ProductCategoriesNav() {
             />
             <span>HOOK & EYE PRODUCTS</span>
           </Link>
-          <Link href="/rivets" className="flex items-center gap-1 hover:text-[#FFD5D5] transition-colors">
+          <Link href="/rivets" className="flex items-center gap-1 whitespace-nowrap hover:text-[#FFD5D5] transition-colors">
             <Image
               src="/rivet.png"
               alt="Rivets Icon"
@@ -73,34 +73,16 @@ export default function ProductCategoriesNav() {
             />
             <span>RIVETS, PIN & INSERTS</span>
           </Link>
-          <Link href="/attachments" className="flex items-center gap-1 hover:text-[#FFD5D5] transition-colors">
+          <Link href="/attachments" className="flex items-center gap-1 whitespace-nowrap hover:text-[#FFD5D5] transition-colors">
             <Settings className="w-4 h-4" />
             <span>HEAVY LOAD ATTACHMENTS</span>
           </Link>
-          <Link href="/other" className="flex items-center gap-1 hover:text-[#FFD5D5] transition-colors">
+          <Link href="/other" className="flex items-center gap-1 whitespace-nowrap hover:text-[#FFD5D5] transition-colors">
             <Settings className="w-4 h-4" />
             <span>OTHER PRODUCTS</span>
           </Link>
-          <Link href="/contact" className="flex items-center gap-1 hover:text-[#FFD5D5] transition-colors">
-            <FileText className="w-4 h-4" />
-            <span>CONTACT US</span>
-          </Link>
-          <Link href="/" className="flex items-center gap-1 hover:text-[#FFD5D5] transition-colors">
-            <Map className="w-4 h-4" />
-            <span>MAP</span>
-          </Link>
         </div>
       </div>
-
-      <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
     </nav>
   )
 }

@@ -34,6 +34,13 @@ export default function OtherFastenersPage() {
             Discover non-standard fasteners, specialty hardware, and custom components engineered for niche applications
             where typical catalogue items aren&apos;t enough.
           </p>
+          <a
+            href="/srk-fastener.pdf"
+            download
+            className="mt-2 inline-flex items-center gap-2 bg-white text-[#A02222] px-6 py-2.5 rounded-lg font-semibold border border-white hover:bg-[#A02222] hover:text-white transition-colors shadow-lg"
+          >
+            See Products
+          </a>
         </div>
       </section>
 
