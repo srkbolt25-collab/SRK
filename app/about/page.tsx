@@ -96,7 +96,7 @@ export default function AboutPage() {
               </h3>
               <div className="space-y-4 text-[rgba(46,31,68,0.85)]">
                 <p>
-                  Established in 2015K Bolt started as a trading business dealing in a range of building material items such as
+                  Established in 2015, SRK Bolt started as a trading business dealing in a range of building material items such as
                   nails, machine screws and self-tapping screws.
               </p>
                 <p>

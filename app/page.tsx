@@ -324,13 +324,13 @@ export default function SRKBoltHomepage() {
               
               <div className="space-y-4 text-[rgba(46,31,68,0.85)]">
                 <p>
-                  Established in 1998, SRK Bolt started as a trading business dealing in a range of building material items such as nails, machine screws and self-tapping screws.
+                  Established in 2015, SRK Bolt started as a trading business dealing in a range of building material items such as nails, machine screws and self-tapping screws.
                 </p>
                 <p>
                   As India and other Asian countries developed, SRK Bolt progressed and diversified into specialized engineering and marine quality fasteners pertaining to various sectors such as the construction and steel structure industry, oil and petro-chemical industry, the automotive sector, shipbuilding, electrical and switch gear and the furniture industry.
                 </p>
                 <p>
-                  It's legacy of over 25 years has allowed SRK Bolt to become one of the leading stockist and trader of engineering fasteners in the Indian region dealing in a variety of more than 5k SKU's coming from reputed manufacturers located in India, Europe and the Far East Asia.
+                  It's legacy of over 10 years has allowed SRK Bolt to become one of the leading stockist and trader of engineering fasteners in the Indian region dealing in a variety of more than 5k SKU's coming from reputed manufacturers located in India, Europe and the Far East Asia.
                 </p>
               </div>
             </div>
