@@ -9,21 +9,54 @@ export async function GET(request: NextRequest) {
     const collection = await getCollection('products')
     const category = request.nextUrl.searchParams.get('category')
     const name = request.nextUrl.searchParams.get('name')
+    const rawSearch = request.nextUrl.searchParams.get('search')
 
     const query: Record<string, any> = {}
 
     if (category) {
       query.category = category
     }
+    
+    const orFilters: Record<string, unknown>[] = []
 
     if (name) {
-      query.name = { $regex: `^${escapeRegex(name)}$`, $options: 'i' }
+      orFilters.push({ name: { $regex: `^${escapeRegex(name)}$`, $options: 'i' } })
     }
 
-    const cursor = collection.find(query)
+    if (rawSearch) {
+      const search = rawSearch.trim()
+      if (search.length > 0) {
+        const searchRegex = { $regex: escapeRegex(search), $options: 'i' }
+        orFilters.push(
+          { name: searchRegex },
+          { category: searchRegex },
+          { standard: searchRegex },
+          { equivalentStandard: searchRegex },
+          { sku: searchRegex },
+          { modelNumber: searchRegex },
+          { partNumber: searchRegex },
+          { code: searchRegex },
+          { description: searchRegex },
+          { 'specifications.standard': searchRegex },
+          { 'specifications.equivalentStandard': searchRegex },
+          { 'specifications.material': searchRegex },
+          { 'specifications.sizes': searchRegex },
+          { 'specifications.grades': searchRegex },
+          { 'specifications.threadType': searchRegex }
+        )
+      }
+    }
 
-    if (name) {
+    if (orFilters.length > 0) {
+      query.$or = orFilters
+    }
+
+    const cursor = collection.find(query).sort({ updatedAt: -1, name: 1 })
+
+    if (name && !rawSearch) {
       cursor.limit(1)
+    } else if (rawSearch) {
+      cursor.limit(20)
     }
 
     const products = await cursor.toArray()
