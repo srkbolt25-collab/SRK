@@ -12,11 +12,11 @@ export default function Footer() {
           
           {/* Company Info */}
           <div className="space-y-4">
-              <div className="flex items-center">
+            <div className="flex items-center">
               <div className="relative h-20 w-60">
                 <Image
                   src={FooterLogo}
-                  alt="SRK Bolt Logo"
+                alt="SRK Bolt Logo" 
                   fill
                   className="object-contain"
               />
@@ -24,7 +24,7 @@ export default function Footer() {
             </div>
             <p className="text-white/70 text-sm leading-relaxed">
               Leading manufacturer and supplier of high-quality fasteners serving industries 
-              across India and internationally since 1998. Your trusted partner for all 
+              across India and internationally since 2015. Your trusted partner for all 
               fastener solutions.
             </p>
             <div className="flex space-x-4">

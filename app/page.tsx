@@ -318,7 +318,7 @@ export default function SRKBoltHomepage() {
               <div>
                 <h2 className="text-4xl font-bold text-[#A02222] mb-4">SRK BOLT</h2>
                 <h3 className="text-3xl font-bold text-[#2E1F44] mb-2">
-                  Leading fasteners suppliers in India, Since <span className="text-[#A02222]">1998</span>
+                  Leading fasteners suppliers in India, Since <span className="text-[#A02222]">2015</span>
                 </h3>
               </div>
               

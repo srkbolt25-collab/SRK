@@ -92,11 +92,11 @@ export default function AboutPage() {
             <div className="space-y-6">
               <h2 className="text-4xl font-bold text-[#A02222]">SRK BOLT</h2>
               <h3 className="text-3xl font-bold text-[#2E1F44]">
-                Leading fasteners suppliers in India, Since <span className="text-[#A02222]">1998</span>
+                Leading fasteners suppliers in India, Since <span className="text-[#A02222]">2015</span>
               </h3>
               <div className="space-y-4 text-[rgba(46,31,68,0.85)]">
                 <p>
-                  Established in 1998, SRK Bolt started as a trading business dealing in a range of building material items such as
+                  Established in 2015K Bolt started as a trading business dealing in a range of building material items such as
                   nails, machine screws and self-tapping screws.
               </p>
                 <p>
@@ -105,7 +105,7 @@ export default function AboutPage() {
                   petro-chemical industry, the automotive sector, shipbuilding, electrical and switch gear and the furniture industry.
               </p>
                 <p>
-                  Its legacy of over 25 years has allowed SRK Bolt to become one of the leading stockist and trader of engineering
+                  Its legacy of over 10 years has allowed SRK Bolt to become one of the leading stockist and trader of engineering
                   fasteners in the Indian region dealing in a variety of more than 5k SKU's coming from reputed manufacturers located
                   in India, Europe and the Far East Asia.
                 </p>
