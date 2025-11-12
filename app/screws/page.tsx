@@ -157,11 +157,11 @@ export default function ScrewsPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
             {screwsProducts.map((product) => (
               <div key={product.id} className="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 p-5 flex flex-col items-center text-center gap-3 h-full">
-                <div className="w-full h-64 bg-gray-50 rounded-lg flex items-center justify-center overflow-hidden px-4">
+                <div className="w-full aspect-square bg-gray-50 rounded-lg flex items-center justify-center overflow-hidden p-4">
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="max-h-48 w-auto object-contain transition-transform duration-500 group-hover:scale-105"
+                    className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
                 <h4 className="text-base font-semibold text-[#2E1F44]">{product.name}</h4>

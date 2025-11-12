@@ -171,9 +171,9 @@ export default function SRKBoltHomepage() {
             {categories.map((category, index) => {
               const isSelected = selectedCategory === category.name
               return (
-                <button
-                  key={index}
-                  onClick={() => setSelectedCategory(category.name as CategoryKey)}
+              <button
+                key={index}
+                onClick={() => setSelectedCategory(category.name as CategoryKey)}
                   className={`group p-4 rounded-xl text-center cursor-pointer transition-all duration-300 border ${
                     isSelected
                     ? 'bg-[#A02222] text-white border-[#A02222] shadow-lg'
@@ -196,7 +196,7 @@ export default function SRKBoltHomepage() {
                           height={36}
                           className={`w-8 h-8 object-contain transition-transform duration-300 ${
                             isSelected ? 'group-hover:scale-[1.08]' : 'group-hover:scale-[1.05]'
-                          }`}
+                }`}
                           style={{ filter: "brightness(0) saturate(100%)" }}
                         />
                       </div>
@@ -210,11 +210,11 @@ export default function SRKBoltHomepage() {
                       />
                     )}
                   </div>
-                  <p className="text-sm font-semibold">{category.name}</p>
+                <p className="text-sm font-semibold">{category.name}</p>
                   {isSelected && (
-                    <div className="w-2 h-2 bg-white rounded-full mx-auto mt-2"></div>
-                  )}
-                </button>
+                  <div className="w-2 h-2 bg-white rounded-full mx-auto mt-2"></div>
+                )}
+              </button>
               )
             })}
           </div>

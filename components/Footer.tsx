@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Phone, Mail, MapPin, Clock, Facebook, Twitter, Linkedin, Instagram } from "lucide-react"
 import Image from "next/image"
-import LogoSRK from "@/public/logoSRK.jpeg"
+import FooterLogo from "@/public/footer.jpeg"
 
 export default function Footer() {
   return (
@@ -12,11 +12,11 @@ export default function Footer() {
           
           {/* Company Info */}
           <div className="space-y-4">
-            <div className="flex items-center">
+              <div className="flex items-center">
               <div className="relative h-20 w-60">
                 <Image
-                  src={LogoSRK}
-                alt="SRK Bolt Logo" 
+                  src={FooterLogo}
+                  alt="SRK Bolt Logo"
                   fill
                   className="object-contain"
               />

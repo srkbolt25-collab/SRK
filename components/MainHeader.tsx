@@ -70,10 +70,15 @@ export default function MainHeader() {
                 </span>
               )}
             </Link>
-            <div className="flex items-center space-x-2">
-              <Mail className="w-4 h-4 text-[#A02222]" />
-              <span className="text-sm font-medium text-[#2E1F44]">sales@srkbolt.com</span>
-            </div>
+            <button
+              onClick={() => {
+                window.location.href = "mailto:sales@srkbolt.com"
+              }}
+              className="bg-[#A02222] hover:bg-[#2E1F44] transition-colors px-3 py-2 rounded-lg flex items-center gap-2 text-white"
+            >
+              <Mail className="w-4 h-4" />
+              Email Us
+            </button>
           </div>
         </div>
       </div>
