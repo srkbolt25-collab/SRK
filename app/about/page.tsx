@@ -338,7 +338,7 @@ export default function AboutPage() {
                     </p>
                     <p>
                       As we move forward, our focus remains on continuous improvement, adopting advanced technologies, and expanding our global reach. Together, we will continue to build a company that not only meets the expectations of our clients but also sets new benchmarks in the industry.
-                    </p>
+                  </p>
                   </div>
                 </div>
               </div>

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getCollection } from '@/lib/mongodb'
 
 const escapeRegex = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-const MAX_IMAGES = 3
+const MAX_IMAGES = 5
 
 export async function GET(request: NextRequest) {
   try {
@@ -169,7 +169,7 @@ export async function POST(request: NextRequest) {
       coating: coatingValues,
       features: sanitizeArray(body.features),
       uses: sanitizeArray(body.uses),
-      technicalInformation: body.technicalInformation?.trim() || undefined,
+      technicalInformation: body.technicalInformation?.trim() && body.technicalInformation.trim() !== "" ? body.technicalInformation.trim() : undefined,
       shippingInfo: body.shippingInfo?.trim() || undefined,
       returnsInfo: body.returnsInfo?.trim() || undefined,
       warrantyInfo: body.warrantyInfo?.trim() || undefined,

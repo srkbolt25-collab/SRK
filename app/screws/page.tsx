@@ -151,7 +151,11 @@ export default function ScrewsPage() {
           ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
             {screwsProducts.map((product) => (
-              <div key={product.id} className="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 p-5 flex flex-col items-center text-center gap-3 h-full">
+              <div 
+                key={product.id} 
+                className="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 p-5 flex flex-col items-center text-center gap-3 h-full cursor-pointer"
+                onClick={() => window.location.href = `/view-details?name=${encodeURIComponent(product.name)}&category=SCREWS`}
+              >
                 <div className="w-full aspect-square bg-gray-50 rounded-lg flex items-center justify-center overflow-hidden p-4">
                   <img
                     src={product.image}
@@ -163,14 +167,20 @@ export default function ScrewsPage() {
                 <div className="w-full space-y-2.5 mt-auto">
                     <div className="flex gap-2">
                       <button 
-                        onClick={() => window.location.href = `/view-details?name=${encodeURIComponent(product.name)}&category=SCREWS`}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          window.location.href = `/view-details?name=${encodeURIComponent(product.name)}&category=SCREWS`
+                        }}
                       className="flex-1 border border-[#2E1F44] text-[#2E1F44] text-xs font-semibold py-1.5 rounded-md transition-colors duration-200 flex items-center justify-center gap-1 hover:bg-[#A02222] hover:text-white hover:border-[#A02222]"
                       >
                       <FileText className="w-3 h-3" />
                         VIEW-DETAIL
                       </button>
                       <button 
-                        onClick={() => handleWhatsAppClick(product)}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleWhatsAppClick(product)
+                        }}
                       className="flex-1 bg-[#25D366] hover:bg-[#1ebe5a] text-white text-xs font-semibold py-1.5 rounded-md transition-colors duration-200 flex items-center justify-center gap-1"
                       >
                       <MessageCircle className="w-3 h-3" />
@@ -178,7 +188,8 @@ export default function ScrewsPage() {
                       </button>
                     </div>
                     <button 
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation()
                         setRfqProductName(product.name);
                         setIsRFQPopupOpen(true);
                         addToRFQ(product.name, product.image);

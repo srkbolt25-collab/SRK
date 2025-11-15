@@ -237,8 +237,8 @@ export default function CollectionsPage() {
           {viewMode === 'grid' ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
               {filteredProducts.map((product) => (
+              <Link key={product._id} href={`/view-details?id=${product._id}`}>
               <Card
-                key={product._id}
                   className="group cursor-pointer overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 bg-white/80 backdrop-blur-sm rounded-2xl"
               >
                   <div className="aspect-square overflow-hidden relative">
@@ -319,8 +319,12 @@ export default function CollectionsPage() {
                       <span className="text-sm text-muted-foreground">{product.category}</span>
                     </div>
                     
-                    <Link href={`/view-details?id=${product._id}`}>
                       <Button
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          window.location.href = `/view-details?id=${product._id}`
+                        }}
                         className="w-full bg-linear-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                       >
                         <span className="flex items-center justify-center">
@@ -328,16 +332,16 @@ export default function CollectionsPage() {
                           <ChevronRight className="w-4 h-4 ml-2" />
                         </span>
                       </Button>
-                    </Link>
                   </CardContent>
                 </Card>
+              </Link>
               ))}
             </div>
           ) : (
             <div className="space-y-6">
               {filteredProducts.map((product) => (
+                <Link key={product._id} href={`/view-details?id=${product._id}`}>
                 <Card
-                  key={product._id}
                   className="group cursor-pointer overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white/80 backdrop-blur-sm rounded-2xl"
                 >
                   <div className="flex flex-col md:flex-row">
@@ -408,8 +412,12 @@ export default function CollectionsPage() {
                       
                   <div className="flex justify-between items-center">
                         <span className="text-sm text-muted-foreground">{product.category}</span>
-                        <Link href={`/view-details?id=${product._id}`}>
                           <Button
+                            onClick={(e) => {
+                              e.preventDefault()
+                              e.stopPropagation()
+                              window.location.href = `/view-details?id=${product._id}`
+                            }}
                             className="bg-linear-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                           >
                             <span className="flex items-center justify-center">
@@ -417,7 +425,6 @@ export default function CollectionsPage() {
                               <ChevronRight className="w-4 h-4 ml-2" />
                             </span>
                     </Button>
-                        </Link>
                       </div>
                     </div>
                   </div>

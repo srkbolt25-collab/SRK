@@ -34,6 +34,7 @@ export default function ProductDetailsPage() {
   const [quantity, setQuantity] = useState(1)
   const [isWishlisted, setIsWishlisted] = useState(false)
   const [product, setProduct] = useState<HusainiProduct | null>(null)
+  const [rawProductData, setRawProductData] = useState<any>(null) // Store raw product data to access technicalInformation
   const [loadingProduct, setLoadingProduct] = useState(true)
   const [productError, setProductError] = useState<string | null>(null)
   const [isRFQPopupOpen, setIsRFQPopupOpen] = useState(false)
@@ -116,6 +117,7 @@ export default function ProductDetailsPage() {
           if (response.ok) {
             const data = await response.json()
             if (!cancelled && data) {
+              setRawProductData(data) // Store raw data for technicalInformation
               setProduct(mapDbProductToHusaini(data, category))
               setProductError(null)
               setLoadingProduct(false)
@@ -127,6 +129,7 @@ export default function ProductDetailsPage() {
           if (response.ok) {
             const data = await response.json()
             if (!cancelled && Array.isArray(data) && data.length > 0) {
+              setRawProductData(data[0]) // Store raw data for technicalInformation
               setProduct(mapDbProductToHusaini(data[0], category))
               setProductError(null)
               setLoadingProduct(false)
@@ -487,17 +490,29 @@ export default function ProductDetailsPage() {
           {/* Tabs Section */}
           <div className="mt-16 bg-white rounded-2xl shadow-[0_16px_40px_rgba(39,31,68,0.08)] p-8 border border-[#E4E1F0]">
             <Tabs defaultValue="description" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 mb-8 rounded-xl bg-[#F0ECFA] p-1">
-                <TabsTrigger value="description" className="data-[state=active]:bg-white data-[state=active]:text-[#A02222] data-[state=active]:shadow-[0_8px_20px_rgba(160,34,34,0.15)] text-[#2E1F44]/70 font-semibold rounded-lg transition-all">
-                  Description
-                </TabsTrigger>
-                <TabsTrigger value="uses" className="data-[state=active]:bg-white data-[state=active]:text-[#A02222] data-[state=active]:shadow-[0_8px_20px_rgba(160,34,34,0.15)] text-[#2E1F44]/70 font-semibold rounded-lg transition-all">
-                  Uses & Applications
-                </TabsTrigger>
-                <TabsTrigger value="shipping" className="data-[state=active]:bg-white data-[state=active]:text-[#A02222] data-[state=active]:shadow-[0_8px_20px_rgba(160,34,34,0.15)] text-[#2E1F44]/70 font-semibold rounded-lg transition-all">
-                  Shipping & Returns
-                </TabsTrigger>
-              </TabsList>
+              {(() => {
+                const hasTechnicalInfo = rawProductData?.technicalInformation && 
+                  typeof rawProductData.technicalInformation === 'string' && 
+                  rawProductData.technicalInformation.trim() !== ""
+                return (
+                  <TabsList className={`grid w-full mb-8 rounded-xl bg-[#F0ECFA] p-1 ${hasTechnicalInfo ? 'grid-cols-4' : 'grid-cols-3'}`}>
+                    <TabsTrigger value="description" className="data-[state=active]:bg-white data-[state=active]:text-[#A02222] data-[state=active]:shadow-[0_8px_20px_rgba(160,34,34,0.15)] text-[#2E1F44]/70 font-semibold rounded-lg transition-all">
+                      Description
+                    </TabsTrigger>
+                    <TabsTrigger value="uses" className="data-[state=active]:bg-white data-[state=active]:text-[#A02222] data-[state=active]:shadow-[0_8px_20px_rgba(160,34,34,0.15)] text-[#2E1F44]/70 font-semibold rounded-lg transition-all">
+                      Uses & Applications
+                    </TabsTrigger>
+                    {hasTechnicalInfo && (
+                      <TabsTrigger value="technical" className="data-[state=active]:bg-white data-[state=active]:text-[#A02222] data-[state=active]:shadow-[0_8px_20px_rgba(160,34,34,0.15)] text-[#2E1F44]/70 font-semibold rounded-lg transition-all">
+                        Technical Information
+                      </TabsTrigger>
+                    )}
+                    <TabsTrigger value="shipping" className="data-[state=active]:bg-white data-[state=active]:text-[#A02222] data-[state=active]:shadow-[0_8px_20px_rgba(160,34,34,0.15)] text-[#2E1F44]/70 font-semibold rounded-lg transition-all">
+                      Shipping & Returns
+                    </TabsTrigger>
+                  </TabsList>
+                )
+              })()}
 
               <TabsContent value="description" className="space-y-4">
                 <h3 className="text-2xl font-bold text-[#2E1F44]">Product Description</h3>
@@ -538,6 +553,17 @@ export default function ProductDetailsPage() {
                   ))}
                 </div>
               </TabsContent>
+
+              {rawProductData?.technicalInformation && 
+               typeof rawProductData.technicalInformation === 'string' && 
+               rawProductData.technicalInformation.trim() !== "" && (
+                <TabsContent value="technical" className="space-y-4">
+                  <h3 className="text-2xl font-bold text-[#2E1F44]">Technical Information</h3>
+                  <div className="text-[#2E1F44]/80 leading-relaxed whitespace-pre-wrap">
+                    {rawProductData.technicalInformation}
+                  </div>
+                </TabsContent>
+              )}
 
               <TabsContent value="shipping" className="space-y-4">
                 <h3 className="text-2xl font-bold text-[#2E1F44]">Shipping & Returns</h3>

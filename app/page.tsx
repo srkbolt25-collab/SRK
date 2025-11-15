@@ -332,7 +332,11 @@ export default function SRKBoltHomepage() {
               {databaseProducts.slice(0, 8).map((product) => (
               <div
                   key={product.id ?? product.name}
-                  className="bg-white rounded-lg md:rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-lg transition-all duration-300 overflow-hidden"
+                  className="bg-white rounded-lg md:rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer"
+                  onClick={() => {
+                    const categoryParam = encodeURIComponent(product.category || selectedCategory)
+                    window.location.href = `/view-details?name=${encodeURIComponent(product.name)}&category=${categoryParam}`
+                  }}
                 >
                 {/* Product Image */}
                 <div className="aspect-square bg-gray-50 flex items-center justify-center p-2 sm:p-3 md:p-4">
@@ -352,7 +356,8 @@ export default function SRKBoltHomepage() {
                 <div className="px-2 sm:px-3 md:px-4 pb-2 sm:pb-3 md:pb-4">
                   <div className="flex flex-nowrap gap-1 sm:gap-1.5 md:gap-2 mb-2 sm:mb-2.5 md:mb-3">
                     <button 
-                      onClick={() => {
+                      onClick={(e) => {
+                          e.stopPropagation() // Prevent card click
                           const categoryParam = encodeURIComponent(product.category || selectedCategory)
                           window.location.href = `/view-details?name=${encodeURIComponent(product.name)}&category=${categoryParam}`
                         }}
@@ -363,7 +368,10 @@ export default function SRKBoltHomepage() {
                       <span className="sm:hidden">VIEW</span>
                     </button>
                     <button 
-                      onClick={() => handleWhatsAppClick(product)}
+                      onClick={(e) => {
+                          e.stopPropagation() // Prevent card click
+                          handleWhatsAppClick(product)
+                        }}
                       className="flex-1 bg-[#25D366] hover:bg-[#1ebe5a] text-white text-[9px] sm:text-[10px] md:text-xs font-semibold py-1.5 sm:py-2 rounded-md transition-colors duration-200 flex items-center justify-center gap-0.5 sm:gap-1 whitespace-nowrap"
                     >
                       <MessageCircle className="hidden sm:block w-3 h-3 shrink-0" />
@@ -372,7 +380,8 @@ export default function SRKBoltHomepage() {
                     </button>
                   </div>
                   <button 
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation() // Prevent card click
                       setRfqProductName(product.name)
                       setIsRFQPopupOpen(true)
                       addToRFQ(product.name, product.image)

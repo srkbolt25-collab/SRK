@@ -36,14 +36,65 @@ export async function PUT(
     
     const collection = await getCollection('products')
     
-    const updateData = {
-      ...body,
-      updatedAt: new Date().toISOString(),
+    // Get existing product to check if technicalInformation exists
+    const existingProduct = await collection.findOne({ _id: new ObjectId(params.id) })
+    
+    // Sanitize technicalInformation - remove if empty
+    const technicalInformationValue = body.technicalInformation
+    const isTechnicalInfoEmpty = !technicalInformationValue || 
+      (typeof technicalInformationValue === 'string' && technicalInformationValue.trim() === "") ||
+      technicalInformationValue === null ||
+      technicalInformationValue === undefined
+    
+    const technicalInformation = !isTechnicalInfoEmpty && typeof technicalInformationValue === 'string'
+      ? technicalInformationValue.trim() 
+      : null
+    
+    // Build update operation
+    const setData: Record<string, any> = {}
+    const unsetFields: Record<string, string> = {}
+    
+    // Process all fields from body
+    Object.keys(body).forEach(key => {
+      if (key === 'technicalInformation') {
+        // Handle technicalInformation specially
+        if (isTechnicalInfoEmpty) {
+          // Mark for removal from database if it exists
+          if (existingProduct?.technicalInformation !== undefined && existingProduct?.technicalInformation !== null) {
+            unsetFields[key] = ""
+          }
+          // Don't include it in $set
+        } else {
+          setData[key] = technicalInformation
+        }
+      } else if (body[key] !== undefined && body[key] !== null) {
+        setData[key] = body[key]
+      }
+    })
+    
+    // Double-check: if technicalInformation was in body but is empty - need to remove it
+    if ('technicalInformation' in body && isTechnicalInfoEmpty) {
+      // Check if it exists in database and remove it
+      if (existingProduct && (existingProduct.technicalInformation !== undefined && existingProduct.technicalInformation !== null)) {
+        unsetFields['technicalInformation'] = ""
+      }
+    }
+    
+    // Always update updatedAt
+    setData.updatedAt = new Date().toISOString()
+    
+    // Build the update operation
+    const updateOperation: Record<string, any> = {}
+    if (Object.keys(setData).length > 0) {
+      updateOperation.$set = setData
+    }
+    if (Object.keys(unsetFields).length > 0) {
+      updateOperation.$unset = unsetFields
     }
 
     const result = await collection.updateOne(
       { _id: new ObjectId(params.id) },
-      { $set: updateData }
+      Object.keys(updateOperation).length > 0 ? updateOperation : { $set: { updatedAt: new Date().toISOString() } }
     )
     
     if (result.matchedCount === 0) {

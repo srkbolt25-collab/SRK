@@ -76,7 +76,11 @@ export default function OtherFastenersPage() {
               {products.map((product) => (
                 <div
                   key={product.id}
-                  className="group bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-xl transition-all duration-300 hover:-translate-y-1 p-6 flex flex-col items-center text-center gap-4 h-full"
+                  className="group bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-xl transition-all duration-300 hover:-translate-y-1 p-6 flex flex-col items-center text-center gap-4 h-full cursor-pointer"
+                  onClick={() => {
+                    const categoryParam = encodeURIComponent(product.category || "OTHER")
+                    window.location.href = `/view-details?name=${encodeURIComponent(product.name)}&category=${categoryParam}`
+                  }}
                 >
                   <div className="w-full aspect-square bg-[#F1EFFA] rounded-lg flex items-center justify-center overflow-hidden p-4">
                     <img
@@ -89,7 +93,8 @@ export default function OtherFastenersPage() {
                   <div className="w-full space-y-2.5 mt-auto">
                     <div className="flex gap-2">
                       <button
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation()
                           const categoryParam = encodeURIComponent(product.category || "OTHER")
                           window.location.href = `/view-details?name=${encodeURIComponent(product.name)}&category=${categoryParam}`
                         }}
@@ -99,12 +104,13 @@ export default function OtherFastenersPage() {
                         VIEW DETAILS
                       </button>
                       <button
-                        onClick={() =>
+                        onClick={(e) => {
+                          e.stopPropagation()
                           handleWhatsAppClick({
                             name: product.name,
                             category: product.category || "OTHER",
                           })
-                        }
+                        }}
                         className="flex-1 bg-[#25D366] hover:bg-[#1ebe5a] text-white text-xs font-semibold py-1.5 rounded-md transition-colors duration-200 flex items-center justify-center gap-1"
                       >
                         <MessageCircle className="w-3 h-3" />
@@ -112,7 +118,8 @@ export default function OtherFastenersPage() {
                       </button>
                     </div>
                     <button
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation()
                         setRfqProductName(product.name)
                         setIsRFQPopupOpen(true)
                         addToRFQ(product.name, product.image)

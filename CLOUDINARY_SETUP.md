@@ -10,13 +10,15 @@ This project supports using **two Cloudinary accounts** for image storage and ma
 
 ### Primary Cloudinary Account (Required)
 
-These are the main Cloudinary credentials that will be used by default:
+These are the main Cloudinary credentials that will be used by default. **Add these to your Vercel Environment Variables:**
 
 ```
-CLOUDINARY_CLOUD_NAME=your-primary-cloud-name
-CLOUDINARY_API_KEY=your-primary-api-key
-CLOUDINARY_API_SECRET=your-primary-api-secret
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
 ```
+
+**Note**: Do not commit these credentials to your code. Always use environment variables in Vercel.
 
 ### Secondary Cloudinary Account (Optional)
 
@@ -47,16 +49,18 @@ CLOUDINARY_FOLDER=products  # Default folder for uploads (optional)
 Click **Add New** and add each variable:
 
 1. **Name**: `CLOUDINARY_CLOUD_NAME`
-   - **Value**: Your primary Cloudinary cloud name
+   - **Value**: Your Cloudinary cloud name
    - **Environment**: Production, Preview, Development (select all)
 
 2. **Name**: `CLOUDINARY_API_KEY`
-   - **Value**: Your primary Cloudinary API key
+   - **Value**: Your Cloudinary API key
    - **Environment**: Production, Preview, Development (select all)
 
 3. **Name**: `CLOUDINARY_API_SECRET`
-   - **Value**: Your primary Cloudinary API secret
+   - **Value**: Your Cloudinary API secret
    - **Environment**: Production, Preview, Development (select all)
+
+**Note**: Your Cloudinary account should be configured with **Dynamic Folders** to organize uploads into different folders dynamically.
 
 ### Step 3: Add Secondary Cloudinary Variables (Optional)
 

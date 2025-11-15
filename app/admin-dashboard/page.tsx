@@ -275,7 +275,7 @@ export default function AdminDashboard() {
   })
   const [uploadingImages, setUploadingImages] = useState(false)
   const [uploadedImageUrls, setUploadedImageUrls] = useState<string[]>([])
-  const MAX_IMAGES = 3
+  const MAX_IMAGES = 5
 
   const iconChoices: Array<{ value: string; label: string }> = [
     { value: "briefcase", label: "Briefcase" },
@@ -1556,7 +1556,11 @@ export default function AdminDashboard() {
         )
       ).slice(0, MAX_IMAGES)
 
-      const productData = {
+      // Handle technicalInformation - send null if empty so API knows to remove it
+      const technicalInfoValue = editFormData.technicalInformation?.trim()
+      const technicalInformation = technicalInfoValue && technicalInfoValue !== "" ? technicalInfoValue : null
+      
+      const productData: Record<string, any> = {
         name: editFormData.name,
         description: editFormData.description,
         category: editFormData.category,
@@ -1573,7 +1577,7 @@ export default function AdminDashboard() {
         coating: editFormData.coating.filter(c => c.trim() !== ""),
         features: editFormData.features.filter(feat => feat.trim() !== ""),
         uses: editFormData.uses.filter(use => use.trim() !== ""),
-        technicalInformation: editFormData.technicalInformation || undefined,
+        technicalInformation: technicalInformation, // Send null if empty
         shippingInfo: editFormData.shippingInfo || undefined,
         returnsInfo: editFormData.returnsInfo || undefined,
         warrantyInfo: editFormData.warrantyInfo || undefined,
@@ -1706,7 +1710,11 @@ export default function AdminDashboard() {
         )
       ).slice(0, MAX_IMAGES)
 
-      const productData = {
+      // Handle technicalInformation - send null if empty
+      const technicalInfoValue = formData.technicalInformation?.trim()
+      const technicalInformation = technicalInfoValue && technicalInfoValue !== "" ? technicalInfoValue : null
+      
+      const productData: Record<string, any> = {
         name: formData.name,
         description: formData.description,
         category: formData.category,
@@ -1723,7 +1731,7 @@ export default function AdminDashboard() {
         coating: formData.coating.filter(c => c.trim() !== ""),
         features: formData.features.filter(feat => feat.trim() !== ""),
         uses: formData.uses.filter(use => use.trim() !== ""),
-        technicalInformation: formData.technicalInformation || undefined,
+        technicalInformation: technicalInformation, // Send null if empty
         shippingInfo: formData.shippingInfo || undefined,
         returnsInfo: formData.returnsInfo || undefined,
         warrantyInfo: formData.warrantyInfo || undefined,
