@@ -270,29 +270,29 @@ export default function ProductDetailsPage() {
   return (
     <Layout>
       <div className="pt-12 pb-20 bg-[#F7F7FA]">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-3 sm:px-4">
           {/* Breadcrumb */}
-          <div className="mb-10 flex items-center gap-2 text-sm text-[#2E1F44]/70">
-            <a href="/" className="font-medium hover:text-[#A02222] transition-colors">Home</a>
+          <div className="mb-6 sm:mb-10 flex flex-wrap items-center gap-1 sm:gap-2 text-xs sm:text-sm text-[#2E1F44]/70">
+            <a href="/" className="font-medium hover:text-[#A02222] transition-colors break-words">Home</a>
             <span>/</span>
-            <a href="/products" className="font-medium hover:text-[#A02222] transition-colors">Products</a>
+            <a href="/products" className="font-medium hover:text-[#A02222] transition-colors break-words">Products</a>
             <span>/</span>
-            <a href={getCategoryRoute(product.category)} className="font-medium hover:text-[#A02222] transition-colors">{product.category}</a>
+            <a href={getCategoryRoute(product.category)} className="font-medium hover:text-[#A02222] transition-colors break-words">{product.category}</a>
             <span>/</span>
-            <span className="text-[#2E1F44] font-semibold">{product.name}</span>
+            <span className="text-[#2E1F44] font-semibold break-words line-clamp-2">{product.name}</span>
           </div>
 
           {productError && (
-            <div className="mb-8 rounded-xl border border-[#FAD2CF] bg-[#FFF1EF] px-4 py-3 text-sm text-[#8C2F2F] shadow-sm">
+            <div className="mb-6 sm:mb-8 rounded-xl border border-[#FAD2CF] bg-[#FFF1EF] px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-[#8C2F2F] shadow-sm">
               {productError}
             </div>
           )}
 
-          <div className="grid lg:grid-cols-2 gap-12">
+          <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
             {/* Left: Product Images */}
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               {/* Main Image */}
-              <div className="relative bg-white rounded-2xl shadow-[0_12px_30px_rgba(39,31,68,0.08)] overflow-hidden border border-[#E4E1F0] w-full max-w-lg mx-auto">
+              <div className="relative bg-white rounded-xl sm:rounded-2xl shadow-[0_12px_30px_rgba(39,31,68,0.08)] overflow-hidden border border-[#E4E1F0] w-full max-w-lg mx-auto">
                 <div className="aspect-square flex items-center justify-center bg-linear-to-br from-white via-[#F5F5FB] to-[#ECE8F8]">
                   <img 
                     src={productImages[selectedImage]} 
@@ -306,25 +306,25 @@ export default function ProductDetailsPage() {
                   <>
                     <button 
                       onClick={prevImage}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white shadow-lg rounded-full p-2.5 transition-all border border-[#E4E1F0]"
+                      className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white shadow-lg rounded-full p-2 sm:p-2.5 transition-all border border-[#E4E1F0]"
                     >
-                      <ChevronLeft className="w-6 h-6 text-[#2E1F44]" />
+                      <ChevronLeft className="w-4 h-4 sm:w-6 sm:h-6 text-[#2E1F44]" />
                     </button>
                     <button 
                       onClick={nextImage}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white shadow-lg rounded-full p-2.5 transition-all border border-[#E4E1F0]"
+                      className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white shadow-lg rounded-full p-2 sm:p-2.5 transition-all border border-[#E4E1F0]"
                     >
-                      <ChevronRight className="w-6 h-6 text-[#2E1F44]" />
+                      <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6 text-[#2E1F44]" />
                     </button>
                   </>
                 )}
 
                 {/* Badges */}
-                <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                  <span className="bg-[#A02222] text-white px-3 py-1 rounded-full text-xs font-semibold tracking-wide shadow-md">
+                <div className="absolute top-2 left-2 sm:top-4 sm:left-4 flex flex-wrap gap-1.5 sm:gap-2">
+                  <span className="bg-[#A02222] text-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold tracking-wide shadow-md break-words">
                     {product.standard || product.category}
                   </span>
-                  <span className="bg-[#2E1F44] text-white px-3 py-1 rounded-full text-xs font-semibold tracking-wide shadow-md">
+                  <span className="bg-[#2E1F44] text-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold tracking-wide shadow-md">
                     In Stock
                     </span>
                 </div>
@@ -332,7 +332,7 @@ export default function ProductDetailsPage() {
 
               {/* Thumbnail Images */}
               {productImages.length > 1 && (
-                <div className="grid grid-cols-4 gap-3">
+                <div className="grid grid-cols-4 gap-2 sm:gap-3">
                   {productImages.map((image, idx) => (
                     <button
                       key={idx}
@@ -351,94 +351,94 @@ export default function ProductDetailsPage() {
             </div>
 
             {/* Right: Product Information */}
-            <div className="space-y-8">
+            <div className="space-y-4 sm:space-y-6 lg:space-y-8">
               {/* Header */}
               <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="bg-[#E6E1F5] text-[#2E1F44] px-3 py-1 rounded-full text-sm font-medium">
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-3 sm:mb-4">
+                  <span className="bg-[#E6E1F5] text-[#2E1F44] px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-medium break-words">
                     {product.category}
                   </span>
-                  <span className="bg-[#E1F7EC] text-[#1F7A4D] px-3 py-1 rounded-full text-sm font-medium">
+                  <span className="bg-[#E1F7EC] text-[#1F7A4D] px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-medium">
                     In Stock
                   </span>
                 </div>
 
-                <h1 className="text-4xl font-bold text-[#2E1F44] mb-4 leading-snug">{product.name}</h1>
+                <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold text-[#2E1F44] mb-3 sm:mb-4 leading-tight sm:leading-snug break-words">{product.name}</h1>
 
                 {/* Product Standard */}
                 {product.standard && (
-                <div className="flex items-center gap-3 mb-6">
-                    <span className="text-lg font-semibold text-[#2E1F44]/80">Standard:</span>
-                    <span className="text-lg text-[#2E1F44] font-semibold">{product.standard}</span>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 mb-4 sm:mb-6">
+                    <span className="text-sm sm:text-lg font-semibold text-[#2E1F44]/80">Standard:</span>
+                    <span className="text-sm sm:text-lg text-[#2E1F44] font-semibold break-words">{product.standard}</span>
                   </div>
                 )}
               </div>
 
               {/* Specifications */}
-              <div className="bg-white p-6 rounded-2xl shadow-[0_12px_30px_rgba(39,31,68,0.08)] border border-[#E4E1F0]">
-                <h3 className="text-lg font-bold text-[#2E1F44] mb-4 tracking-wide">Specifications</h3>
-                <div className="space-y-3 text-sm">
+              <div className="bg-white p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-[0_12px_30px_rgba(39,31,68,0.08)] border border-[#E4E1F0]">
+                <h3 className="text-base sm:text-lg font-bold text-[#2E1F44] mb-3 sm:mb-4 tracking-wide">Specifications</h3>
+                <div className="space-y-2.5 sm:space-y-3 text-xs sm:text-sm">
                   {(product.equivalentStandard || product.specifications?.equivalentStandard || product.standard || product.specifications?.standard) && (
-                    <div className="flex justify-between border-b border-dashed border-[#E4E1F0] pb-2">
-                      <span className="text-[#2E1F44]/70 font-semibold">Equivalent Standard:</span>
-                      <span className="text-[#2E1F44] font-medium text-right max-w-[60%]">
+                    <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0 border-b border-dashed border-[#E4E1F0] pb-2">
+                      <span className="text-[#2E1F44]/70 font-semibold shrink-0">Equivalent Standard:</span>
+                      <span className="text-[#2E1F44] font-medium sm:text-right break-words">
                         {product.equivalentStandard || product.specifications?.equivalentStandard || product.standard || product.specifications?.standard}
                       </span>
                     </div>
                   )}
                   {product.specifications.material && (
-                    <div className="flex justify-between border-b border-dashed border-[#E4E1F0] pb-2">
-                      <span className="text-[#2E1F44]/70 font-semibold">Material:</span>
-                      <span className="text-[#2E1F44] font-medium text-right max-w-[60%]">{product.specifications.material}</span>
+                    <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0 border-b border-dashed border-[#E4E1F0] pb-2">
+                      <span className="text-[#2E1F44]/70 font-semibold shrink-0">Material:</span>
+                      <span className="text-[#2E1F44] font-medium sm:text-right break-words">{product.specifications.material}</span>
                   </div>
                   )}
                   {product.specifications.sizes && (
-                    <div className="flex justify-between border-b border-dashed border-[#E4E1F0] pb-2">
-                      <span className="text-[#2E1F44]/70 font-semibold">Sizes:</span>
-                      <span className="text-[#2E1F44] font-medium text-right max-w-[60%]">{product.specifications.sizes}</span>
+                    <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0 border-b border-dashed border-[#E4E1F0] pb-2">
+                      <span className="text-[#2E1F44]/70 font-semibold shrink-0">Sizes:</span>
+                      <span className="text-[#2E1F44] font-medium sm:text-right break-words">{product.specifications.sizes}</span>
                   </div>
                   )}
                   {product.specifications.grades && product.specifications.grades.length > 0 && (
-                    <div className="flex justify-between border-b border-dashed border-[#E4E1F0] pb-2">
-                      <span className="text-[#2E1F44]/70 font-semibold">Grades:</span>
-                      <span className="text-[#2E1F44] font-medium text-right max-w-[60%]">{product.specifications.grades.join(", ")}</span>
+                    <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0 border-b border-dashed border-[#E4E1F0] pb-2">
+                      <span className="text-[#2E1F44]/70 font-semibold shrink-0">Grades:</span>
+                      <span className="text-[#2E1F44] font-medium sm:text-right break-words">{product.specifications.grades.join(", ")}</span>
                   </div>
                   )}
                   {product.specifications.coating && product.specifications.coating.length > 0 && (
-                    <div className="flex justify-between border-b border-dashed border-[#E4E1F0] pb-2">
-                      <span className="text-[#2E1F44]/70 font-semibold">Coating:</span>
-                      <span className="text-[#2E1F44] font-medium text-right max-w-[60%]">{product.specifications.coating.join(", ")}</span>
+                    <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0 border-b border-dashed border-[#E4E1F0] pb-2">
+                      <span className="text-[#2E1F44]/70 font-semibold shrink-0">Coating:</span>
+                      <span className="text-[#2E1F44] font-medium sm:text-right break-words">{product.specifications.coating.join(", ")}</span>
                     </div>
                   )}
                   {product.specifications.threadType && (
-                    <div className="flex justify-between">
-                      <span className="text-[#2E1F44]/70 font-semibold">Thread Type:</span>
-                      <span className="text-[#2E1F44] font-medium text-right max-w-[60%]">{product.specifications.threadType}</span>
+                    <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0">
+                      <span className="text-[#2E1F44]/70 font-semibold shrink-0">Thread Type:</span>
+                      <span className="text-[#2E1F44] font-medium sm:text-right break-words">{product.specifications.threadType}</span>
                     </div>
                   )}
                 </div>
               </div>
 
               {/* Features */}
-              <div className="bg-white p-6 rounded-2xl shadow-[0_12px_30px_rgba(39,31,68,0.08)] border border-[#E4E1F0]">
-                <h3 className="text-lg font-bold text-[#2E1F44] mb-4 tracking-wide">Key Features</h3>
-                <ul className="space-y-2">
+              <div className="bg-white p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-[0_12px_30px_rgba(39,31,68,0.08)] border border-[#E4E1F0]">
+                <h3 className="text-base sm:text-lg font-bold text-[#2E1F44] mb-3 sm:mb-4 tracking-wide">Key Features</h3>
+                <ul className="space-y-1.5 sm:space-y-2">
                   {product.features.map((feature, i) => (
-                    <li key={i} className="flex items-center gap-3 text-[#2E1F44]/80 leading-relaxed">
-                      <Check className="w-5 h-5 text-[#A02222] shrink-0" />
-                      {feature}
+                    <li key={i} className="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm text-[#2E1F44]/80 leading-relaxed">
+                      <Check className="w-4 h-4 sm:w-5 sm:h-5 text-[#A02222] shrink-0 mt-0.5 sm:mt-0" />
+                      <span className="break-words">{feature}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
               {/* Quantity & Actions */}
-              <div className="bg-white p-6 rounded-2xl shadow-[0_12px_30px_rgba(39,31,68,0.08)] space-y-5 border border-[#E4E1F0]">
-                <div className="flex items-center justify-between bg-[#F3F1FB] border border-[#E0DBF4] rounded-xl px-4 py-3">
-                  <span className="text-[#2E1F44] font-semibold">Quantity</span>
+              <div className="bg-white p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-[0_12px_30px_rgba(39,31,68,0.08)] space-y-4 sm:space-y-5 border border-[#E4E1F0]">
+                <div className="flex items-center justify-between bg-[#F3F1FB] border border-[#E0DBF4] rounded-xl px-3 sm:px-4 py-2 sm:py-3">
+                  <span className="text-sm sm:text-base text-[#2E1F44] font-semibold">Quantity</span>
                   <div className="flex items-center bg-white border border-[#E0DBF4] rounded-lg shadow-sm">
                     <button
-                      className="px-4 py-2 text-[#2E1F44] hover:bg-[#F7F7FA] font-semibold"
+                      className="px-3 sm:px-4 py-1.5 sm:py-2 text-[#2E1F44] hover:bg-[#F7F7FA] font-semibold text-sm sm:text-base"
                       onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
                     >
                       −
@@ -447,10 +447,10 @@ export default function ProductDetailsPage() {
                       type="number" 
                       value={quantity}
                       onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                      className="w-16 text-center border-x border-[#E0DBF4] py-2 text-[#2E1F44] font-semibold"
+                      className="w-12 sm:w-16 text-center border-x border-[#E0DBF4] py-1.5 sm:py-2 text-sm sm:text-base text-[#2E1F44] font-semibold"
                     />
                     <button
-                      className="px-4 py-2 text-[#2E1F44] hover:bg-[#F7F7FA] font-semibold"
+                      className="px-3 sm:px-4 py-1.5 sm:py-2 text-[#2E1F44] hover:bg-[#F7F7FA] font-semibold text-sm sm:text-base"
                       onClick={() => setQuantity((prev) => prev + 1)}
                     >
                       +
@@ -458,26 +458,26 @@ export default function ProductDetailsPage() {
                   </div>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-2.5 sm:space-y-3">
                   <Button
-                    className="w-full bg-[#A02222] hover:bg-[#2E1F44] text-white py-3 text-lg flex items-center justify-center gap-2 shadow-[0_10px_24px_rgba(160,34,34,0.25)]"
+                    className="w-full bg-[#A02222] hover:bg-[#2E1F44] text-white py-2.5 sm:py-3 text-sm sm:text-lg flex items-center justify-center gap-2 shadow-[0_10px_24px_rgba(160,34,34,0.25)]"
                     onClick={handleAddToRFQ}
                   >
-                  <ShoppingCart className="w-5 h-5" />
+                  <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
                   Add to RFQ
                 </Button>
                   <Button
-                    className="w-full bg-[#25D366] hover:bg-[#20BD5B] text-white py-3 text-lg flex items-center justify-center gap-2"
+                    className="w-full bg-[#25D366] hover:bg-[#20BD5B] text-white py-2.5 sm:py-3 text-sm sm:text-lg flex items-center justify-center gap-2"
                     onClick={handleWhatsAppClick}
                   >
-                    <MessageCircle className="w-5 h-5" />
+                    <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
                     Contact via WhatsApp
                   </Button>
                   <Button
-                    className="w-full bg-[#2E1F44] hover:bg-[#A02222] text-white py-3 text-lg flex items-center justify-center gap-2"
+                    className="w-full bg-[#2E1F44] hover:bg-[#A02222] text-white py-2.5 sm:py-3 text-sm sm:text-lg flex items-center justify-center gap-2"
                     onClick={handleDownloadDataSheet}
                   >
-                    <Send className="w-5 h-5" />
+                    <Send className="w-4 h-4 sm:w-5 sm:h-5" />
                     Submit Request
                   </Button>
                 </div>
@@ -487,26 +487,26 @@ export default function ProductDetailsPage() {
           </div>
 
           {/* Tabs Section */}
-          <div className="mt-16 bg-white rounded-2xl shadow-[0_16px_40px_rgba(39,31,68,0.08)] p-8 border border-[#E4E1F0]">
+          <div className="mt-8 sm:mt-12 lg:mt-16 bg-white rounded-xl sm:rounded-2xl shadow-[0_16px_40px_rgba(39,31,68,0.08)] p-3 sm:p-4 lg:p-8 border border-[#E4E1F0]">
             <Tabs defaultValue="description" className="w-full">
               {(() => {
                 const hasTechnicalInfo = rawProductData?.technicalInformation && 
                   typeof rawProductData.technicalInformation === 'string' && 
                   rawProductData.technicalInformation.trim() !== ""
                 return (
-                  <TabsList className={`grid w-full mb-8 rounded-xl bg-[#F0ECFA] p-1 ${hasTechnicalInfo ? 'grid-cols-4' : 'grid-cols-3'}`}>
-                    <TabsTrigger value="description" className="data-[state=active]:bg-white data-[state=active]:text-[#A02222] data-[state=active]:shadow-[0_8px_20px_rgba(160,34,34,0.15)] text-[#2E1F44]/70 font-semibold rounded-lg transition-all">
+                  <TabsList className={`flex flex-wrap sm:grid w-full mb-6 sm:mb-8 rounded-xl bg-[#F0ECFA] p-1 gap-1 sm:gap-0 ${hasTechnicalInfo ? 'sm:grid-cols-4' : 'sm:grid-cols-3'}`}>
+                    <TabsTrigger value="description" className="flex-1 sm:flex-none data-[state=active]:bg-white data-[state=active]:text-[#A02222] data-[state=active]:shadow-[0_8px_20px_rgba(160,34,34,0.15)] text-[#2E1F44]/70 font-semibold rounded-lg transition-all text-xs sm:text-sm px-2 sm:px-4 py-2 sm:py-2">
                       Description
                     </TabsTrigger>
-                    <TabsTrigger value="uses" className="data-[state=active]:bg-white data-[state=active]:text-[#A02222] data-[state=active]:shadow-[0_8px_20px_rgba(160,34,34,0.15)] text-[#2E1F44]/70 font-semibold rounded-lg transition-all">
+                    <TabsTrigger value="uses" className="flex-1 sm:flex-none data-[state=active]:bg-white data-[state=active]:text-[#A02222] data-[state=active]:shadow-[0_8px_20px_rgba(160,34,34,0.15)] text-[#2E1F44]/70 font-semibold rounded-lg transition-all text-xs sm:text-sm px-2 sm:px-4 py-2 sm:py-2">
                       Uses & Applications
                     </TabsTrigger>
                     {hasTechnicalInfo && (
-                      <TabsTrigger value="technical" className="data-[state=active]:bg-white data-[state=active]:text-[#A02222] data-[state=active]:shadow-[0_8px_20px_rgba(160,34,34,0.15)] text-[#2E1F44]/70 font-semibold rounded-lg transition-all">
-                        Technical Information
+                      <TabsTrigger value="technical" className="flex-1 sm:flex-none data-[state=active]:bg-white data-[state=active]:text-[#A02222] data-[state=active]:shadow-[0_8px_20px_rgba(160,34,34,0.15)] text-[#2E1F44]/70 font-semibold rounded-lg transition-all text-xs sm:text-sm px-2 sm:px-4 py-2 sm:py-2">
+                        Technical Info
                       </TabsTrigger>
                     )}
-                    <TabsTrigger value="shipping" className="data-[state=active]:bg-white data-[state=active]:text-[#A02222] data-[state=active]:shadow-[0_8px_20px_rgba(160,34,34,0.15)] text-[#2E1F44]/70 font-semibold rounded-lg transition-all">
+                    <TabsTrigger value="shipping" className="flex-1 sm:flex-none data-[state=active]:bg-white data-[state=active]:text-[#A02222] data-[state=active]:shadow-[0_8px_20px_rgba(160,34,34,0.15)] text-[#2E1F44]/70 font-semibold rounded-lg transition-all text-xs sm:text-sm px-2 sm:px-4 py-2 sm:py-2">
                       Shipping & Returns
                     </TabsTrigger>
                   </TabsList>
@@ -514,27 +514,27 @@ export default function ProductDetailsPage() {
               })()}
 
               <TabsContent value="description" className="space-y-4">
-                <h3 className="text-2xl font-bold text-[#2E1F44]">Product Description</h3>
-                <p className="text-[#2E1F44]/80 leading-relaxed">
+                <h3 className="text-xl sm:text-2xl font-bold text-[#2E1F44]">Product Description</h3>
+                <p className="text-sm sm:text-base text-[#2E1F44]/80 leading-relaxed">
                   {product.description}
                 </p>
                 
                 {/* Material Specifications */}
                 {(product.specifications?.material || product.material || product.specifications?.coating || product.coating || product.specifications?.grades || product.grades || product.specifications?.tensileStrength) && (
-                  <div className="mt-6">
-                    <h4 className="font-bold text-[#2E1F44] mb-3">Material Specifications:</h4>
-                    <ul className="space-y-2 text-[#2E1F44]/80">
+                  <div className="mt-4 sm:mt-6">
+                    <h4 className="text-sm sm:text-base font-bold text-[#2E1F44] mb-2 sm:mb-3">Material Specifications:</h4>
+                    <ul className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm text-[#2E1F44]/80">
                       {(product.specifications?.material || product.material) && (
-                        <li>• Material: {product.specifications?.material || product.material}</li>
+                        <li className="break-words">• Material: {product.specifications?.material || product.material}</li>
                       )}
                       {((product.specifications?.coating && product.specifications.coating.length > 0) || (product.coating && product.coating.length > 0)) && (
-                        <li>• Coating options: {((product.specifications?.coating && product.specifications.coating.length > 0) ? product.specifications.coating : product.coating || []).join(", ")}</li>
+                        <li className="break-words">• Coating options: {((product.specifications?.coating && product.specifications.coating.length > 0) ? product.specifications.coating : product.coating || []).join(", ")}</li>
                       )}
                       {((product.specifications?.grades && product.specifications.grades.length > 0) || (product.grades && product.grades.length > 0)) && (
-                        <li>• Available grades: {((product.specifications?.grades && product.specifications.grades.length > 0) ? product.specifications.grades : product.grades || []).join(", ")}</li>
+                        <li className="break-words">• Available grades: {((product.specifications?.grades && product.specifications.grades.length > 0) ? product.specifications.grades : product.grades || []).join(", ")}</li>
                       )}
                       {product.specifications?.tensileStrength && (
-                        <li>• Tensile strength: {product.specifications.tensileStrength}</li>
+                        <li className="break-words">• Tensile strength: {product.specifications.tensileStrength}</li>
                       )}
                   </ul>
                 </div>
@@ -542,12 +542,12 @@ export default function ProductDetailsPage() {
               </TabsContent>
 
               <TabsContent value="uses" className="space-y-4">
-                <h3 className="text-2xl font-bold text-[#2E1F44]">Ideal For</h3>
-                <div className="grid grid-cols-2 gap-4">
+                <h3 className="text-xl sm:text-2xl font-bold text-[#2E1F44]">Ideal For</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   {product.uses.map((use, i) => (
-                    <div key={i} className="flex items-center gap-3 bg-[#FFE9E6] p-4 rounded-xl border border-[#FBC7BF]">
-                      <Award className="w-5 h-5 text-[#A02222] shrink-0" />
-                      <span className="text-[#2E1F44] font-medium">{use}</span>
+                    <div key={i} className="flex items-start sm:items-center gap-2 sm:gap-3 bg-[#FFE9E6] p-3 sm:p-4 rounded-xl border border-[#FBC7BF]">
+                      <Award className="w-4 h-4 sm:w-5 sm:h-5 text-[#A02222] shrink-0 mt-0.5 sm:mt-0" />
+                      <span className="text-xs sm:text-sm text-[#2E1F44] font-medium break-words">{use}</span>
                     </div>
                   ))}
                 </div>
@@ -557,27 +557,27 @@ export default function ProductDetailsPage() {
                typeof rawProductData.technicalInformation === 'string' && 
                rawProductData.technicalInformation.trim() !== "" && (
                 <TabsContent value="technical" className="space-y-4">
-                  <h3 className="text-2xl font-bold text-[#2E1F44]">Technical Information</h3>
-                  <div className="text-[#2E1F44]/80 leading-relaxed whitespace-pre-wrap">
+                  <h3 className="text-xl sm:text-2xl font-bold text-[#2E1F44]">Technical Information</h3>
+                  <div className="text-xs sm:text-sm text-[#2E1F44]/80 leading-relaxed whitespace-pre-wrap break-words">
                     {rawProductData.technicalInformation}
                   </div>
                 </TabsContent>
               )}
 
               <TabsContent value="shipping" className="space-y-4">
-                <h3 className="text-2xl font-bold text-[#2E1F44]">Shipping & Returns</h3>
-                <div className="space-y-4 text-[#2E1F44]/80">
+                <h3 className="text-xl sm:text-2xl font-bold text-[#2E1F44]">Shipping & Returns</h3>
+                <div className="space-y-3 sm:space-y-4 text-xs sm:text-sm text-[#2E1F44]/80">
                   <div>
-                    <h4 className="font-bold mb-2 text-[#2E1F44]">Shipping:</h4>
-                    <p>{(product as any).shippingInfo || "Free shipping on orders over ₹2,499. Standard delivery takes 5-7 business days."}</p>
+                    <h4 className="text-sm sm:text-base font-bold mb-1.5 sm:mb-2 text-[#2E1F44]">Shipping:</h4>
+                    <p className="break-words">{(product as any).shippingInfo || "Free shipping on orders over ₹2,499. Standard delivery takes 5-7 business days."}</p>
                   </div>
                   <div>
-                    <h4 className="font-bold mb-2 text-[#2E1F44]">Returns:</h4>
-                    <p>{(product as any).returnsInfo || "30-day return policy with no questions asked. Products must be in original condition."}</p>
+                    <h4 className="text-sm sm:text-base font-bold mb-1.5 sm:mb-2 text-[#2E1F44]">Returns:</h4>
+                    <p className="break-words">{(product as any).returnsInfo || "30-day return policy with no questions asked. Products must be in original condition."}</p>
                   </div>
                   <div>
-                    <h4 className="font-bold mb-2 text-[#2E1F44]">Warranty:</h4>
-                    <p>{(product as any).warrantyInfo || "All products come with manufacturer's warranty. Contact us for warranty details."}</p>
+                    <h4 className="text-sm sm:text-base font-bold mb-1.5 sm:mb-2 text-[#2E1F44]">Warranty:</h4>
+                    <p className="break-words">{(product as any).warrantyInfo || "All products come with manufacturer's warranty. Contact us for warranty details."}</p>
                   </div>
                 </div>
               </TabsContent>
