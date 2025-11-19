@@ -168,14 +168,6 @@ export default function ContactPage() {
                       "Sharjah, United Arab Emirates",
                     ],
                   },
-                  {
-                    title: "Retail Outlet",
-                    detail: [
-                      "SHOP- GA4304, near Entrance B",
-                      "Dubai Trade YIWU Market, Jabal Ali Industrial Second",
-                      "Dubai, United Arab Emirates",
-                    ],
-                  },
                   { title: "Phone", detail: ["+971 58 871 3064"] },
                   { title: "Email", detail: ["sales@srkbolt.com"] },
                   { title: "Working Hours", detail: ["Mon - Fri: 9:00 AM - 6:00 PM", "Sat: 9:00 AM - 2:00 PM", "Sun: Closed"] },

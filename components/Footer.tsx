@@ -140,12 +140,6 @@ export default function Footer() {
                     Al Zahia, Sheikh Mohammed Bin Zayed Rd<br />
                     Sharjah, United Arab Emirates
                   </p>
-                  <p className="font-semibold text-white mt-4">Retail Outlet</p>
-                  <p>
-                    SHOP- GA4304, near Entrance B<br />
-                    Dubai Trade YIWU Market, Jabal Ali Industrial Second<br />
-                    Dubai, United Arab Emirates
-                  </p>
                 </div>
               </div>
               
