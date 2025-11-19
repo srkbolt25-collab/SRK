@@ -24,6 +24,7 @@ import {
 } from "lucide-react"
 import { useRFQ } from "@/contexts/RFQContext"
 import { useCategoryProducts, type CategoryProductCard } from "@/hooks/useCategoryProducts"
+import { createSlug } from "@/lib/slug"
 
 type BannerSlide = {
   _id?: string
@@ -335,7 +336,7 @@ export default function SRKBoltHomepage() {
                   className="bg-white rounded-lg md:rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer"
                   onClick={() => {
                     const categoryParam = encodeURIComponent(product.category || selectedCategory)
-                    window.location.href = `/view-details?name=${encodeURIComponent(product.name)}&category=${categoryParam}`
+                    window.location.href = `/view-details/${createSlug(product.name)}`
                   }}
                 >
                 {/* Product Image */}
@@ -359,7 +360,7 @@ export default function SRKBoltHomepage() {
                       onClick={(e) => {
                           e.stopPropagation() // Prevent card click
                           const categoryParam = encodeURIComponent(product.category || selectedCategory)
-                          window.location.href = `/view-details?name=${encodeURIComponent(product.name)}&category=${categoryParam}`
+                          window.location.href = `/view-details/${createSlug(product.name)}`
                         }}
                       className="flex-1 border border-[#2E1F44] text-[#2E1F44] text-[9px] sm:text-[10px] md:text-xs font-semibold py-1.5 sm:py-2 rounded-md transition-colors duration-200 flex items-center justify-center gap-0.5 sm:gap-1 hover:bg-[#A02222] hover:text-white hover:border-[#A02222] whitespace-nowrap"
                     >

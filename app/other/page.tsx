@@ -1,5 +1,7 @@
 "use client"
 
+import { createSlug } from "@/lib/slug"
+
 import Layout from "@/components/Layout"
 import { useState } from "react"
 import { useCategoryProducts } from "@/hooks/useCategoryProducts"
@@ -79,7 +81,7 @@ export default function OtherFastenersPage() {
                   className="group bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-xl transition-all duration-300 hover:-translate-y-1 p-6 flex flex-col items-center text-center gap-4 h-full cursor-pointer"
                   onClick={() => {
                     const categoryParam = encodeURIComponent(product.category || "OTHER")
-                    window.location.href = `/view-details?name=${encodeURIComponent(product.name)}&category=${categoryParam}`
+                    window.location.href = `/view-details/${createSlug(product.name)}`
                   }}
                 >
                   <div className="w-full aspect-square bg-[#F1EFFA] rounded-lg flex items-center justify-center overflow-hidden p-4">
@@ -96,7 +98,7 @@ export default function OtherFastenersPage() {
                         onClick={(e) => {
                           e.stopPropagation()
                           const categoryParam = encodeURIComponent(product.category || "OTHER")
-                          window.location.href = `/view-details?name=${encodeURIComponent(product.name)}&category=${categoryParam}`
+                          window.location.href = `/view-details/${createSlug(product.name)}`
                         }}
                         className="flex-1 border border-[#2E1F44] text-[#2E1F44] text-xs font-semibold py-1.5 rounded-md transition-colors duration-200 flex items-center justify-center gap-1 hover:bg-[#A02222] hover:text-white hover:border-[#A02222]"
                       >

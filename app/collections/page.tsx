@@ -9,6 +9,7 @@ import Footer from "@/components/Footer"
 import { useCart, cartUtils } from "@/contexts/CartContext"
 import { useToast } from "@/contexts/ToastContext"
 import Link from "next/link"
+import { createSlug } from "@/lib/slug"
 import { 
   Star, 
   Heart, 
@@ -237,7 +238,7 @@ export default function CollectionsPage() {
           {viewMode === 'grid' ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
               {filteredProducts.map((product) => (
-              <Link key={product._id} href={`/view-details?id=${product._id}`}>
+              <Link key={product._id} href={`/view-details/${createSlug(product.name || '')}`}>
               <Card
                   className="group cursor-pointer overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 bg-white/80 backdrop-blur-sm rounded-2xl"
               >
@@ -323,7 +324,7 @@ export default function CollectionsPage() {
                         onClick={(e) => {
                           e.preventDefault()
                           e.stopPropagation()
-                          window.location.href = `/view-details?id=${product._id}`
+                          window.location.href = `/view-details/${createSlug(product.name || '')}`
                         }}
                         className="w-full bg-linear-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                       >
@@ -340,7 +341,7 @@ export default function CollectionsPage() {
           ) : (
             <div className="space-y-6">
               {filteredProducts.map((product) => (
-                <Link key={product._id} href={`/view-details?id=${product._id}`}>
+                <Link key={product._id} href={`/view-details/${createSlug(product.name || '')}`}>
                 <Card
                   className="group cursor-pointer overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white/80 backdrop-blur-sm rounded-2xl"
                 >
@@ -416,7 +417,7 @@ export default function CollectionsPage() {
                             onClick={(e) => {
                               e.preventDefault()
                               e.stopPropagation()
-                              window.location.href = `/view-details?id=${product._id}`
+                              window.location.href = `/view-details/${createSlug(product.name || '')}`
                             }}
                             className="bg-linear-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                           >

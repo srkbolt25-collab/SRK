@@ -1,5 +1,7 @@
 "use client"
 
+import { createSlug } from "@/lib/slug"
+
 import Layout from "@/components/Layout"
 import { useState, useEffect } from "react"
 import { ChevronLeft, ChevronRight, ExternalLink, Wrench, Settings, Factory, MessageCircle, FileText, CheckCircle } from "lucide-react"
@@ -154,7 +156,7 @@ export default function ScrewsPage() {
               <div 
                 key={product.id} 
                 className="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 p-5 flex flex-col items-center text-center gap-3 h-full cursor-pointer"
-                onClick={() => window.location.href = `/view-details?name=${encodeURIComponent(product.name)}&category=SCREWS`}
+                onClick={() => window.location.href = `/view-details/${createSlug(product.name)}`}
               >
                 <div className="w-full aspect-square bg-gray-50 rounded-lg flex items-center justify-center overflow-hidden p-4">
                   <img
