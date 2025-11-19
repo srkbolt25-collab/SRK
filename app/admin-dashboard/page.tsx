@@ -3781,34 +3781,38 @@ export default function AdminDashboard() {
                           value={contactForm.image}
                           onChange={(e) => handleContactInputChange("image", e.target.value)}
                           placeholder="Enter image URL or upload"
+                          className="flex-1"
                         />
-                        <label className="cursor-pointer">
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleContactImageUpload}
-                            className="hidden"
-                            disabled={uploadingContactImage}
-                          />
-                          <Button
-                            type="button"
-                            variant="outline"
-                            disabled={uploadingContactImage}
-                            className="whitespace-nowrap"
-                          >
-                            {uploadingContactImage ? (
-                              <>
-                                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                                Uploading...
-                              </>
-                            ) : (
-                              <>
-                                <Upload className="h-4 w-4 mr-2" />
-                                Upload
-                              </>
-                            )}
-                          </Button>
-                        </label>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleContactImageUpload}
+                          className="hidden"
+                          id="contact-image-upload"
+                          disabled={uploadingContactImage}
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          disabled={uploadingContactImage}
+                          className="whitespace-nowrap"
+                          onClick={() => {
+                            const fileInput = document.getElementById('contact-image-upload') as HTMLInputElement
+                            fileInput?.click()
+                          }}
+                        >
+                          {uploadingContactImage ? (
+                            <>
+                              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                              Uploading...
+                            </>
+                          ) : (
+                            <>
+                              <Upload className="h-4 w-4 mr-2" />
+                              Upload
+                            </>
+                          )}
+                        </Button>
                       </div>
                       {contactForm.image && (
                         <div className="mt-3">
