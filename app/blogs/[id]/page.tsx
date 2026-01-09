@@ -15,6 +15,8 @@ interface Blog {
     coverImage?: string
     readTime?: string
     publishedAt?: string
+    metaTitle?: string
+    metaDescription?: string
 }
 
 // Simple markdown renderer for bold text
@@ -64,6 +66,21 @@ export default function BlogDetailsPage() {
             fetchRecentBlogs()
         }
     }, [params.id])
+
+    useEffect(() => {
+        if (blog) {
+            document.title = `${blog.metaTitle || blog.title} | SRK Bolt`
+            const metaDescription = document.querySelector('meta[name="description"]')
+            if (metaDescription) {
+                metaDescription.setAttribute('content', blog.metaDescription || blog.title)
+            } else {
+                const meta = document.createElement('meta')
+                meta.name = "description"
+                meta.content = blog.metaDescription || blog.title
+                document.head.appendChild(meta)
+            }
+        }
+    }, [blog])
 
     if (loading) {
         return (

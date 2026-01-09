@@ -83,10 +83,13 @@ interface Product {
 interface Blog {
   _id?: string
   title: string
+  slug?: string
   category: string
   content: string
   coverImage?: string
   publishedAt?: string
+  metaTitle?: string
+  metaDescription?: string
   createdAt?: string
   updatedAt?: string
 }
@@ -97,6 +100,8 @@ const emptyBlogForm = {
   coverImage: "",
   publishedAt: "",
   category: "",
+  metaTitle: "",
+  metaDescription: "",
 }
 
 interface Opening {
@@ -1417,6 +1422,8 @@ export default function AdminDashboard() {
       const payload = {
         ...blogForm,
         slug: slugify(blogForm.title),
+        metaTitle: blogForm.metaTitle || blogForm.title,
+        metaDescription: blogForm.metaDescription || (contentParagraphs[0] ? contentParagraphs[0].slice(0, 160) : ""),
         publishedAt: blogForm.publishedAt || new Date().toISOString(),
       }
 
@@ -1465,6 +1472,8 @@ export default function AdminDashboard() {
       coverImage: blog.coverImage || "",
       publishedAt: blog.publishedAt ? new Date(blog.publishedAt).toISOString().slice(0, 10) : "",
       category: blog.category || "",
+      metaTitle: blog.metaTitle || "",
+      metaDescription: blog.metaDescription || "",
     })
     setContentParagraphs(blog.content ? blog.content.split("\n\n") : [""])
     setActiveTab("blogs")
@@ -3592,6 +3601,32 @@ export default function AdminDashboard() {
                         placeholder="e.g., Engineering Insights"
                         required
                       />
+                    </div>
+
+                    <div className="space-y-4 pt-4 border-t border-gray-100">
+                      <h4 className="text-sm font-semibold text-gray-900">SEO Settings</h4>
+                      <div className="space-y-2">
+                        <Label htmlFor="blog-meta-title">Meta Title</Label>
+                        <Input
+                          id="blog-meta-title"
+                          value={blogForm.metaTitle}
+                          onChange={(e) => handleBlogInputChange("metaTitle", e.target.value)}
+                          placeholder="Default is blog title"
+                        />
+                        <p className="text-[10px] text-gray-500">Recommended length: 50-60 characters</p>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="blog-meta-description">Meta Description</Label>
+                        <Textarea
+                          id="blog-meta-description"
+                          value={blogForm.metaDescription}
+                          onChange={(e) => handleBlogInputChange("metaDescription", e.target.value)}
+                          placeholder="Brief summary for search engines"
+                          rows={3}
+                        />
+                        <p className="text-[10px] text-gray-500">Recommended length: 150-160 characters</p>
+                      </div>
                     </div>
 
                     {editingBlog && (
