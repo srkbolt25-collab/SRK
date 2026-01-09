@@ -14,12 +14,12 @@ import TopBar from "@/components/TopBar"
 import MainHeader from "@/components/MainHeader"
 import Footer from "@/components/Footer"
 import { useToast } from "@/contexts/ToastContext"
-import { 
-  Plus, 
-  Package, 
-  Edit, 
-  Trash2, 
-  Eye, 
+import {
+  Plus,
+  Package,
+  Edit,
+  Trash2,
+  Eye,
   Upload,
   Save,
   X,
@@ -40,6 +40,7 @@ import {
   LinkIcon,
   ArrowRight,
   Phone,
+  Bold,
 } from "lucide-react"
 
 interface Product {
@@ -148,6 +149,18 @@ interface Contact {
   updatedAt?: string
 }
 
+interface Banner {
+  _id?: string
+  title: string
+  highlight: string
+  subtitle: string
+  image: string
+  order?: number
+  page?: string
+  createdAt?: string
+  updatedAt?: string
+}
+
 const emptyContactForm = {
   title: "",
   name: "",
@@ -247,7 +260,7 @@ export default function AdminDashboard() {
     threadType: "",
     finish: [""]
   })
-  
+
   // Form state for adding new product
   const [formData, setFormData] = useState({
     name: "",
@@ -300,6 +313,7 @@ export default function AdminDashboard() {
     { value: "from-indigo-500 to-blue-500", label: "Indigo" },
     { value: "from-emerald-500 to-teal-500", label: "Emerald" },
   ]
+  const [contentParagraphs, setContentParagraphs] = useState<string[]>([""])
 
   const currentImageLinks = editingProduct ? editFormData.imageLinks : formData.imageLinks
   const sanitizedManualLinks = (currentImageLinks || [])
@@ -317,13 +331,13 @@ export default function AdminDashboard() {
   const checkAuthentication = () => {
     const adminLoggedIn = localStorage.getItem("adminLoggedIn")
     const adminSession = localStorage.getItem("adminSession")
-    
+
     if (adminLoggedIn === "true" && adminSession) {
       // Check if session is not expired (24 hours)
       const sessionTime = parseInt(adminSession)
       const currentTime = Date.now()
       const sessionDuration = 24 * 60 * 60 * 1000 // 24 hours
-      
+
       if (currentTime - sessionTime < sessionDuration) {
         setIsAuthenticated(true)
         fetchProducts()
@@ -1175,39 +1189,39 @@ export default function AdminDashboard() {
   const handleArrayFieldChange = (field: string, index: number, value: string) => {
     setFormData(prev => ({
       ...prev,
-      [field]: Array.isArray(prev[field as keyof typeof prev]) 
-        ? (prev[field as keyof typeof prev] as string[]).map((item: string, i: number) => 
-            i === index ? value : item
-          )
+      [field]: Array.isArray(prev[field as keyof typeof prev])
+        ? (prev[field as keyof typeof prev] as string[]).map((item: string, i: number) =>
+          i === index ? value : item
+        )
         : prev[field as keyof typeof prev]
     }))
   }
 
   const handleImageUpload = async (files: FileList | null) => {
     if (!files || files.length === 0) return
- 
-     if (remainingImageSlots <= 0) {
-       toast({
-         title: "Image Limit Reached",
-         description: `You can upload a maximum of ${MAX_IMAGES} product images.`,
-         variant: "destructive",
-       })
-       return
-     }
- 
-     const filesToUpload = Array.from(files).slice(0, remainingImageSlots)
-     if (filesToUpload.length === 0) {
-       toast({
-         title: "Image Limit Reached",
-         description: `You can upload a maximum of ${MAX_IMAGES} product images.`,
-         variant: "destructive",
-       })
-       return
-     }
+
+    if (remainingImageSlots <= 0) {
+      toast({
+        title: "Image Limit Reached",
+        description: `You can upload a maximum of ${MAX_IMAGES} product images.`,
+        variant: "destructive",
+      })
+      return
+    }
+
+    const filesToUpload = Array.from(files).slice(0, remainingImageSlots)
+    if (filesToUpload.length === 0) {
+      toast({
+        title: "Image Limit Reached",
+        description: `You can upload a maximum of ${MAX_IMAGES} product images.`,
+        variant: "destructive",
+      })
+      return
+    }
 
     try {
       setUploadingImages(true)
-       const uploadPromises = filesToUpload.map(async (file) => {
+      const uploadPromises = filesToUpload.map(async (file) => {
         const formData = new FormData()
         formData.append('file', file)
 
@@ -1225,16 +1239,16 @@ export default function AdminDashboard() {
       })
 
       const urls = await Promise.all(uploadPromises)
-       setUploadedImageUrls(prev => {
-         const merged = [...prev, ...urls]
-           .filter((url) => typeof url === 'string' && url.trim() !== '')
-           .map((url) => url.trim())
-         return Array.from(new Set(merged)).slice(0, MAX_IMAGES)
-       })
-      
+      setUploadedImageUrls(prev => {
+        const merged = [...prev, ...urls]
+          .filter((url) => typeof url === 'string' && url.trim() !== '')
+          .map((url) => url.trim())
+        return Array.from(new Set(merged)).slice(0, MAX_IMAGES)
+      })
+
       toast({
         title: "Images Uploaded Successfully",
-         description: `${filesToUpload.length} image(s) uploaded to Cloudinary`,
+        description: `${filesToUpload.length} image(s) uploaded to Cloudinary`,
         variant: "success",
       })
     } catch (error) {
@@ -1280,7 +1294,7 @@ export default function AdminDashboard() {
 
     try {
       setUploadingBannerImages(prev => ({ ...prev, [slideIndex]: true }))
-      
+
       const formData = new FormData()
       formData.append('file', file)
 
@@ -1343,12 +1357,66 @@ export default function AdminDashboard() {
     }))
   }
 
+  const handleParagraphChange = (index: number, value: string) => {
+    const newParagraphs = [...contentParagraphs]
+    newParagraphs[index] = value
+    setContentParagraphs(newParagraphs)
+
+    // Update main content field as well for compatibility
+    setBlogForm(prev => ({
+      ...prev,
+      content: newParagraphs.join("\n\n")
+    }))
+  }
+
+  const addParagraph = () => {
+    setContentParagraphs([...contentParagraphs, ""])
+  }
+
+  const removeParagraph = (index: number) => {
+    if (contentParagraphs.length <= 1) return
+    const newParagraphs = contentParagraphs.filter((_, i) => i !== index)
+    setContentParagraphs(newParagraphs)
+    setBlogForm(prev => ({
+      ...prev,
+      content: newParagraphs.join("\n\n")
+    }))
+  }
+
+  const toggleBold = (index: number) => {
+    const inputId = `paragraph-${index}`
+    const input = document.getElementById(inputId) as HTMLTextAreaElement
+    if (!input) return
+
+    const start = input.selectionStart
+    const end = input.selectionEnd
+    const text = contentParagraphs[index]
+
+    if (start === end) {
+      // No selection, append bold syntax
+      const newText = text + " **bold text** "
+      handleParagraphChange(index, newText)
+    } else {
+      // Wrap selection
+      const newText = text.substring(0, start) + "**" + text.substring(start, end) + "**" + text.substring(end)
+      handleParagraphChange(index, newText)
+    }
+
+    // Restore focus
+    setTimeout(() => input.focus(), 0)
+  }
+
   const handleBlogSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
       setSubmittingBlog(true)
+
+      // Import slugify dynamically
+      const { slugify } = await import('@/lib/slugify')
+
       const payload = {
         ...blogForm,
+        slug: slugify(blogForm.title),
         publishedAt: blogForm.publishedAt || new Date().toISOString(),
       }
 
@@ -1398,12 +1466,14 @@ export default function AdminDashboard() {
       publishedAt: blog.publishedAt ? new Date(blog.publishedAt).toISOString().slice(0, 10) : "",
       category: blog.category || "",
     })
+    setContentParagraphs(blog.content ? blog.content.split("\n\n") : [""])
     setActiveTab("blogs")
   }
 
   const cancelBlogEdit = () => {
     setEditingBlog(null)
     setBlogForm(emptyBlogForm)
+    setContentParagraphs([""])
   }
 
   const handleDeleteBlog = async (blogId?: string) => {
@@ -1449,12 +1519,12 @@ export default function AdminDashboard() {
     }
     const sanitizedImages = rawImages
       ? Array.from(
-          new Set(
-            rawImages
-              .filter((url) => typeof url === 'string' && url.trim() !== '')
-              .map((url) => url.trim())
-          )
-        ).slice(0, MAX_IMAGES)
+        new Set(
+          rawImages
+            .filter((url) => typeof url === 'string' && url.trim() !== '')
+            .map((url) => url.trim())
+        )
+      ).slice(0, MAX_IMAGES)
       : []
 
     setEditFormData({
@@ -1496,9 +1566,9 @@ export default function AdminDashboard() {
     setEditFormData(prev => ({
       ...prev,
       [field]: Array.isArray(prev[field as keyof typeof prev])
-        ? (prev[field as keyof typeof prev] as string[]).map((item: string, i: number) => 
-            i === index ? value : item
-          )
+        ? (prev[field as keyof typeof prev] as string[]).map((item: string, i: number) =>
+          i === index ? value : item
+        )
         : prev[field as keyof typeof prev]
     }))
   }
@@ -1523,7 +1593,7 @@ export default function AdminDashboard() {
 
   const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (!editingProduct) return
 
     try {
@@ -1559,7 +1629,7 @@ export default function AdminDashboard() {
       // Handle technicalInformation - send null if empty so API knows to remove it
       const technicalInfoValue = editFormData.technicalInformation?.trim()
       const technicalInformation = technicalInfoValue && technicalInfoValue !== "" ? technicalInfoValue : null
-      
+
       const productData: Record<string, any> = {
         name: editFormData.name,
         description: editFormData.description,
@@ -1609,7 +1679,7 @@ export default function AdminDashboard() {
           description: "Product updated successfully",
           variant: "default"
         })
-        
+
         // Reset form and fetch updated products
         setEditingProduct(null)
         setEditFormData({
@@ -1692,7 +1762,7 @@ export default function AdminDashboard() {
 
     try {
       setSubmitting(true)
-      
+
       // Combine uploaded images and image link
       const manualLinks = (formData.imageLinks || [])
         .map((url) => url.trim())
@@ -1713,7 +1783,7 @@ export default function AdminDashboard() {
       // Handle technicalInformation - send null if empty
       const technicalInfoValue = formData.technicalInformation?.trim()
       const technicalInformation = technicalInfoValue && technicalInfoValue !== "" ? technicalInfoValue : null
-      
+
       const productData: Record<string, any> = {
         name: formData.name,
         description: formData.description,
@@ -1811,7 +1881,7 @@ export default function AdminDashboard() {
 
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         product.description.toLowerCase().includes(searchTerm.toLowerCase())
+      product.description.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesCategory = selectedCategory === "all" || product.category === selectedCategory
     return matchesSearch && matchesCategory
   })
@@ -1839,7 +1909,7 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-gray-50">
       <TopBar />
       <MainHeader />
-      
+
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8 flex justify-between items-center">
@@ -1851,7 +1921,7 @@ export default function AdminDashboard() {
               Manage your fastener products and track inventory
             </p>
           </div>
-          <Button 
+          <Button
             onClick={handleLogout}
             variant="outline"
             className="text-red-600 hover:text-red-700 hover:bg-red-50"
@@ -1873,7 +1943,7 @@ export default function AdminDashboard() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-white shadow-md">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -1885,7 +1955,7 @@ export default function AdminDashboard() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-white shadow-md">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -1897,7 +1967,7 @@ export default function AdminDashboard() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-white shadow-md">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -2007,7 +2077,7 @@ export default function AdminDashboard() {
                           placeholder="e.g., DIN 933 / 931"
                         />
                       </div>
-                      
+
                       <div className="space-y-2">
                         <Label htmlFor="material">Material:</Label>
                         <Input
@@ -2017,7 +2087,7 @@ export default function AdminDashboard() {
                           placeholder="e.g., Steel / Stainless Steel"
                         />
                       </div>
-                      
+
                       <div className="space-y-2">
                         <Label htmlFor="sizes">Sizes:</Label>
                         <Input
@@ -2059,7 +2129,7 @@ export default function AdminDashboard() {
                         </SelectContent>
                       </Select>
                     </div>
-                    
+
                     <div className="space-y-2">
                       <div className="flex items-center space-x-2">
                         <input
@@ -2075,108 +2145,108 @@ export default function AdminDashboard() {
                       </div>
                       <p className="text-xs text-gray-500">Premium products will be featured prominently</p>
                     </div>
-                    </div>
-                    
-                      {/* Grades */}
-                      <div className="space-y-2">
-                        <Label>Grades:</Label>
-                        {editingProduct ? editFormData.grades.map((grade, index) => (
-                          <div key={index} className="flex gap-2">
-                            <Input
-                              value={grade}
-                              onChange={(e) => handleEditArrayFieldChange("grades", index, e.target.value)}
-                              placeholder="e.g., Grade 8.8"
-                            />
-                            {editFormData.grades.length > 1 && (
-                              <Button
-                                type="button"
-                                variant="outline"
-                                size="sm"
-                                onClick={() => removeEditArrayField("grades", index)}
-                              >
-                                <X className="h-4 w-4" />
-                              </Button>
-                            )}
-                          </div>
-                        )) : formData.grades.map((grade, index) => (
-                          <div key={index} className="flex gap-2">
-                            <Input
-                              value={grade}
-                              onChange={(e) => handleArrayFieldChange("grades", index, e.target.value)}
-                              placeholder="e.g., Grade 8.8"
-                            />
-                            {formData.grades.length > 1 && (
-                              <Button
-                                type="button"
-                                variant="outline"
-                                size="sm"
-                                onClick={() => removeArrayField("grades", index)}
-                              >
-                                <X className="h-4 w-4" />
-                              </Button>
-                            )}
-                          </div>
-                        ))}
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          onClick={() => editingProduct ? addEditArrayField("grades") : addArrayField("grades")}
-                        >
-                          <Plus className="h-4 w-4 mr-2" />
-                          Add Grade
-                        </Button>
+                  </div>
+
+                  {/* Grades */}
+                  <div className="space-y-2">
+                    <Label>Grades:</Label>
+                    {editingProduct ? editFormData.grades.map((grade, index) => (
+                      <div key={index} className="flex gap-2">
+                        <Input
+                          value={grade}
+                          onChange={(e) => handleEditArrayFieldChange("grades", index, e.target.value)}
+                          placeholder="e.g., Grade 8.8"
+                        />
+                        {editFormData.grades.length > 1 && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => removeEditArrayField("grades", index)}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        )}
                       </div>
-                      
-                      {/* Coating */}
-                      <div className="space-y-2">
-                        <Label>Coating:</Label>
-                        {editingProduct ? editFormData.coating.map((coat, index) => (
-                          <div key={index} className="flex gap-2">
-                            <Input
-                              value={coat}
-                              onChange={(e) => handleEditArrayFieldChange("coating", index, e.target.value)}
-                              placeholder="e.g., Zinc Plated"
-                            />
-                            {editFormData.coating.length > 1 && (
-                              <Button
-                                type="button"
-                                variant="outline"
-                                size="sm"
-                                onClick={() => removeEditArrayField("coating", index)}
-                              >
-                                <X className="h-4 w-4" />
-                              </Button>
-                            )}
-                          </div>
-                        )) : formData.coating.map((coat, index) => (
-                          <div key={index} className="flex gap-2">
-                            <Input
-                              value={coat}
-                              onChange={(e) => handleArrayFieldChange("coating", index, e.target.value)}
-                              placeholder="e.g., Zinc Plated"
-                            />
-                            {formData.coating.length > 1 && (
-                              <Button
-                                type="button"
-                                variant="outline"
-                                size="sm"
-                                onClick={() => removeArrayField("coating", index)}
-                              >
-                                <X className="h-4 w-4" />
-                              </Button>
-                            )}
-                          </div>
-                        ))}
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          onClick={() => editingProduct ? addEditArrayField("coating") : addArrayField("coating")}
-                        >
-                          <Plus className="h-4 w-4 mr-2" />
-                          Add Coating
-                        </Button>
+                    )) : formData.grades.map((grade, index) => (
+                      <div key={index} className="flex gap-2">
+                        <Input
+                          value={grade}
+                          onChange={(e) => handleArrayFieldChange("grades", index, e.target.value)}
+                          placeholder="e.g., Grade 8.8"
+                        />
+                        {formData.grades.length > 1 && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => removeArrayField("grades", index)}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => editingProduct ? addEditArrayField("grades") : addArrayField("grades")}
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Grade
+                    </Button>
+                  </div>
+
+                  {/* Coating */}
+                  <div className="space-y-2">
+                    <Label>Coating:</Label>
+                    {editingProduct ? editFormData.coating.map((coat, index) => (
+                      <div key={index} className="flex gap-2">
+                        <Input
+                          value={coat}
+                          onChange={(e) => handleEditArrayFieldChange("coating", index, e.target.value)}
+                          placeholder="e.g., Zinc Plated"
+                        />
+                        {editFormData.coating.length > 1 && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => removeEditArrayField("coating", index)}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
+                    )) : formData.coating.map((coat, index) => (
+                      <div key={index} className="flex gap-2">
+                        <Input
+                          value={coat}
+                          onChange={(e) => handleArrayFieldChange("coating", index, e.target.value)}
+                          placeholder="e.g., Zinc Plated"
+                        />
+                        {formData.coating.length > 1 && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => removeArrayField("coating", index)}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => editingProduct ? addEditArrayField("coating") : addArrayField("coating")}
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Coating
+                    </Button>
                   </div>
 
                   {/* Image Link or Upload */}
@@ -2186,14 +2256,14 @@ export default function AdminDashboard() {
                       <p className="text-xs text-gray-500">Paste direct image URLs. Uploaded files and links combined can contain up to {MAX_IMAGES} items.</p>
                       {(currentImageLinks || []).map((link, index) => (
                         <div key={index} className="flex gap-2">
-                      <Input
-                        type="url"
+                          <Input
+                            type="url"
                             value={link}
                             onChange={(e) => editingProduct
                               ? handleEditArrayFieldChange("imageLinks", index, e.target.value)
                               : handleArrayFieldChange("imageLinks", index, e.target.value)}
-                        placeholder="https://example.com/image.jpg"
-                      />
+                            placeholder="https://example.com/image.jpg"
+                          />
                           {(currentImageLinks?.length || 0) > 1 && (
                             <Button
                               type="button"
@@ -2232,7 +2302,7 @@ export default function AdminDashboard() {
                         <span className="text-xs text-gray-500">Slots remaining: {remainingImageSlots}</span>
                       </div>
                     </div>
-                    
+
                     {/* File Upload Area */}
                     <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-red-600 transition-colors">
                       <input
@@ -2482,7 +2552,7 @@ export default function AdminDashboard() {
                   {/* Shipping & Returns */}
                   <div className="border-t pt-6 space-y-4">
                     <h3 className="text-lg font-semibold mb-4">Shipping & Returns</h3>
-                    
+
                     <div className="space-y-2">
                       <Label htmlFor="shippingInfo">Shipping:</Label>
                       <Textarea
@@ -2493,7 +2563,7 @@ export default function AdminDashboard() {
                         rows={2}
                       />
                     </div>
-                    
+
                     <div className="space-y-2">
                       <Label htmlFor="returnsInfo">Returns:</Label>
                       <Textarea
@@ -2504,7 +2574,7 @@ export default function AdminDashboard() {
                         rows={2}
                       />
                     </div>
-                    
+
                     <div className="space-y-2">
                       <Label htmlFor="warrantyInfo">Warranty:</Label>
                       <Textarea
@@ -2623,7 +2693,7 @@ export default function AdminDashboard() {
                                 <span>Sizes: {product.sizes || product.specifications?.sizes}</span>
                               )}
                               {product.createdAt && (
-                              <span>Added: {new Date(product.createdAt).toLocaleDateString()}</span>
+                                <span>Added: {new Date(product.createdAt).toLocaleDateString()}</span>
                               )}
                             </div>
                             {((product.grades && product.grades.length > 0) || (product.specifications?.grades && product.specifications.grades.length > 0)) && (
@@ -2663,7 +2733,7 @@ export default function AdminDashboard() {
                         </div>
                       </div>
                     ))}
-                    
+
                     {filteredProducts.length === 0 && !loading && (
                       <div className="text-center py-8 text-gray-500">
                         <Package className="h-12 w-12 mx-auto mb-4 opacity-50" />
@@ -2747,14 +2817,14 @@ export default function AdminDashboard() {
                               {download.productMaterial || '-'}
                             </td>
                             <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
-                              {download.downloadedAt 
+                              {download.downloadedAt
                                 ? new Date(download.downloadedAt).toLocaleString('en-IN', {
-                                    year: 'numeric',
-                                    month: 'short',
-                                    day: 'numeric',
-                                    hour: '2-digit',
-                                    minute: '2-digit'
-                                  })
+                                  year: 'numeric',
+                                  month: 'short',
+                                  day: 'numeric',
+                                  hour: '2-digit',
+                                  minute: '2-digit'
+                                })
                                 : '-'}
                             </td>
                           </tr>
@@ -2833,12 +2903,12 @@ export default function AdminDashboard() {
                             <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
                               {enquiry.enquiryDate || enquiry.createdAt
                                 ? new Date(enquiry.enquiryDate || enquiry.createdAt).toLocaleString('en-IN', {
-                                    year: 'numeric',
-                                    month: 'short',
-                                    day: 'numeric',
-                                    hour: '2-digit',
-                                    minute: '2-digit'
-                                  })
+                                  year: 'numeric',
+                                  month: 'short',
+                                  day: 'numeric',
+                                  hour: '2-digit',
+                                  minute: '2-digit'
+                                })
                                 : '-'}
                             </td>
                             <td className="px-4 py-3 whitespace-nowrap text-sm">
@@ -3172,7 +3242,7 @@ export default function AdminDashboard() {
 
                           <div className="space-y-2">
                             <Label htmlFor={`${inputPrefix}-image`}>Banner Image {bannerIndex}</Label>
-                            
+
                             {/* Image URL Input */}
                             <Input
                               id={`${inputPrefix}-image`}
@@ -3182,7 +3252,7 @@ export default function AdminDashboard() {
                               required={requireImage}
                               disabled={slideDisabled && !editingBanner}
                             />
-                            
+
                             {/* Divider */}
                             <div className="flex items-center gap-2 my-2">
                               <div className="flex-1 border-t border-gray-300"></div>
@@ -3440,16 +3510,57 @@ export default function AdminDashboard() {
                       />
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="blog-content">Content</Label>
-                      <Textarea
-                        id="blog-content"
-                        value={blogForm.content}
-                        onChange={(e) => handleBlogInputChange("content", e.target.value)}
-                        placeholder="Full blog content"
-                        rows={8}
-                        required
-                      />
+                    <div className="space-y-4">
+                      <Label>Content (Paragraphs)</Label>
+                      {contentParagraphs.map((paragraph, index) => (
+                        <div key={index} className="flex gap-2 items-start">
+                          <div className="flex-1 space-y-2">
+                            <div className="relative">
+                              <Textarea
+                                id={`paragraph-${index}`}
+                                value={paragraph}
+                                onChange={(e) => handleParagraphChange(index, e.target.value)}
+                                placeholder={`Paragraph ${index + 1}`}
+                                rows={4}
+                                className="min-h-[100px] pr-12"
+                              />
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                className="absolute top-2 right-2 h-8 w-8 p-0 hover:bg-gray-100"
+                                onClick={() => toggleBold(index)}
+                                title="Bold Text"
+                              >
+                                <Bold className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                          <div className="pt-2">
+                            {contentParagraphs.length > 1 && (
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="icon"
+                                onClick={() => removeParagraph(index)}
+                                className="h-9 w-9 text-red-600 hover:text-red-700 hover:bg-red-50"
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={addParagraph}
+                        className="w-full border-dashed"
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Paragraph
+                      </Button>
                     </div>
 
                     <div className="space-y-2">
@@ -3540,10 +3651,10 @@ export default function AdminDashboard() {
                         const preview = previewSource.length > 200 ? `${previewSource.slice(0, 200)}…` : previewSource
                         const formattedDate = blog.publishedAt
                           ? new Date(blog.publishedAt).toLocaleDateString("en-IN", {
-                              month: "long",
-                              day: "numeric",
-                              year: "numeric",
-                            })
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric",
+                          })
                           : "Unpublished"
 
                         return (
@@ -3953,7 +4064,7 @@ export default function AdminDashboard() {
                 <X className="w-6 h-6" />
               </button>
             </div>
-            
+
             <div className="p-8 space-y-6">
               {/* Customer Information */}
               <div className="bg-gray-50 rounded-lg p-6">
@@ -4049,7 +4160,7 @@ export default function AdminDashboard() {
           </div>
         </div>
       )}
-      
+
       <Footer />
     </div>
   )
