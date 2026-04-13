@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getCollection } from '@/lib/mongodb'
 import { ObjectId } from 'mongodb'
+import { createSlug } from '@/lib/slug'
 
 export async function GET(
   request: NextRequest,
@@ -53,6 +54,7 @@ export async function PUT(
     // Build update operation
     const setData: Record<string, any> = {}
     const unsetFields: Record<string, string> = {}
+    const optionalTrimFields = new Set(['seoTitle', 'seoDescription', 'seoKeywords'])
     
     // Process all fields from body
     Object.keys(body).forEach(key => {
@@ -67,10 +69,24 @@ export async function PUT(
         } else {
           setData[key] = technicalInformation
         }
+      } else if (optionalTrimFields.has(key)) {
+        const raw = body[key]
+        const normalized = typeof raw === 'string' ? raw.trim() : raw
+        if (!normalized) {
+          if (existingProduct?.[key] !== undefined && existingProduct?.[key] !== null) {
+            unsetFields[key] = ""
+          }
+        } else {
+          setData[key] = normalized
+        }
       } else if (body[key] !== undefined && body[key] !== null) {
         setData[key] = body[key]
       }
     })
+
+    if (typeof setData.name === 'string' && setData.name.trim() !== '') {
+      setData.slug = createSlug(setData.name)
+    }
     
     // Double-check: if technicalInformation was in body but is empty - need to remove it
     if ('technicalInformation' in body && isTechnicalInfoEmpty) {

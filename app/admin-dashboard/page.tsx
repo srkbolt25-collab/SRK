@@ -47,6 +47,9 @@ interface Product {
   _id?: string
   name: string
   description: string
+  seoTitle?: string
+  seoDescription?: string
+  seoKeywords?: string
   category: string
   inStock: boolean
   images: string[]
@@ -244,6 +247,9 @@ export default function AdminDashboard() {
   const [editFormData, setEditFormData] = useState({
     name: "",
     description: "",
+    seoTitle: "",
+    seoDescription: "",
+    seoKeywords: "",
     category: "",
     inStock: true,
     premium: false,
@@ -270,6 +276,9 @@ export default function AdminDashboard() {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
+    seoTitle: "",
+    seoDescription: "",
+    seoKeywords: "",
     category: "",
     inStock: true,
     premium: false,
@@ -1539,6 +1548,9 @@ export default function AdminDashboard() {
     setEditFormData({
       name: product.name,
       description: product.description,
+      seoTitle: product.seoTitle || "",
+      seoDescription: product.seoDescription || "",
+      seoKeywords: product.seoKeywords || "",
       category: product.category,
       inStock: product.inStock,
       premium: product.premium || false,
@@ -1642,6 +1654,9 @@ export default function AdminDashboard() {
       const productData: Record<string, any> = {
         name: editFormData.name,
         description: editFormData.description,
+        seoTitle: editFormData.seoTitle?.trim() || null,
+        seoDescription: editFormData.seoDescription?.trim() || null,
+        seoKeywords: editFormData.seoKeywords?.trim() || null,
         category: editFormData.category,
         inStock: editFormData.inStock,
         premium: editFormData.premium,
@@ -1694,6 +1709,9 @@ export default function AdminDashboard() {
         setEditFormData({
           name: "",
           description: "",
+          seoTitle: "",
+          seoDescription: "",
+          seoKeywords: "",
           category: "",
           inStock: true,
           premium: false,
@@ -1742,6 +1760,9 @@ export default function AdminDashboard() {
     setEditFormData({
       name: "",
       description: "",
+      seoTitle: "",
+      seoDescription: "",
+      seoKeywords: "",
       category: "",
       inStock: true,
       premium: false,
@@ -1796,6 +1817,9 @@ export default function AdminDashboard() {
       const productData: Record<string, any> = {
         name: formData.name,
         description: formData.description,
+        seoTitle: formData.seoTitle?.trim() || undefined,
+        seoDescription: formData.seoDescription?.trim() || undefined,
+        seoKeywords: formData.seoKeywords?.trim() || undefined,
         category: formData.category,
         inStock: formData.inStock,
         premium: formData.premium,
@@ -1840,6 +1864,9 @@ export default function AdminDashboard() {
         setFormData({
           name: "",
           description: "",
+          seoTitle: "",
+          seoDescription: "",
+          seoKeywords: "",
           category: "",
           inStock: true,
           premium: false,
@@ -2493,6 +2520,39 @@ export default function AdminDashboard() {
                       placeholder="Enter product description"
                       rows={4}
                     />
+                  </div>
+
+                  <div className="border rounded-md p-4 space-y-4">
+                    <h3 className="text-sm font-semibold text-gray-700">SEO Metadata</h3>
+                    <div className="space-y-2">
+                      <Label htmlFor="seoTitle">SEO Title</Label>
+                      <Input
+                        id="seoTitle"
+                        value={editingProduct ? editFormData.seoTitle : formData.seoTitle}
+                        onChange={(e) => editingProduct ? handleEditInputChange("seoTitle", e.target.value) : handleInputChange("seoTitle", e.target.value)}
+                        placeholder="Exact meta title for this product page"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="seoDescription">SEO Description</Label>
+                      <Textarea
+                        id="seoDescription"
+                        value={editingProduct ? editFormData.seoDescription : formData.seoDescription}
+                        onChange={(e) => editingProduct ? handleEditInputChange("seoDescription", e.target.value) : handleInputChange("seoDescription", e.target.value)}
+                        placeholder="Exact meta description for this product page"
+                        rows={3}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="seoKeywords">SEO Keywords</Label>
+                      <Textarea
+                        id="seoKeywords"
+                        value={editingProduct ? editFormData.seoKeywords : formData.seoKeywords}
+                        onChange={(e) => editingProduct ? handleEditInputChange("seoKeywords", e.target.value) : handleInputChange("seoKeywords", e.target.value)}
+                        placeholder="keyword one, keyword two, keyword three"
+                        rows={2}
+                      />
+                    </div>
                   </div>
 
                   {/* Technical Information */}

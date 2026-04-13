@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getCollection } from '@/lib/mongodb'
+import { createSlug } from '@/lib/slug'
 
 const escapeRegex = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 const MAX_IMAGES = 5
@@ -9,12 +10,17 @@ export async function GET(request: NextRequest) {
     const collection = await getCollection('products')
     const category = request.nextUrl.searchParams.get('category')
     const name = request.nextUrl.searchParams.get('name')
+    const slug = request.nextUrl.searchParams.get('slug')
     const rawSearch = request.nextUrl.searchParams.get('search')
 
     const query: Record<string, any> = {}
 
     if (category) {
       query.category = category
+    }
+
+    if (slug) {
+      query.slug = slug.trim().toLowerCase()
     }
     
     const orFilters: Record<string, unknown>[] = []
@@ -53,7 +59,9 @@ export async function GET(request: NextRequest) {
 
     const cursor = collection.find(query).sort({ updatedAt: -1, name: 1 })
 
-    if (name && !rawSearch) {
+    if (slug) {
+      cursor.limit(1)
+    } else if (name && !rawSearch) {
       cursor.limit(1)
     } else if (rawSearch) {
       cursor.limit(20)
@@ -78,6 +86,9 @@ export async function POST(request: NextRequest) {
     const name = body.name?.trim() || 'Untitled Product'
     const description = body.description?.trim() || ''
     const category = body.category?.trim() || 'UNCATEGORIZED'
+    const seoTitle = body.seoTitle?.trim() || ''
+    const seoDescription = body.seoDescription?.trim() || ''
+    const seoKeywords = body.seoKeywords?.trim() || ''
 
     if (!name || !description || !category) {
       return NextResponse.json(
@@ -155,6 +166,7 @@ export async function POST(request: NextRequest) {
 
     const product: Record<string, any> = {
       name,
+      slug: createSlug(name),
       description,
       category,
       inStock: typeof body.inStock === 'boolean' ? body.inStock : true,
@@ -188,6 +200,9 @@ export async function POST(request: NextRequest) {
       threadType: threadType || undefined,
       finish: finishValues,
       imageUrls: Array.isArray(body.imageUrls) ? body.imageUrls : undefined,
+      seoTitle: seoTitle || undefined,
+      seoDescription: seoDescription || undefined,
+      seoKeywords: seoKeywords || undefined,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     }

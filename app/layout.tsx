@@ -24,9 +24,10 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
-  title: "SRK Bolt Industries | Premium Fasteners & Engineering Solutions",
-  description:
-    "SRK Bolt supplies high-performance industrial fasteners, custom bolt solutions, and engineering support across infrastructure, oil & gas, automotive, and manufacturing sectors.",
+  title: "Best fasteners suppliers in Dubai, UAE – Srkbolt.com",
+  description: " We are one of the best fasteners suppliers and manufacturers in Dubai, UAE. Contact us for more +971 58 871 3064 ",
+  keywords:
+    " best fasteners suppliers in Dubai, fasteners suppliers UAE, industrial fasteners Dubai, bolts and nuts suppliers UAE, stainless steel fasteners Dubai, screw suppliers UAE, anchor bolts suppliers Dubai, high tensile fasteners UAE, fastener companies Dubai.",
   generator: "v0.app",
 }
 

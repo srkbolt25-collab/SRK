@@ -118,25 +118,18 @@ export default function ProductDetailsPage() {
       setProductError(null)
 
       // Normalize the URL slug for comparison
-      const urlSlug = productSlug.toLowerCase().trim()
+      const urlSlug = decodeURIComponent(productSlug).replace(/[’']/g, "").toLowerCase().trim()
 
       try {
-        // Fetch all products and match by slug
-        // We'll search broadly and then match by slug comparison
-        const response = await fetch(`/api/products`)
+        // Fetch direct by slug first
+        const response = await fetch(`/api/products?slug=${encodeURIComponent(urlSlug)}`)
         if (response.ok) {
           const data = await response.json()
           if (!cancelled && Array.isArray(data) && data.length > 0) {
-            // Find the exact match by comparing slugs
-            // Create slug from each product name and compare with the URL slug
-            let matchedProduct = data.find((p: any) => {
-              if (!p.name) return false
-              const pSlug = createSlug(p.name)
-              return pSlug === urlSlug
-            })
-            
+            const matchedProduct = data[0]
+
             if (matchedProduct) {
-              setRawProductData(matchedProduct) // Store raw data for technicalInformation
+              setRawProductData(matchedProduct)
               setProduct(mapDbProductToHusaini(matchedProduct))
               setProductError(null)
               setLoadingProduct(false)
@@ -751,4 +744,3 @@ export default function ProductDetailsPage() {
     </Layout>
   )
 }
-
