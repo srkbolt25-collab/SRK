@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Input } from "@/components/ui/input"
@@ -27,9 +28,11 @@ import {
 } from "lucide-react"
 import { findProductByName, findProductById, getCategoryRoute, type HusainiProduct } from "@/data/husaini-products"
 import { useRFQ } from "@/contexts/RFQContext"
+import { createSlug } from "@/lib/slug"
 
 export default function ProductDetailsPage() {
   const searchParams = useSearchParams()
+  const router = useRouter()
   const [selectedImage, setSelectedImage] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [isWishlisted, setIsWishlisted] = useState(false)
@@ -47,6 +50,13 @@ export default function ProductDetailsPage() {
   })
   const [isDataSheetSuccessOpen, setIsDataSheetSuccessOpen] = useState(false)
   const { addToRFQ } = useRFQ()
+
+  useEffect(() => {
+    const productName = searchParams.get("name")
+    if (!productName) return
+
+    router.replace(`/view-details/${createSlug(productName)}`)
+  }, [router, searchParams])
 
   const mapDbProductToHusaini = (dbProduct: any, fallbackCategory?: string): HusainiProduct => {
     const gallery = Array.isArray(dbProduct.images) && dbProduct.images.length > 0

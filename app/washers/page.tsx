@@ -171,7 +171,7 @@ export default function WashersPage() {
                       <button 
                         onClick={(e) => {
                           e.stopPropagation()
-                          window.location.href = `/view-details?name=${encodeURIComponent(product.name)}&category=WASHERS`
+                          window.location.href = `/view-details/${createSlug(product.name)}`
                         }}
                       className="flex-1 border border-[#2E1F44] text-[#2E1F44] text-xs font-semibold py-1.5 rounded-md transition-colors duration-200 flex items-center justify-center gap-1 hover:bg-[#A02222] hover:text-white hover:border-[#A02222]"
                       >

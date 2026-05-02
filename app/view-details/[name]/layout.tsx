@@ -20,7 +20,7 @@ function titleFromSlug(slug: string) {
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ")
 
-  return readable ? `${readable} - Srkbolt.com` : "Srkbolt.com"
+  return readable ? `${readable} - SRK BOLT` : "SRK BOLT"
 }
 
 export async function generateMetadata({ params }: { params: { name: string } }): Promise<Metadata> {
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: { params: { name: string } })
 
   if (!requestedSlug) {
     return {
-      title: "Product Details - Srkbolt.com",
+      title: "Product Details - SRK BOLT",
       description: DEFAULT_DESCRIPTION,
     }
   }
@@ -78,7 +78,7 @@ export async function generateMetadata({ params }: { params: { name: string } })
       const description = typeof product.description === "string" ? product.description.trim() : ""
 
       return {
-        title: seoTitle || (name ? `${name} - Srkbolt.com` : titleFromSlug(requestedSlug)),
+        title: seoTitle || (name ? `${name} - SRK BOLT` : titleFromSlug(requestedSlug)),
         description: seoDescription || description || DEFAULT_DESCRIPTION,
         keywords: seoKeywords || undefined,
       }
@@ -96,4 +96,3 @@ export async function generateMetadata({ params }: { params: { name: string } })
 export default function ProductDetailsLayout({ children }: { children: ReactNode }) {
   return children
 }
-

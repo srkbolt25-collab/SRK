@@ -24,10 +24,11 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
-  title: "Best fasteners suppliers in Dubai, UAE – Srkbolt.com",
-  description: " We are one of the best fasteners suppliers and manufacturers in Dubai, UAE. Contact us for more +971 58 871 3064 ",
+  title: "Best fasteners suppliers in Dubai, UAE - SRK BOLT",
+  description:
+    "We are one of the best fasteners suppliers and manufacturers in Dubai, UAE. Contact us for more +971 58 871 3064",
   keywords:
-    " best fasteners suppliers in Dubai, fasteners suppliers UAE, industrial fasteners Dubai, bolts and nuts suppliers UAE, stainless steel fasteners Dubai, screw suppliers UAE, anchor bolts suppliers Dubai, high tensile fasteners UAE, fastener companies Dubai.",
+    "best fasteners suppliers in Dubai, fasteners suppliers UAE, industrial fasteners Dubai, bolts and nuts suppliers UAE, stainless steel fasteners Dubai, screw suppliers UAE, anchor bolts suppliers Dubai, high tensile fasteners UAE, fastener companies Dubai",
   generator: "v0.app",
 }
 
