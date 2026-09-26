@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getCollection } from "@/lib/mongodb"
 
+export const dynamic = "force-dynamic"
+
 const sanitize = (value: unknown): string => (typeof value === "string" ? value.trim() : "")
 
 export async function GET() {

@@ -1,19 +1,23 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getCollection } from "@/lib/mongodb"
 
+export const dynamic = "force-dynamic"
+
 const MAX_BANNERS = 3
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
+    const showAll = searchParams.get("all") === "1"
     const page = searchParams.get("page") || "home"
-    
+
     const collection = await getCollection("banners")
-    const banners = await collection
-      .find({ page })
-      .sort({ order: 1, createdAt: -1 })
-      .limit(MAX_BANNERS)
-      .toArray()
+    const cursor = collection
+      .find(showAll ? {} : { page })
+      .sort(showAll ? { page: 1, order: 1, createdAt: -1 } : { order: 1, createdAt: -1 })
+
+    if (!showAll) cursor.limit(MAX_BANNERS)
+    const banners = await cursor.toArray()
 
     return NextResponse.json(banners)
   } catch (error) {
@@ -25,12 +29,6 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const collection = await getCollection("banners")
-
-    const existingCount = await collection.countDocuments()
-    if (existingCount >= MAX_BANNERS) {
-      return NextResponse.json({ error: "Maximum of 3 banners allowed" }, { status: 400 })
-    }
-
     const body = await request.json()
 
     const title = typeof body.title === "string" ? body.title.trim() : ""
@@ -42,7 +40,12 @@ export async function POST(request: NextRequest) {
 
     const subtitle = typeof body.subtitle === "string" ? body.subtitle.trim() : ""
     const highlight = typeof body.highlight === "string" ? body.highlight.trim() : ""
-    const page = typeof body.page === "string" ? body.page.trim() : "home"
+    const page = typeof body.page === "string" && body.page.trim() ? body.page.trim() : "home"
+    const existingCount = await collection.countDocuments({ page })
+
+    if (existingCount >= MAX_BANNERS) {
+      return NextResponse.json({ error: `Maximum of ${MAX_BANNERS} banners allowed per page` }, { status: 400 })
+    }
 
     const rawOrder = body.order
     let order = Number.isFinite(rawOrder) ? Number(rawOrder) : existingCount

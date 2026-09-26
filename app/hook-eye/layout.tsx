@@ -3,11 +3,11 @@ import type { ReactNode } from "react"
 import Script from "next/script"
 
 export const metadata: Metadata = {
-  title: "Hook and eye suppliers in Dubai, UAE - SRK BOLT",
+  title: "Hook & Eye Fastener Supplier in UAE & GCC | SRK Bolt",
   description:
-    "We offer premium quality eye bolts, hook bolts, screw eyes, and industrial fastening solutions for construction, marine, and engineering applications with fast delivery across the UAE.",
+    "SRK Bolt supplies hook, eye and related industrial fastening hardware across the UAE and GCC for marine, structural, rigging and engineering requirements.",
   keywords:
-    "hook and eye suppliers Dubai, eye bolts suppliers UAE, hook bolts Dubai, screw eye suppliers UAE, lifting hooks Dubai, eye nuts UAE, industrial fasteners Dubai, rigging hardware suppliers UAE, stainless steel eye bolts Dubai",
+    "hook and eye supplier UAE, eye bolts Dubai, hook bolts UAE, screw eyes UAE, industrial fastening hardware Dubai, rigging hardware UAE",
 }
 
 export default function SegmentLayout({ children }: { children: ReactNode }) {

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getCollection } from "@/lib/mongodb"
 
+export const dynamic = "force-dynamic"
+
 const REQUIRED_FIELDS = ["title", "employmentType", "location", "experience", "description"]
 
 const sanitizeString = (value: unknown, fallback = ""): string => {

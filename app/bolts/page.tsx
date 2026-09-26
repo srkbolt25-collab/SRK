@@ -19,7 +19,7 @@ export default function BoltsPage() {
       id: 1,
       image: "https://t3.ftcdn.net/jpg/02/33/71/82/240_F_233718247_GoQZJTzziQ1Qp2S30kv8hac3pVzMs74y.jpg",
       title: "High-Quality Bolts",
-      subtitle: "Precision Engineering for Every Application"
+      subtitle: "Standards-Based Selection for Every Application"
     },
     {
       id: 2,
@@ -127,11 +127,9 @@ export default function BoltsPage() {
         <div className="max-w-7xl mx-auto">
           {/* Page Header */}
           <div className="text-center mb-16">
-            <h1 className="text-4xl font-bold text-[#2E1F44] mb-6">Bolts Collection</h1>
+            <h1 className="text-4xl font-bold text-[#2E1F44] mb-6">Industrial Bolts Supplier in UAE & GCC</h1>
             <p className="text-[rgba(46,31,68,0.85)] text-xl max-w-4xl mx-auto leading-relaxed">
-              Discover our comprehensive range of high-quality bolts designed for various industrial 
-              and construction applications. From hex head bolts to specialized eye bolts, we provide 
-              reliable fastening solutions for every project.
+              Source industrial bolts for construction, structural steel, machinery, marine and engineering requirements. SRK Bolt supports enquiries for standard and specialty bolts across multiple materials, grades, coatings, diameters and lengths, with bulk-order and project RFQ support from the UAE for customers across the GCC, Iraq and Jordan.
             </p>
           </div>
 
@@ -149,7 +147,7 @@ export default function BoltsPage() {
           {/* Product Grid */}
           {(!boltsLoading && boltsProducts.length === 0) ? (
             <div className="mb-16 rounded-2xl border border-dashed border-gray-300 bg-gray-50 p-12 text-center text-gray-500">
-              No bolts are currently available. Add new products from the admin dashboard to populate this collection.
+              Our online bolt listings are being updated. Contact our sales team with the required standard, size, grade, finish and quantity for current availability and quotation.
             </div>
           ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
@@ -216,9 +214,9 @@ export default function BoltsPage() {
                   <div className="w-16 h-16 bg-[#A02222]/15 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Wrench className="w-8 h-8 text-[#A02222]" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">High Strength</h3>
+                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Grades & Materials</h3>
                   <p className="text-[rgba(46,31,68,0.85)] text-sm leading-relaxed">
-                    Manufactured from premium materials with superior tensile strength for demanding applications.
+                    Options across common industrial grades, stainless steels and protective finishes to suit different service conditions.
                   </p>
                 </div>
               </div>
@@ -227,9 +225,9 @@ export default function BoltsPage() {
                   <div className="w-16 h-16 bg-[#A02222]/15 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Settings className="w-8 h-8 text-[#A02222]" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Precision Engineering</h3>
+                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Standards-Based Selection</h3>
                   <p className="text-[rgba(46,31,68,0.85)] text-sm leading-relaxed">
-                    Tight tolerances and consistent quality ensure reliable performance in critical applications.
+                    Source by DIN, ISO, ASTM or project specification, with diameter, length, thread and finish matched to the enquiry.
                   </p>
                 </div>
               </div>
@@ -238,9 +236,9 @@ export default function BoltsPage() {
                   <div className="w-16 h-16 bg-[#A02222]/15 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Factory className="w-8 h-8 text-[#A02222]" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Industrial Grade</h3>
+                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Project & Bulk Supply</h3>
                   <p className="text-[rgba(46,31,68,0.85)] text-sm leading-relaxed">
-                    Designed to meet industry standards for construction, manufacturing, and heavy-duty applications.
+                    RFQ support for construction, steel, machinery, marine and general industrial requirements in the UAE.
                   </p>
                 </div>
                 </div>
@@ -254,14 +252,14 @@ export default function BoltsPage() {
       <section className="py-16 bg-[#A02222] text-white">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto space-y-6">
-            <h2 className="text-3xl md:text-4xl font-bold">Need Custom Bolts?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold">Need Bolts for a Project or Bulk Order?</h2>
             <p className="text-lg text-white/85 max-w-2xl mx-auto">
-              Contact our experts for custom bolt specifications and bulk orders. We provide tailored solutions for your specific requirements.
+              Share the bolt standard or drawing, diameter, length, grade, material, finish and quantity. Our team will help source suitable options and prepare a competitive RFQ.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2">
               <button className="bg-white text-[#A02222] border border-white hover:bg-[#2E1F44] hover:text-white transition-colors duration-300 font-semibold px-8 py-3 rounded-lg flex items-center justify-center gap-2 shadow-lg">
                 <ExternalLink className="w-5 h-5" />
-                Get Custom Quote
+                Request Quote
               </button>
               <button className="border-[1.5px] border-white text-white hover:bg-white hover:text-[#A02222] transition-colors duration-300 font-semibold px-8 py-3 rounded-lg flex items-center justify-center gap-2">
                 <ExternalLink className="w-5 h-5" />
@@ -286,7 +284,7 @@ export default function BoltsPage() {
               {rfqProductName}
             </p>
             <p className="text-gray-500 text-sm mb-6">
-              The product has been added to your RFQ list. You can continue shopping or proceed to checkout.
+              The product has been added to your RFQ list. You can continue browsing or open the RFQ list to submit your enquiry.
             </p>
             <div className="space-y-3">
               <button

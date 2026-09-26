@@ -19,18 +19,18 @@ export default function WashersPage() {
       id: 1,
       image: "https://t3.ftcdn.net/jpg/02/33/71/82/240_F_233718247_GoQZJTzziQ1Qp2S30kv8hac3pVzMs74y.jpg",
       title: "Protective Washers",
-      subtitle: "Surface Protection & Load Distribution"
+      subtitle: "Material & Finish Options & Dimensional Matching"
     },
     {
       id: 2,
       image: "https://t3.ftcdn.net/jpg/07/06/47/84/240_F_706478455_hSFXNArvKUkM3fWMmr91O71fvyqJTzmb.jpg",
-      title: "Load Distribution",
+      title: "Dimensional Matching",
       subtitle: "Even Pressure Distribution"
     },
     {
       id: 3,
       image: "https://t4.ftcdn.net/jpg/04/87/17/99/240_F_487179985_vWWNxyr0facawhl0G4F9ir8mjmfK64lU.jpg",
-      title: "Surface Protection",
+      title: "Material & Finish Options",
       subtitle: "Prevent Surface Damage"
     }
   ]
@@ -126,11 +126,9 @@ export default function WashersPage() {
         <div className="max-w-7xl mx-auto">
           {/* Page Header */}
           <div className="text-center mb-16">
-            <h1 className="text-4xl font-bold text-[#2E1F44] mb-6">Washers Collection</h1>
+            <h1 className="text-4xl font-bold text-[#2E1F44] mb-6">Industrial Washers Supplier in UAE & GCC</h1>
             <p className="text-[rgba(46,31,68,0.85)] text-xl max-w-4xl mx-auto leading-relaxed">
-              Discover our comprehensive range of washers designed for load distribution, surface protection, 
-              and secure fastening. From standard flat washers to specialized rubber washers, we provide 
-              essential components for every assembly application.
+              Source industrial washers for load distribution, locking, sealing and joint protection. SRK Bolt supports enquiries for plain, spring, tab, sealing and specialty washers in multiple materials, sizes and finishes for construction, steel, machinery and engineering applications.
             </p>
           </div>
 
@@ -148,7 +146,7 @@ export default function WashersPage() {
           {/* Product Grid */}
           {(!washersLoading && washersProducts.length === 0) ? (
             <div className="mb-16 rounded-2xl border border-dashed border-gray-300 bg-gray-50 p-12 text-center text-gray-500">
-              No washers are currently available. Add new products from the admin dashboard to populate this collection.
+              Our online washer listings are being updated. Contact us with the required standard, inner/outer diameter, thickness, material, finish and quantity for current availability and quotation.
             </div>
           ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
@@ -215,9 +213,9 @@ export default function WashersPage() {
                   <div className="w-16 h-16 bg-[#A02222]/15 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Shield className="w-8 h-8 text-[#A02222]" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Surface Protection</h3>
+                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Material & Finish Options</h3>
                   <p className="text-[rgba(46,31,68,0.85)] text-sm leading-relaxed">
-                    Prevents damage to surfaces and provides cushioning between fasteners and materials.
+                    Source washers in suitable materials and finishes for corrosion resistance, sealing, locking or general assembly requirements.
                   </p>
                 </div>
               </div>
@@ -226,9 +224,9 @@ export default function WashersPage() {
                   <div className="w-16 h-16 bg-[#A02222]/15 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Settings className="w-8 h-8 text-[#A02222]" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Load Distribution</h3>
+                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Dimensional Matching</h3>
                   <p className="text-[rgba(46,31,68,0.85)] text-sm leading-relaxed">
-                    Distributes clamping force evenly to prevent stress concentration and material failure.
+                    Inner diameter, outer diameter and thickness can be matched to the bolt, nut and assembly specification.
                   </p>
                 </div>
               </div>
@@ -237,9 +235,9 @@ export default function WashersPage() {
                   <div className="w-16 h-16 bg-[#A02222]/15 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Factory className="w-8 h-8 text-[#A02222]" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Vibration Dampening</h3>
+                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Application-Specific Types</h3>
                   <p className="text-[rgba(46,31,68,0.85)] text-sm leading-relaxed">
-                    Reduces vibration transmission and prevents fastener loosening in dynamic applications.
+                    Plain, spring, tab, bonded sealing and other washer types can be sourced according to the joint requirement.
                   </p>
                 </div>
                 </div>
@@ -253,14 +251,14 @@ export default function WashersPage() {
       <section className="py-16 bg-[#A02222] text-white">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto space-y-6">
-            <h2 className="text-3xl md:text-4xl font-bold">Need Specialized Washers?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold">Need Washers for a Project or Bulk Order?</h2>
             <p className="text-lg text-white/85 max-w-2xl mx-auto">
-              Contact our technical team for custom washer specifications and bulk orders. We provide tailored solutions for your specific assembly requirements.
+              Share your washer standard or dimensions, material, finish and quantity. Our team can support selection, sourcing and quotation for project and bulk requirements.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2">
               <button className="bg-white text-[#A02222] border border-white hover:bg-[#2E1F44] hover:text-white transition-colors duration-300 font-semibold px-8 py-3 rounded-lg flex items-center justify-center gap-2 shadow-lg">
                 <ExternalLink className="w-5 h-5" />
-                Get Custom Quote
+                Request Quote
               </button>
               <button className="border-[1.5px] border-white text-white hover:bg-white hover:text-[#A02222] transition-colors duration-300 font-semibold px-8 py-3 rounded-lg flex items-center justify-center gap-2">
                 <ExternalLink className="w-5 h-5" />
@@ -285,7 +283,7 @@ export default function WashersPage() {
               {rfqProductName}
             </p>
             <p className="text-gray-500 text-sm mb-6">
-              The product has been added to your RFQ list. You can continue shopping or proceed to checkout.
+              The product has been added to your RFQ list. You can continue browsing or open the RFQ list to submit your enquiry.
             </p>
             <div className="space-y-3">
               <button

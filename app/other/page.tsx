@@ -30,11 +30,10 @@ export default function OtherFastenersPage() {
             Miscellaneous Fasteners
           </span>
           <h1 className="text-4xl md:text-5xl font-bold leading-tight max-w-3xl">
-            Specialized & Custom Fasteners for Unique Industrial Requirements
+            Specialty & Non-Standard Fasteners for Industrial Requirements
           </h1>
           <p className="text-white/80 max-w-2xl text-lg">
-            Discover non-standard fasteners, specialty hardware, and custom components engineered for niche applications
-            where typical catalogue items aren&apos;t enough.
+            Source specialty and non-standard fasteners where standard catalogue items do not meet the required drawing, material, finish or dimensional specification.
           </p>
           <a
             href="/srk-fastener.pdf"
@@ -51,8 +50,7 @@ export default function OtherFastenersPage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-[#2E1F44] mb-4">Other Industrial Fasteners</h2>
             <p className="text-[rgba(46,31,68,0.85)] text-lg max-w-3xl mx-auto leading-relaxed">
-              Every project is different. This catalogue covers unique fastening solutions ranging from locking mechanisms to
-              made-to-order hardware for specialized machinery and infrastructure.
+              Every project can have different fastening requirements. This section covers specialty hardware and non-standard items that may be sourced against a specification, sample or drawing for machinery, maintenance and infrastructure applications.
             </p>
           </div>
 
@@ -70,8 +68,7 @@ export default function OtherFastenersPage() {
             </div>
           ) : products.length === 0 ? (
             <div className="mb-16 rounded-2xl border border-dashed border-[#A02222]/40 bg-white p-12 text-center text-[#2E1F44]/70">
-              No specialized fasteners have been added yet. Upload new products from the admin dashboard to populate this
-              section.
+              Our online specialty-fastener listings are being updated. Send your drawing, sample details, standard, material, finish and required quantity to our sales team for sourcing and quotation support.
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
@@ -140,18 +137,18 @@ export default function OtherFastenersPage() {
             {[
               {
                 icon: PackageSearch,
-                title: "Low Volume Specials",
-                description: "Support for pilot projects and spare parts where only limited quantities are needed.",
+                title: "Specialty Sourcing",
+                description: "Support for non-standard, replacement and specialty fastener enquiries where standard catalogue items are not suitable.",
               },
               {
                 icon: Layers,
-                title: "Material Flexibility",
-                description: "Carbon steel, stainless, brass, high-nickel alloys, and engineered polymers available.",
+                title: "Material Options",
+                description: "Material availability can be reviewed against the drawing, specification, environment and required quantity.",
               },
               {
                 icon: Puzzle,
-                title: "Custom Compatibility",
-                description: "Precisely machined to integrate with bespoke equipment and legacy installations.",
+                title: "Drawing & Sample Matching",
+                description: "Provide a drawing, sample or dimensional requirement so our team can review suitable sourcing options.",
               },
             ].map((feature) => (
               <div key={feature.title} className="bg-white rounded-2xl p-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)] text-center">
@@ -169,9 +166,9 @@ export default function OtherFastenersPage() {
       <section className="py-16 bg-[#A02222] text-white">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto space-y-6">
-            <h2 className="text-3xl md:text-4xl font-bold">Need a Custom Fastener?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold">Need a Specialty or Non-Standard Fastener?</h2>
             <p className="text-lg text-white/85 max-w-2xl mx-auto">
-              Collaborate with our engineering team for bespoke designs, from prototype quantities to scalable production.
+              Share your drawing, sample, dimensions, material, finish and quantity. Our team can review the requirement and support sourcing through our established supplier and manufacturer network.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="bg-white text-[#A02222] border border-white hover:bg-[#2E1F44] hover:text-white transition-colors duration-300 font-semibold px-8 py-3 rounded-lg flex items-center justify-center gap-2 shadow-lg">

@@ -126,7 +126,7 @@ export default function ScrewsPage() {
         <div className="max-w-7xl mx-auto">
           {/* Page Header */}
           <div className="text-center mb-16">
-            <h1 className="text-4xl font-bold text-[#2E1F44] mb-6">Screws Collection</h1>
+            <h1 className="text-4xl font-bold text-[#2E1F44] mb-6">Industrial Screws Supplier in UAE & GCC</h1>
             <p className="text-[rgba(46,31,68,0.85)] text-xl max-w-4xl mx-auto leading-relaxed">
               Explore our extensive range of screws designed for various materials and applications. 
               From precision machine screws to specialized wood screws, we provide reliable threaded 
@@ -148,7 +148,7 @@ export default function ScrewsPage() {
           {/* Product Grid */}
           {(!screwsLoading && screwsProducts.length === 0) ? (
             <div className="mb-16 rounded-2xl border border-dashed border-gray-300 bg-gray-50 p-12 text-center text-gray-500">
-              No screws are currently available. Add new products from the admin dashboard to populate this collection.
+              Our online screw listings are being updated. Send us the required standard, head/drive type, diameter, length, material, finish and quantity for current availability and quotation.
             </div>
           ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
@@ -215,9 +215,9 @@ export default function ScrewsPage() {
                   <div className="w-16 h-16 bg-[#A02222]/15 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Wrench className="w-8 h-8 text-[#A02222]" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Precision Threading</h3>
+                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Standards & Drive Types</h3>
                   <p className="text-[rgba(46,31,68,0.85)] text-sm leading-relaxed">
-                    Accurate thread profiles and consistent pitch for reliable engagement and secure fastening.
+                    Source screws by DIN or ISO standard, head style, drive type, thread, diameter, length and material.
                   </p>
                 </div>
               </div>
@@ -226,9 +226,9 @@ export default function ScrewsPage() {
                   <div className="w-16 h-16 bg-[#A02222]/15 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Settings className="w-8 h-8 text-[#A02222]" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Material Specific</h3>
+                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Material & Finish Options</h3>
                   <p className="text-[rgba(46,31,68,0.85)] text-sm leading-relaxed">
-                    Designed for specific materials including wood, metal, plastic, and composite applications.
+                    Options can be matched to base material, indoor or outdoor exposure, corrosion requirements and assembly method.
                   </p>
                 </div>
               </div>
@@ -237,9 +237,9 @@ export default function ScrewsPage() {
                   <div className="w-16 h-16 bg-[#A02222]/15 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Factory className="w-8 h-8 text-[#A02222]" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Corrosion Resistance</h3>
+                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Project & Bulk Supply</h3>
                   <p className="text-[rgba(46,31,68,0.85)] text-sm leading-relaxed">
-                    High-quality materials and coatings ensure long-lasting performance in various environments.
+                    Bulk and project enquiries supported for construction, fabrication, manufacturing and maintenance requirements.
                   </p>
                 </div>
                 </div>
@@ -253,14 +253,14 @@ export default function ScrewsPage() {
       <section className="py-16 bg-[#A02222] text-white">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto space-y-6">
-            <h2 className="text-3xl md:text-4xl font-bold">Need Specialized Screws?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold">Need Screws for a Project or Bulk Order?</h2>
             <p className="text-lg text-white/85 max-w-2xl mx-auto">
-              Contact our technical team for custom screw specifications and bulk orders. We provide tailored threaded solutions for your specific material and application requirements.
+              Share the screw standard, head and drive type, diameter, length, material, finish and quantity. Our team can help source suitable options and prepare an RFQ.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2">
               <button className="bg-white text-[#A02222] border border-white hover:bg-[#2E1F44] hover:text-white transition-colors duration-300 font-semibold px-8 py-3 rounded-lg flex items-center justify-center gap-2 shadow-lg">
                 <ExternalLink className="w-5 h-5" />
-                Get Custom Quote
+                Request Quote
               </button>
               <button className="border-[1.5px] border-white text-white hover:bg-white hover:text-[#A02222] transition-colors duration-300 font-semibold px-8 py-3 rounded-lg flex items-center justify-center gap-2">
                 <ExternalLink className="w-5 h-5" />
@@ -285,7 +285,7 @@ export default function ScrewsPage() {
               {rfqProductName}
             </p>
             <p className="text-gray-500 text-sm mb-6">
-              The product has been added to your RFQ list. You can continue shopping or proceed to checkout.
+              The product has been added to your RFQ list. You can continue browsing or open the RFQ list to submit your enquiry.
             </p>
             <div className="space-y-3">
               <button

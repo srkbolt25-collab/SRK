@@ -12,6 +12,21 @@ Go to your Vercel project → Settings → Environment Variables and add:
 
 **Important**: Replace the placeholder values above with your actual Cloudinary credentials. Never commit these to your code repository.
 
+
+## MongoDB & Admin Variables (Required)
+
+Add these alongside the Cloudinary variables:
+
+| Variable Name | Value | Environments |
+|--------------|-------|--------------|
+| `MONGODB_URI` | Your MongoDB connection string | Production, Preview, Development |
+| `MONGODB_DB_NAME` | Your SRK Bolt database name | Production, Preview, Development |
+| `ADMIN_USERNAME` | Private admin username | Production, Preview, Development |
+| `ADMIN_PASSWORD` | Strong private admin password | Production, Preview, Development |
+| `ADMIN_SESSION_TOKEN` | Long random secret (32+ random bytes recommended) | Production, Preview, Development |
+
+The admin credentials are no longer hard-coded in the website. Admin authentication now uses an HTTP-only session cookie.
+
 ## Optional Variables
 
 | Variable Name | Value | Description |
@@ -51,3 +66,16 @@ CLOUDINARY_FOLDER=products
 - Replace the placeholder values with your actual Cloudinary credentials.
 - Never commit `.env.local` or any `.env` files to your repository.
 
+
+## Email Notifications (Recommended)
+
+Add these if RFQ and datasheet submissions should also be emailed. The admin dashboard will still receive MongoDB records without them.
+
+| Variable Name | Example / Purpose |
+|--------------|-------------------|
+| `SMTP_HOST` | SMTP server hostname |
+| `SMTP_PORT` | `587` (or your provider's port) |
+| `SMTP_USER` | SMTP login |
+| `SMTP_PASSWORD` | SMTP password / app password |
+| `EMAIL_FROM` | Verified sender address |
+| `EMAIL_TO` | `sales@srkbolt.com` or the inbox that should receive website leads |

@@ -123,6 +123,44 @@ export async function uploadImageToCloudinary(
   }
 }
 
+
+/**
+ * Upload a non-media document (for example a CV) to Cloudinary as a raw asset.
+ */
+export async function uploadRawFileToCloudinary(
+  file: File,
+  account: CloudinaryAccount = 'primary',
+  folder = 'documents'
+): Promise<string> {
+  try {
+    const cloudinaryInstance = createCloudinaryInstance(account)
+    const bytes = await file.arrayBuffer()
+    const buffer = Buffer.from(bytes)
+
+    return await new Promise((resolve, reject) => {
+      cloudinaryInstance.uploader.upload_stream(
+        {
+          folder,
+          resource_type: 'raw',
+          use_filename: true,
+          unique_filename: true,
+        },
+        (error, result) => {
+          if (error) {
+            console.error(`Cloudinary raw upload error (${account} account):`, error)
+            reject(new Error(error.message || 'Failed to upload document to Cloudinary'))
+            return
+          }
+          resolve(result!.secure_url)
+        }
+      ).end(buffer)
+    })
+  } catch (error) {
+    console.error(`Error uploading raw file to Cloudinary (${account} account):`, error)
+    throw error
+  }
+}
+
 /**
  * Delete image from Cloudinary
  * @param publicId - Public ID of the image to delete

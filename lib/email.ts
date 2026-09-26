@@ -19,7 +19,8 @@ const isEmailConfigured =
   Boolean(SMTP_PORT) &&
   Boolean(SMTP_USER) &&
   Boolean(SMTP_PASSWORD) &&
-  Boolean(EMAIL_FROM)
+  Boolean(EMAIL_FROM) &&
+  Boolean(EMAIL_TO)
 
 let transporter: nodemailer.Transporter | null = null
 
@@ -34,7 +35,7 @@ if (isEmailConfigured) {
   })
 } else {
   console.warn(
-    "Email notifications are disabled because SMTP environment variables are missing. Set SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, and EMAIL_FROM to enable emails.",
+    "Email notifications are disabled because SMTP environment variables are missing. Set SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, EMAIL_FROM, and EMAIL_TO to enable emails.",
   )
 }
 
@@ -46,7 +47,7 @@ export async function sendNotificationEmail({ subject, html }: EmailPayload) {
   try {
     await transporter.sendMail({
       from: EMAIL_FROM,
-      to: EMAIL_TO || "ghodehimanshu453@gmail.com",
+      to: EMAIL_TO,
       subject,
       html,
     })

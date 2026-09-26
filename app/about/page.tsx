@@ -23,14 +23,14 @@ const FALLBACK_SLIDES: BannerSlide[] = [
   },
   {
     id: 2,
-    title: "Quality Manufacturing",
-    subtitle: "Precision Engineering Excellence",
+    title: "Quality-Focused Supply",
+    subtitle: "Standards, Materials & Reliable Sourcing",
     image: "https://t4.ftcdn.net/jpg/11/42/47/91/240_F_1142479131_EJ3VEcNTYlomctW2qr8j1dYM05DeIXal.jpg",
   },
   {
     id: 3,
-    title: "Global Reach",
-    subtitle: "Serving Industries Worldwide",
+    title: "International Sourcing Network",
+    subtitle: "Supporting UAE and Regional Requirements",
     image: "https://t4.ftcdn.net/jpg/15/51/86/31/240_F_1551863150_c4Ew22S4nIyVMRMuBSbNWsyo236KB5Ro.jpg",
   },
 ]
@@ -160,23 +160,18 @@ export default function AboutPage() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <h2 className="text-4xl font-bold text-[#A02222]">SRK BOLT</h2>
-              <h3 className="text-3xl font-bold text-[#2E1F44]">
-                Leading fasteners suppliers in UAE, Since <span className="text-[#A02222]">2015</span>
-              </h3>
+              <h1 className="text-3xl font-bold text-[#2E1F44]">
+                Industrial Fasteners Supplier Serving UAE & GCC Since <span className="text-[#A02222]">2015</span>
+              </h1>
               <div className="space-y-4 text-[rgba(46,31,68,0.85)]">
                 <p>
-                  Established in 2015, SRK Bolt started as a trading business dealing in a range of building material items such as
-                  nails, machine screws and self-tapping screws.
+                  Established in 2015, SRK Bolt began as a trading business and has developed into a focused UAE-based supplier of industrial fasteners for project, maintenance and production requirements across the UAE and GCC.
               </p>
                 <p>
-                  As UAE and other Asian countries developed, SRK Bolt progressed and diversified into specialized engineering and
-                  marine quality fasteners pertaining to various sectors such as the construction and steel structure industry, oil and
-                  petro-chemical industry, the automotive sector, shipbuilding, electrical and switch gear and the furniture industry.
+                  Our range has expanded to support construction and structural steel, oil and petrochemical, automotive, shipbuilding, electrical and switchgear, furniture, power and general engineering applications across the UAE, Bahrain, Qatar, Kuwait, Saudi Arabia and Oman, with regional enquiries from Iraq and Jordan.
               </p>
                 <p>
-                  Its legacy of over 10 years has allowed SRK Bolt to become one of the leading stockist and trader of engineering
-                  fasteners in the Indian region dealing in a variety of more than 5k SKU's coming from reputed manufacturers located
-                  in India, Europe and the Far East Asia.
+                  With more than 10 years in business and 5,000+ SKUs across our fastener range, we support buyers across the UAE, GCC and selected Middle East markets through an established sourcing network spanning manufacturers in India, Europe and the Far East.
                 </p>
               </div>
             </div>
@@ -212,13 +207,10 @@ export default function AboutPage() {
             <div className="space-y-4 text-[rgba(46,31,68,0.85)]">
               <h3 className="text-3xl font-semibold text-[#2E1F44]">Our Story</h3>
               <p>
-                What began as a modest trading venture has evolved into a comprehensive fastener solutions provider, serving diverse
-                industries across India and beyond. We operate state-of-the-art manufacturing facilities and maintain extensive
-                inventory to meet the ever-growing demands of our clients.
+                What began as a modest trading venture has evolved into a specialized fastener supply business serving contractors, fabricators, industrial buyers and engineering teams across the UAE, GCC and selected Middle East markets from our UAE base. Our focus is on product availability, dependable sourcing and practical support for standards, materials, grades and finishes.
               </p>
               <p>
-                From construction giants to automotive manufacturers, from power plants to aerospace companies, SRK Bolt has been the
-                preferred choice for fastener solutions across multiple sectors.
+                From structural steel and construction to marine, petrochemical, automotive, electrical and general manufacturing, we help customers source fasteners that match the technical and commercial requirements of their applications.
               </p>
             </div>
           </div>
@@ -228,17 +220,17 @@ export default function AboutPage() {
               {
                 title: "Our Mission",
                 description:
-                  "To provide superior quality fasteners and engineering solutions that meet the highest industry standards while ensuring customer satisfaction and competitive pricing.",
+                  "To supply dependable industrial fasteners with responsive service, clear product information and competitive commercial support for every enquiry.",
               },
               {
                 title: "Our Vision",
                 description:
-                  "To be the most trusted and preferred fastener supplier in India, recognized for quality, reliability, and customer service excellence.",
+                  "To be a trusted fastener supply partner across the UAE, GCC and selected Middle East markets, known for product range, reliability, technical understanding and customer service.",
               },
               {
                 title: "Our Values",
                 description:
-                  "Quality Excellence, Customer Satisfaction, Innovation, Reliability, and Integrity form the core of our business philosophy.",
+                  "Quality, reliability, transparency, customer focus and continuous improvement guide how we source products, respond to enquiries and support long-term relationships.",
               },
             ].map((card) => (
               <div key={card.title} className="bg-white p-8 rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] text-center">
@@ -253,25 +245,22 @@ export default function AboutPage() {
             </div>
       </section>
 
-      {/* Manufacturing Excellence */}
+      {/* Supply & Quality Excellence */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-4 text-[rgba(46,31,68,0.85)]">
-              <h3 className="text-3xl font-semibold text-[#2E1F44]">Manufacturing Excellence</h3>
+              <h3 className="text-3xl font-semibold text-[#2E1F44]">Supply & Quality Excellence</h3>
               <p>
-                Our manufacturing facilities are equipped with state-of-the-art machinery and advanced technology to produce fasteners
-                that meet global quality standards. We maintain strict quality control processes at every stage of production, from raw
-                material selection to final inspection.
+                We source fasteners from established manufacturers and work to match each enquiry with the required standard, material, grade, coating and dimensional specification. Where applicable, customers can request supporting product documentation and certification with their enquiry.
               </p>
               <p>
-                By investing in continuous improvement and innovation, we ensure that every fastener leaving our facilities performs
-                reliably under the most demanding conditions.
+                Our supply approach combines a broad product range, practical application understanding and responsive RFQ handling so buyers can make informed procurement decisions for routine and demanding industrial applications.
               </p>
             </div>
             <img
               src="/WhatsApp Image 2025-11-15 at 12.36.27 PM.jpeg"
-              alt="SRK Bolt Manufacturing Excellence"
+              alt="SRK Bolt Supply & Quality Excellence"
               className="w-full h-96 object-cover rounded-2xl shadow-[0_12px_24px_rgba(32,23,60,0.15)]"
             />
           </div>
@@ -284,10 +273,10 @@ export default function AboutPage() {
           <h3 className="text-3xl font-semibold text-[#2E1F44] mb-10 text-center">Why Choose SRK Bolt?</h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { title: "25+ Years Experience", description: "Decades of expertise in fastener manufacturing and supply." },
-              { title: "Quality Assurance", description: "Rigorous quality control and testing procedures." },
-              { title: "Wide Product Range", description: "Comprehensive selection of fasteners for all applications." },
-              { title: "Customer Support", description: "Dedicated support team for all your fastener needs." },
+              { title: "10+ Years in Business", description: "Established in 2015 with a growing track record in industrial fastener supply." },
+              { title: "Specification-Focused Supply", description: "Support for standards, materials, grades, finishes and project-specific requirements." },
+              { title: "5,000+ SKU Range", description: "Broad coverage across bolts, nuts, washers, screws, rivets and specialty fasteners." },
+              { title: "Responsive RFQ Support", description: "Fast commercial support for availability, bulk orders and project enquiries." },
             ].map((item) => (
               <div key={item.title} className="bg-white p-6 rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.08)] text-center">
                 <div className="w-12 h-12 bg-[#A02222]/15 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -307,7 +296,7 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#2E1F44] mb-4">Meet Our Team</h2>
             <p className="text-lg text-[rgba(46,31,68,0.85)] max-w-2xl mx-auto">
-              The passionate individuals behind SRK Bolt's success, dedicated to delivering excellence in every fastener solution.
+              Meet the people building SRK Bolt around dependable supply, responsive service and long-term customer relationships.
             </p>
           </div>
           
@@ -353,7 +342,7 @@ export default function AboutPage() {
           <div className="max-w-4xl mx-auto space-y-6">
             <h2 className="text-3xl md:text-4xl font-bold">Partner with SRK Bolt</h2>
             <p className="text-lg text-white/85">
-              Join hundreds of satisfied customers across industries who trust us for their fastener needs.
+              Send us your required fastener standard, size, grade, finish and quantity for product availability and quotation support.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a

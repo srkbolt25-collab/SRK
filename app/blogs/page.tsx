@@ -18,8 +18,8 @@ type BannerSlide = {
 const FALLBACK_SLIDES: BannerSlide[] = [
   {
     id: 1,
-    title: "Expertise, Trends & Proven Practices",
-    subtitle: "From SRK Bolt Industries",
+    title: "Fastener Guides, Standards & Procurement Insights",
+    subtitle: "Practical insights for industrial fastener buyers, engineers and procurement teams",
     image: "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1600&q=80",
   },
 ]
@@ -209,7 +209,7 @@ export default function BlogsPage() {
             </div>
           ) : blogs.length === 0 ? (
             <div className="bg-white rounded-2xl border border-[#E4E1F0] px-6 py-12 text-center max-w-3xl mx-auto text-[#2E1F44]/70">
-              No blog posts found. Check back soon for the latest updates from SRK Bolt.
+              New technical guides and procurement insights are being prepared. Check back for articles on fastener standards, grades, materials, coatings, applications and sourcing across the UAE, GCC, Iraq and Jordan.
             </div>
           ) : (
             <div className="grid gap-6 md:grid-cols-2">

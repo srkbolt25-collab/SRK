@@ -14,49 +14,49 @@ const PRODUCT_CARDS: Array<{
 }> = [
   {
     name: "Bolts",
-    description: "High-quality bolts for all industrial applications",
+    description: "Hex, structural, high-tensile and specialty bolts for industrial and project requirements",
     href: "/bolts",
     icon: { kind: "image", src: "/icons8-bolt-64.png", alt: "Bolts Icon" },
   },
   {
     name: "Nuts",
-    description: "Precision-engineered nuts for secure fastening",
+    description: "Hex, lock, flange and specialty nuts in multiple materials, grades and finishes",
     href: "/nuts",
     icon: { kind: "image", src: "/icons8-nut-64 (1).png", alt: "Nuts Icon" },
   },
   {
     name: "Washers",
-    description: "Reliable washers for load distribution",
+    description: "Plain, spring, locking and sealing washers for load distribution and joint performance",
     href: "/washers",
     icon: { kind: "image", src: "/gasket.png", alt: "Washers Icon" },
   },
   {
     name: "Screws",
-    description: "Versatile screws for various applications",
+    description: "Machine, self-tapping and specialty screws for metal, construction and engineering use",
     href: "/screws",
     icon: { kind: "image", src: "/screw (2).png", alt: "Screws Icon" },
   },
   {
     name: "Hook & Eye",
-    description: "Heavy-duty hook and eye products",
+    description: "Hook, eye and related fastening hardware for industrial, marine and rigging requirements",
     href: "/hook-eye",
     icon: { kind: "image", src: "/hookandeye.png", alt: "Hook & Eye Icon" },
   },
   {
     name: "Rivets",
-    description: "Strong rivets for permanent fastening",
+    description: "Rivets, pins and inserts for permanent fastening, alignment and thread reinforcement",
     href: "/rivets",
     icon: { kind: "image", src: "/rivet.png", alt: "Rivets Icon" },
   },
   {
     name: "Heavy Load Attachments",
-    description: "Robust lifting points, clamps, and load-securing hardware",
+    description: "Heavy-load attachments and industrial hardware for demanding project requirements",
     href: "/attachments",
     icon: { kind: "icon", component: Settings },
   },
   {
     name: "Other Products",
-    description: "Specialty fasteners and bespoke components on demand",
+    description: "Specialty and non-standard fasteners sourced against drawings, specifications or project requirements",
     href: "/other",
     icon: { kind: "icon", component: Layers },
   },
@@ -67,7 +67,7 @@ export default function ProductsPage() {
     <Layout>
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">All Products</h1>
+          <div className="text-center mb-10"><h1 className="text-4xl font-bold text-gray-800 mb-4">Industrial Fasteners & Fixings</h1><p className="text-lg text-gray-600 max-w-3xl mx-auto">Browse SRK Bolt product categories for bolts, nuts, washers, screws, rivets, hook & eye products, heavy-load attachments and specialty fasteners. Contact our UAE sales team for standards, grades, finishes, availability and bulk RFQs for supply across the UAE, GCC, Iraq and Jordan.</p></div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {PRODUCT_CARDS.map((card) => (

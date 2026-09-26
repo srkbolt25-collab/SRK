@@ -99,6 +99,7 @@ interface Blog {
 
 const emptyBlogForm = {
   title: "",
+  slug: "",
   content: "",
   coverImage: "",
   publishedAt: "",
@@ -264,9 +265,9 @@ export default function AdminDashboard() {
     features: [""],
     uses: [""],
     technicalInformation: "",
-    shippingInfo: "Free shipping on orders over ₹2,499. Standard delivery takes 5-7 business days.",
-    returnsInfo: "30-day return policy with no questions asked. Products must be in original condition.",
-    warrantyInfo: "All products come with manufacturer's warranty. Contact us for warranty details.",
+    shippingInfo: "Delivery lead time and freight are confirmed against destination, quantity, stock status and agreed order terms.",
+    returnsInfo: "Returns or replacements are reviewed against the agreed quotation, product specification, order terms and condition of supplied goods.",
+    warrantyInfo: "Applicable certification, inspection and product documentation can be confirmed against the specific item and agreed order requirements.",
     tensileStrength: "",
     threadType: "",
     finish: [""]
@@ -293,9 +294,9 @@ export default function AdminDashboard() {
     features: [""],
     uses: [""],
     technicalInformation: "",
-    shippingInfo: "Free shipping on orders over ₹2,499. Standard delivery takes 5-7 business days.",
-    returnsInfo: "30-day return policy with no questions asked. Products must be in original condition.",
-    warrantyInfo: "All products come with manufacturer's warranty. Contact us for warranty details.",
+    shippingInfo: "Delivery lead time and freight are confirmed against destination, quantity, stock status and agreed order terms.",
+    returnsInfo: "Returns or replacements are reviewed against the agreed quotation, product specification, order terms and condition of supplied goods.",
+    warrantyInfo: "Applicable certification, inspection and product documentation can be confirmed against the specific item and agreed order requirements.",
     tensileStrength: "",
     threadType: "",
     finish: [""]
@@ -335,43 +336,39 @@ export default function AdminDashboard() {
     .filter((url) => url.length > 0)
   const remainingImageSlots = Math.max(0, MAX_IMAGES - (sanitizedManualLinks.length + uploadedImageUrls.length))
 
-  const hasReachedBannerLimit = !editingBanner && banners.length >= MAX_BANNER_COUNT
+  const selectedBannerPage = bannerForm.page || "home"
+  const selectedPageBanners = banners.filter((banner) => (banner.page || "home") === selectedBannerPage)
+  const selectedPageBannerCount = selectedPageBanners.length
+  const hasReachedBannerLimit = !editingBanner && selectedPageBannerCount >= MAX_BANNER_COUNT
 
   // Check authentication on component mount
   useEffect(() => {
     checkAuthentication()
   }, [])
 
-  const checkAuthentication = () => {
-    const adminLoggedIn = localStorage.getItem("adminLoggedIn")
-    const adminSession = localStorage.getItem("adminSession")
-
-    if (adminLoggedIn === "true" && adminSession) {
-      // Check if session is not expired (24 hours)
-      const sessionTime = parseInt(adminSession)
-      const currentTime = Date.now()
-      const sessionDuration = 24 * 60 * 60 * 1000 // 24 hours
-
-      if (currentTime - sessionTime < sessionDuration) {
-        setIsAuthenticated(true)
-        fetchProducts()
-        fetchDataSheetDownloads()
-        fetchRFQEnquiries()
-        fetchBlogs()
-        fetchApplications()
-        fetchOpenings()
-        fetchBanners()
-        fetchContacts()
-      } else {
-        // Session expired
-        localStorage.removeItem("adminLoggedIn")
-        localStorage.removeItem("adminSession")
+  const checkAuthentication = async () => {
+    try {
+      const response = await fetch("/api/admin/session", { cache: "no-store" })
+      const data = await response.json()
+      if (!response.ok || !data.authenticated) {
         router.push("/admin-login")
+        return
       }
-    } else {
+
+      setIsAuthenticated(true)
+      fetchProducts()
+      fetchDataSheetDownloads()
+      fetchRFQEnquiries()
+      fetchBlogs()
+      fetchApplications()
+      fetchOpenings()
+      fetchBanners()
+      fetchContacts()
+    } catch {
       router.push("/admin-login")
+    } finally {
+      setCheckingAuth(false)
     }
-    setCheckingAuth(false)
   }
 
   const fetchDataSheetDownloads = async () => {
@@ -492,7 +489,7 @@ export default function AdminDashboard() {
   const fetchBanners = async () => {
     try {
       setLoadingBanners(true)
-      const response = await fetch('/api/banners')
+      const response = await fetch('/api/banners?all=1', { cache: 'no-store' })
       if (response.ok) {
         const data = await response.json()
         setBanners(data)
@@ -869,10 +866,10 @@ export default function AdminDashboard() {
   const handleBannerSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!editingBanner && banners.length >= MAX_BANNER_COUNT) {
+    if (!editingBanner && selectedPageBannerCount >= MAX_BANNER_COUNT) {
       toast({
         title: "Banner limit reached",
-        description: `You can manage up to ${MAX_BANNER_COUNT} banners. Delete or edit an existing banner to make changes.`,
+        description: `You can manage up to ${MAX_BANNER_COUNT} banners per page. Delete or edit an existing banner on ${selectedBannerPage} to make changes.`,
         variant: "destructive",
       })
       return
@@ -951,7 +948,8 @@ export default function AdminDashboard() {
 
         let createdCount = 0
         if (extraSlides.length > 0) {
-          const availableSlots = Math.max(0, MAX_BANNER_COUNT - banners.length)
+          const existingOnTargetPage = banners.filter((banner) => (banner.page || "home") === selectedBannerPage && banner._id !== editingBanner._id).length
+          const availableSlots = Math.max(0, MAX_BANNER_COUNT - (existingOnTargetPage + 1))
           if (availableSlots === 0) {
             toast({
               title: "No space for extra images",
@@ -963,7 +961,7 @@ export default function AdminDashboard() {
             const baseOrder =
               parsedOrder !== undefined
                 ? parsedOrder + 1
-                : (editingBanner.order ?? banners.length) + 1
+                : (editingBanner.order ?? existingOnTargetPage) + 1
 
             for (let i = 0; i < slidesToCreate.length; i += 1) {
               const createPayload = {
@@ -1007,7 +1005,7 @@ export default function AdminDashboard() {
           variant: 'success',
         })
       } else {
-        const availableSlots = Math.max(0, MAX_BANNER_COUNT - banners.length)
+        const availableSlots = Math.max(0, MAX_BANNER_COUNT - selectedPageBannerCount)
         if (availableSlots <= 0) {
           toast({
             title: 'Banner limit reached',
@@ -1018,7 +1016,7 @@ export default function AdminDashboard() {
         }
 
         const slidesToCreate = uniqueSlides.slice(0, availableSlots)
-        const baseOrder = parsedOrder ?? banners.length
+        const baseOrder = parsedOrder ?? selectedPageBannerCount
         let createdCount = 0
 
         for (let i = 0; i < slidesToCreate.length; i += 1) {
@@ -1134,10 +1132,10 @@ export default function AdminDashboard() {
     setIsEnquiryViewOpen(true)
   }
 
-  const handleLogout = () => {
-    localStorage.removeItem("adminLoggedIn")
-    localStorage.removeItem("adminSession")
+  const handleLogout = async () => {
+    await fetch("/api/admin/logout", { method: "POST" })
     router.push("/admin-login")
+    router.refresh()
   }
 
   const handleDeleteProduct = async (productId: string) => {
@@ -1430,7 +1428,7 @@ export default function AdminDashboard() {
 
       const payload = {
         ...blogForm,
-        slug: slugify(blogForm.title),
+        slug: blogForm.slug.trim() || slugify(blogForm.title),
         metaTitle: blogForm.metaTitle || blogForm.title,
         metaDescription: blogForm.metaDescription || (contentParagraphs[0] ? contentParagraphs[0].slice(0, 160) : ""),
         publishedAt: blogForm.publishedAt || new Date().toISOString(),
@@ -1477,6 +1475,7 @@ export default function AdminDashboard() {
     setEditingBlog(blog)
     setBlogForm({
       title: blog.title || "",
+      slug: blog.slug || "",
       content: blog.content || "",
       coverImage: blog.coverImage || "",
       publishedAt: blog.publishedAt ? new Date(blog.publishedAt).toISOString().slice(0, 10) : "",
@@ -1565,9 +1564,9 @@ export default function AdminDashboard() {
       features: product.features && product.features.length > 0 ? product.features : [""],
       uses: product.uses && product.uses.length > 0 ? product.uses : [""],
       technicalInformation: product.technicalInformation || "",
-      shippingInfo: product.shippingInfo || "Free shipping on orders over ₹2,499. Standard delivery takes 5-7 business days.",
-      returnsInfo: product.returnsInfo || "30-day return policy with no questions asked. Products must be in original condition.",
-      warrantyInfo: product.warrantyInfo || "All products come with manufacturer's warranty. Contact us for warranty details.",
+      shippingInfo: product.shippingInfo || "Delivery lead time and freight are confirmed against destination, quantity, stock status and agreed order terms.",
+      returnsInfo: product.returnsInfo || "Returns or replacements are reviewed against the agreed quotation, product specification, order terms and condition of supplied goods.",
+      warrantyInfo: product.warrantyInfo || "Applicable certification, inspection and product documentation can be confirmed against the specific item and agreed order requirements.",
       tensileStrength: product.specifications?.tensileStrength || "",
       threadType: product.specifications?.threadType || "",
       finish: product.specifications?.finish && product.specifications.finish.length > 0 ? product.specifications.finish : [""]
@@ -1726,9 +1725,9 @@ export default function AdminDashboard() {
           features: [""],
           uses: [""],
           technicalInformation: "",
-          shippingInfo: "Free shipping on orders over ₹2,499. Standard delivery takes 5-7 business days.",
-          returnsInfo: "30-day return policy with no questions asked. Products must be in original condition.",
-          warrantyInfo: "All products come with manufacturer's warranty. Contact us for warranty details.",
+          shippingInfo: "Delivery lead time and freight are confirmed against destination, quantity, stock status and agreed order terms.",
+          returnsInfo: "Returns or replacements are reviewed against the agreed quotation, product specification, order terms and condition of supplied goods.",
+          warrantyInfo: "Applicable certification, inspection and product documentation can be confirmed against the specific item and agreed order requirements.",
           tensileStrength: "",
           threadType: "",
           finish: [""]
@@ -1777,9 +1776,9 @@ export default function AdminDashboard() {
       features: [""],
       uses: [""],
       technicalInformation: "",
-      shippingInfo: "Free shipping on orders over ₹2,499. Standard delivery takes 5-7 business days.",
-      returnsInfo: "30-day return policy with no questions asked. Products must be in original condition.",
-      warrantyInfo: "All products come with manufacturer's warranty. Contact us for warranty details.",
+      shippingInfo: "Delivery lead time and freight are confirmed against destination, quantity, stock status and agreed order terms.",
+      returnsInfo: "Returns or replacements are reviewed against the agreed quotation, product specification, order terms and condition of supplied goods.",
+      warrantyInfo: "Applicable certification, inspection and product documentation can be confirmed against the specific item and agreed order requirements.",
       tensileStrength: "",
       threadType: "",
       finish: [""]
@@ -1881,9 +1880,9 @@ export default function AdminDashboard() {
           features: [""],
           uses: [""],
           technicalInformation: "",
-          shippingInfo: "Free shipping on orders over ₹2,499. Standard delivery takes 5-7 business days.",
-          returnsInfo: "30-day return policy with no questions asked. Products must be in original condition.",
-          warrantyInfo: "All products come with manufacturer's warranty. Contact us for warranty details.",
+          shippingInfo: "Delivery lead time and freight are confirmed against destination, quantity, stock status and agreed order terms.",
+          returnsInfo: "Returns or replacements are reviewed against the agreed quotation, product specification, order terms and condition of supplied goods.",
+          warrantyInfo: "Applicable certification, inspection and product documentation can be confirmed against the specific item and agreed order requirements.",
           tensileStrength: "",
           threadType: "",
           finish: [""]
@@ -2628,7 +2627,7 @@ export default function AdminDashboard() {
                         id="shippingInfo"
                         value={editingProduct ? editFormData.shippingInfo : formData.shippingInfo}
                         onChange={(e) => editingProduct ? handleEditInputChange("shippingInfo", e.target.value) : handleInputChange("shippingInfo", e.target.value)}
-                        placeholder="Free shipping on orders over ₹2,499. Standard delivery takes 5-7 business days."
+                        placeholder="Delivery lead time and freight are confirmed against destination, quantity, stock status and agreed order terms."
                         rows={2}
                       />
                     </div>
@@ -2639,7 +2638,7 @@ export default function AdminDashboard() {
                         id="returnsInfo"
                         value={editingProduct ? editFormData.returnsInfo : formData.returnsInfo}
                         onChange={(e) => editingProduct ? handleEditInputChange("returnsInfo", e.target.value) : handleInputChange("returnsInfo", e.target.value)}
-                        placeholder="30-day return policy with no questions asked. Products must be in original condition."
+                        placeholder="Returns or replacements are reviewed against the agreed quotation, product specification, order terms and condition of supplied goods."
                         rows={2}
                       />
                     </div>
@@ -2650,7 +2649,7 @@ export default function AdminDashboard() {
                         id="warrantyInfo"
                         value={editingProduct ? editFormData.warrantyInfo : formData.warrantyInfo}
                         onChange={(e) => editingProduct ? handleEditInputChange("warrantyInfo", e.target.value) : handleInputChange("warrantyInfo", e.target.value)}
-                        placeholder="All products come with manufacturer's warranty. Contact us for warranty details."
+                        placeholder="Applicable certification, inspection and product documentation can be confirmed against the specific item and agreed order requirements."
                         rows={2}
                       />
                     </div>
@@ -3250,7 +3249,7 @@ export default function AdminDashboard() {
                   <form onSubmit={handleBannerSubmit} className="space-y-5">
                     {hasReachedBannerLimit && (
                       <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-                        You already have {MAX_BANNER_COUNT} banners published. Delete or edit an existing banner to make room for a new slide.
+                        The selected page already has {MAX_BANNER_COUNT} banners published. Choose another page, or delete/edit an existing banner to make room.
                       </div>
                     )}
                     {bannerForm.slides.map((slide, index) => {
@@ -3406,8 +3405,7 @@ export default function AdminDashboard() {
                     })}
 
                     <p className="text-xs text-gray-400">
-                      Fill up to {MAX_BANNER_COUNT} banner sections. Each completed section becomes a slide in the homepage
-                      carousel.
+                      Fill up to {MAX_BANNER_COUNT} banner sections. Each completed section becomes a slide in the selected page carousel.
                     </p>
 
                     <div className="space-y-2">
@@ -3415,7 +3413,6 @@ export default function AdminDashboard() {
                       <Select
                         value={bannerForm.page}
                         onValueChange={(value) => handleBannerInputChange("page", value)}
-                        disabled={hasReachedBannerLimit}
                       >
                         <SelectTrigger id="banner-page">
                           <SelectValue placeholder="Select page" />
@@ -3475,7 +3472,7 @@ export default function AdminDashboard() {
                   <div>
                     <CardTitle className="flex items-center gap-2">
                       <Images className="h-5 w-5" />
-                      Current Slider Banners <span className="text-xs font-medium text-gray-500">({Math.min(banners.length, MAX_BANNER_COUNT)} / {MAX_BANNER_COUNT})</span>
+                      Current Slider Banners <span className="text-xs font-medium text-gray-500">({banners.length} total)</span>
                     </CardTitle>
                     <p className="text-sm text-gray-600 mt-1">Manage banners for different pages. Each page can have up to {MAX_BANNER_COUNT} banners.</p>
                   </div>
@@ -3665,6 +3662,16 @@ export default function AdminDashboard() {
 
                     <div className="space-y-4 pt-4 border-t border-gray-100">
                       <h4 className="text-sm font-semibold text-gray-900">SEO Settings</h4>
+                      <div className="space-y-2">
+                        <Label htmlFor="blog-slug">URL Slug</Label>
+                        <Input
+                          id="blog-slug"
+                          value={blogForm.slug}
+                          onChange={(e) => handleBlogInputChange("slug", e.target.value)}
+                          placeholder="auto-generated-from-title"
+                        />
+                        <p className="text-[10px] text-gray-500">Keep this stable after publishing unless the URL intentionally needs to change.</p>
+                      </div>
                       <div className="space-y-2">
                         <Label htmlFor="blog-meta-title">Meta Title</Label>
                         <Input

@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Phone, Mail, MapPin, Clock, Facebook, Twitter, Linkedin, Instagram } from "lucide-react"
+import { Phone, Mail, MapPin, Clock } from "lucide-react"
 import Image from "next/image"
 import FooterLogo from "@/public/footer.jpeg"
 
@@ -23,24 +23,20 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-white/70 text-sm leading-relaxed">
-              Leading manufacturer and supplier of high-quality fasteners serving industries 
-              across India and internationally since 2015. Your trusted partner for all 
-              fastener solutions.
+              UAE-based supplier of industrial fasteners serving the UAE, Bahrain, Qatar, Kuwait, Saudi Arabia and Oman, with regional supply support for Iraq and Jordan. We support construction, steel, oil & gas, marine, engineering and manufacturing requirements with responsive RFQ service.
             </p>
-            <div className="flex space-x-4">
-              <a href="#" className="w-9 h-9 rounded-full bg-white flex items-center justify-center transition-colors hover:bg-[#FFD5D5]">
-                <Facebook className="w-4 h-4 text-[#A02222]" />
-              </a>
-              <a href="#" className="w-9 h-9 rounded-full bg-white flex items-center justify-center transition-colors hover:bg-[#FFD5D5]">
-                <Twitter className="w-4 h-4 text-[#A02222]" />
-              </a>
-              <a href="#" className="w-9 h-9 rounded-full bg-white flex items-center justify-center transition-colors hover:bg-[#FFD5D5]">
-                <Linkedin className="w-4 h-4 text-[#A02222]" />
-              </a>
-              <a href="#" className="w-9 h-9 rounded-full bg-white flex items-center justify-center transition-colors hover:bg-[#FFD5D5]">
-                <Instagram className="w-4 h-4 text-[#A02222]" />
-              </a>
+            <div className="text-sm text-white/80 leading-relaxed">
+              <span className="font-semibold text-white">Markets We Serve:</span>{" "}
+              <Link href="/uae/products" className="hover:text-[#A02222]">UAE</Link> •{" "}
+              <Link href="/bahrain/products" className="hover:text-[#A02222]">Bahrain</Link> •{" "}
+              <Link href="/qatar/products" className="hover:text-[#A02222]">Qatar</Link> •{" "}
+              <Link href="/kuwait/products" className="hover:text-[#A02222]">Kuwait</Link> •{" "}
+              <Link href="/saudi-arabia/products" className="hover:text-[#A02222]">Saudi Arabia</Link> •{" "}
+              <Link href="/oman/products" className="hover:text-[#A02222]">Oman</Link> •{" "}
+              <Link href="/iraq/products" className="hover:text-[#A02222]">Iraq</Link> •{" "}
+              <Link href="/jordan/products" className="hover:text-[#A02222]">Jordan</Link>
             </div>
+
           </div>
 
           {/* Quick Links */}
@@ -146,14 +142,14 @@ export default function Footer() {
               <div className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-[#FFD5D5] shrink-0" />
                 <div>
-                  <p className="text-white/80 text-sm">+971 58 871 3064</p>
+                  <a href="tel:+971588713064" className="text-white/80 hover:text-white text-sm">+971 58 871 3064</a>
                 </div>
               </div>
               
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-[#FFD5D5] shrink-0" />
                 <div>
-                  <p className="text-white/80 text-sm">sales@srkbolt.com</p>
+                  <a href="mailto:sales@srkbolt.com" className="text-white/80 hover:text-white text-sm">sales@srkbolt.com</a>
                 </div>
               </div>
               
@@ -177,7 +173,7 @@ export default function Footer() {
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-[#CCCCCC] text-sm">
-              © 2025 SRK Bolt Industries. All rights reserved.
+              © {new Date().getFullYear()} SRK Bolt Industries. All rights reserved.
             </div>
             <div className="flex space-x-6 text-sm">
               <Link href="/privacy" className="text-white/70 hover:text-[#A02222] transition-colors">

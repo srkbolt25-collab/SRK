@@ -40,30 +40,31 @@ export default function AdminLoginPage() {
 
     setLoading(true)
 
-    // Simple admin credentials check
-    if (formData.username === "admin" && formData.password === "savron2024") {
-      // Store admin session
-      localStorage.setItem("adminLoggedIn", "true")
-      localStorage.setItem("adminSession", Date.now().toString())
-      
+    try {
+      const response = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.error || "Login failed")
+
       toast({
         title: "Success",
         description: "Login successful! Redirecting to dashboard...",
         variant: "success"
       })
-      
-      setTimeout(() => {
-        router.push("/admin-dashboard")
-      }, 1000)
-    } else {
+      router.push("/admin-dashboard")
+      router.refresh()
+    } catch (error) {
       toast({
         title: "Error",
-        description: "Invalid username or password",
+        description: error instanceof Error ? error.message : "Invalid username or password",
         variant: "destructive"
       })
+    } finally {
+      setLoading(false)
     }
-
-    setLoading(false)
   }
 
   return (
@@ -162,18 +163,13 @@ export default function AdminLoginPage() {
               </Button>
             </form>
 
-            <div className="mt-6 pt-6 border-t border-gray-200 text-center">
-              <p className="text-xs text-gray-500">
-                Default credentials: <span className="font-semibold text-gray-700">admin</span> / <span className="font-semibold text-gray-700">savron2024</span>
-              </p>
-            </div>
           </CardContent>
         </Card>
 
         {/* Footer */}
         <div className="mt-6 text-center">
           <p className="text-white/80 text-sm">
-            © 2024 SRK BOLT. All rights reserved.
+            © {new Date().getFullYear()} SRK BOLT. All rights reserved.
           </p>
         </div>
       </div>

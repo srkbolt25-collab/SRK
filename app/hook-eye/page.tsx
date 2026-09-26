@@ -18,7 +18,7 @@ export default function HookEyePage() {
     {
       id: 1,
       image: "https://t3.ftcdn.net/jpg/02/33/71/82/240_F_233718247_GoQZJTzziQ1Qp2S30kv8hac3pVzMs74y.jpg",
-      title: "Hook & Eye Products",
+      title: "Hook & Eye Fasteners Supplier in UAE",
       subtitle: "Lifting & Rigging Solutions"
     },
     {
@@ -128,7 +128,7 @@ export default function HookEyePage() {
           <div className="text-center mb-16">
             <h1 className="text-4xl font-bold text-[#2E1F44] mb-6">Hook & Eye Products</h1>
             <p className="text-[rgba(46,31,68,0.85)] text-xl max-w-4xl mx-auto leading-relaxed">
-              Explore our range of hook and eye fasteners engineered for marine, industrial, and architectural applications.
+              Explore hook, eye and related fastening hardware for marine, structural, industrial and architectural requirements. SRK Bolt supports specification-led sourcing by material, thread, size, finish and application, with UAE-based RFQ and bulk-order support.
             </p>
           </div>
 
@@ -146,7 +146,7 @@ export default function HookEyePage() {
           {/* Product Grid */}
           {(!hookEyeLoading && hookEyeProducts.length === 0) ? (
             <div className="mb-16 rounded-2xl border border-dashed border-gray-300 bg-gray-50 p-12 text-center text-gray-500">
-              No hook & eye products are currently available. Add new products from the admin dashboard to populate this collection.
+              Our online hook & eye listings are being updated. Contact us with the required type, size, thread, material, finish and intended application for current availability and quotation.
             </div>
           ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
@@ -213,9 +213,9 @@ export default function HookEyePage() {
                   <div className="w-16 h-16 bg-[#A02222]/15 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Shield className="w-8 h-8 text-[#A02222]" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Marine Grade</h3>
+                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Materials for Service Conditions</h3>
                   <p className="text-[rgba(46,31,68,0.85)] text-sm leading-relaxed">
-                    Corrosion-resistant materials suitable for marine environments and harsh weather conditions.
+                    Material and finish options can be selected according to marine, outdoor, structural or general industrial exposure.
                   </p>
                 </div>
               </div>
@@ -224,9 +224,9 @@ export default function HookEyePage() {
                   <div className="w-16 h-16 bg-[#A02222]/15 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Settings className="w-8 h-8 text-[#A02222]" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Secure Fastening</h3>
+                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Specification-Led Selection</h3>
                   <p className="text-[rgba(46,31,68,0.85)] text-sm leading-relaxed">
-                    Provides reliable fastening solutions for lifting, rigging, and architectural applications.
+                    Product type, thread, dimensions and applicable load or project specification should be confirmed before selection.
                   </p>
                 </div>
               </div>
@@ -235,9 +235,9 @@ export default function HookEyePage() {
                   <div className="w-16 h-16 bg-[#A02222]/15 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Factory className="w-8 h-8 text-[#A02222]" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Engineered Durability</h3>
+                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">RFQ & Bulk Support</h3>
                   <p className="text-[rgba(46,31,68,0.85)] text-sm leading-relaxed">
-                    Manufactured to withstand heavy loads and repeated use without compromising safety.
+                    Send the required type, material, dimensions and quantity for sourcing, availability and quotation support.
                   </p>
                 </div>
                 </div>
@@ -251,14 +251,14 @@ export default function HookEyePage() {
       <section className="py-16 bg-[#A02222] text-white">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto space-y-6">
-            <h2 className="text-3xl md:text-4xl font-bold">Need Custom Hook & Eye Solutions?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold">Need Hook & Eye Products for a Project?</h2>
             <p className="text-lg text-white/85 max-w-2xl mx-auto">
-              Contact our specialists for custom hook and eye fasteners tailored to your marine or industrial projects.
+              Share your required product type, dimensions, material, finish, quantity and intended application. Our team will support sourcing and quotation against your specification.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2">
               <button className="bg-white text-[#A02222] border border-white hover:bg-[#2E1F44] hover:text-white transition-colors duration-300 font-semibold px-8 py-3 rounded-lg flex items-center justify-center gap-2 shadow-lg">
                 <ExternalLink className="w-5 h-5" />
-                Get Custom Quote
+                Request Quote
               </button>
               <button className="border-[1.5px] border-white text-white hover:bg-white hover:text-[#A02222] transition-colors duration-300 font-semibold px-8 py-3 rounded-lg flex items-center justify-center gap-2">
                 <ExternalLink className="w-5 h-5" />
@@ -283,7 +283,7 @@ export default function HookEyePage() {
               {rfqProductName}
             </p>
             <p className="text-gray-500 text-sm mb-6">
-              The product has been added to your RFQ list. You can continue shopping or proceed to checkout.
+              The product has been added to your RFQ list. You can continue browsing or open the RFQ list to submit your enquiry.
             </p>
             <div className="space-y-3">
               <button

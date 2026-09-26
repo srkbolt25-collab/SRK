@@ -18,7 +18,7 @@ const FALLBACK_SLIDES: BannerSlide[] = [
   {
     id: 1,
     title: "Our Brands",
-    subtitle: "Trusted Partners in Fastener Solutions",
+    subtitle: "Selected Brands & Manufacturers Across Our Sourcing Network",
     image: "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1600&q=80",
   },
 ]
@@ -193,10 +193,9 @@ export default function BrandsPage() {
       <section className="py-16 bg-[#F7F7FA]">
         <div className="container mx-auto px-4 space-y-16">
           <div className="text-center space-y-4 max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold text-[#2E1F44]">Our Brand Ecosystem</h2>
+            <h2 className="text-3xl font-bold text-[#2E1F44]">Fastener Brands & Sourcing Network</h2>
             <p className="text-[rgba(46,31,68,0.8)]">
-              From in-house labels to strategic alliances, each brand is curated to cover critical industry demands—whether
-              it is construction, oil & gas, heavy machinery, marine, or renewables.
+              SRK Bolt works with selected fastener brands and manufacturers to support a broad range of industrial requirements. Brand and product availability can vary by specification, size, material and project quantity, so contact our sales team for current sourcing and quotation support.
             </p>
           </div>
           

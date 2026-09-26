@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from "next/server"
 import { ObjectId } from "mongodb"
 import { getCollection } from "@/lib/mongodb"
 
+export const dynamic = "force-dynamic"
+
+const MAX_BANNERS = 3
+
 const invalidIdResponse = NextResponse.json({ error: "Invalid banner id" }, { status: 400 })
 
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
@@ -59,6 +63,20 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     updates.updatedAt = new Date().toISOString()
 
     const collection = await getCollection("banners")
+    const existingBanner = await collection.findOne({ _id: new ObjectId(id) })
+    if (!existingBanner) {
+      return NextResponse.json({ error: "Banner not found" }, { status: 404 })
+    }
+
+    const targetPage = typeof updates.page === "string" ? updates.page : (existingBanner.page || "home")
+    const currentPage = existingBanner.page || "home"
+    if (targetPage !== currentPage) {
+      const targetCount = await collection.countDocuments({ page: targetPage })
+      if (targetCount >= MAX_BANNERS) {
+        return NextResponse.json({ error: `Maximum of ${MAX_BANNERS} banners allowed per page` }, { status: 400 })
+      }
+    }
+
     const result = await collection.findOneAndUpdate(
       { _id: new ObjectId(id) },
       { $set: updates },

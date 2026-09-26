@@ -82,3 +82,28 @@ CLOUDINARY_FOLDER=products
 - Use strong passwords for MongoDB
 - Restrict MongoDB network access to only necessary IPs
 
+
+### Admin Authentication
+These are required for the SRK Bolt admin portal. Use strong, unique values and never expose them in client-side code.
+
+```env
+ADMIN_USERNAME=your_admin_username
+ADMIN_PASSWORD=use_a_long_unique_password
+ADMIN_SESSION_TOKEN=use_a_long_random_session_secret
+```
+
+`ADMIN_SESSION_TOKEN` should be a long random value (for example, 32+ random bytes represented as a secret string). The admin session is stored in an HTTP-only cookie and expires after 24 hours.
+
+### Email Notifications (Recommended)
+RFQ and datasheet requests are always stored in MongoDB and visible in the admin dashboard. To also send email notifications, configure:
+
+```env
+SMTP_HOST=your_smtp_host
+SMTP_PORT=587
+SMTP_USER=your_smtp_username
+SMTP_PASSWORD=your_smtp_password
+EMAIL_FROM=website@yourdomain.com
+EMAIL_TO=sales@srkbolt.com
+```
+
+If these values are not configured, website submissions still save to MongoDB; only email notifications are disabled.

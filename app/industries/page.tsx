@@ -19,7 +19,7 @@ const FALLBACK_SLIDES: BannerSlide[] = [
     id: 1,
     image: "https://t4.ftcdn.net/jpg/04/52/77/95/240_F_452779507_lESxLc72CJujLVivBiFCzP8I2y1sm91b.jpg",
     title: "Industries We Serve",
-    subtitle: "Quality Fasteners Across All Sectors"
+    subtitle: "Fastener Supply for Industrial Applications"
   },
   {
     id: 2,
@@ -30,8 +30,8 @@ const FALLBACK_SLIDES: BannerSlide[] = [
   {
     id: 3,
     image: "https://t4.ftcdn.net/jpg/04/87/17/99/240_F_487179985_vWWNxyr0facawhl0G4F9ir8mjmfK64lU.jpg",
-    title: "Global Reach",
-    subtitle: "Serving Industries Worldwide"
+    title: "UAE & Regional Supply",
+    subtitle: "Supporting Projects Across Key Sectors"
   }
 ]
 
@@ -178,11 +178,9 @@ export default function IndustriesPage() {
         <div className="max-w-7xl mx-auto">
           {/* Page Header */}
           <div className="text-center mb-16">
-            <h1 className="text-4xl font-bold text-gray-800 mb-6">Industries We Serve</h1>
+            <h1 className="text-4xl font-bold text-gray-800 mb-6">Industrial Fastener Solutions for UAE, GCC & Regional Projects</h1>
             <p className="text-gray-600 text-xl max-w-4xl mx-auto leading-relaxed">
-              SRK Bolt provides specialized fastener solutions across diverse industries, 
-              ensuring quality and reliability for every application. Our expertise spans 
-              multiple sectors, delivering customized solutions for complex engineering challenges.
+              SRK Bolt supplies industrial fasteners for construction, structural steel, automotive, power and energy, manufacturing, oil & gas and other engineering applications across the UAE and GCC. We support buyers in the UAE, Bahrain, Qatar, Kuwait, Saudi Arabia and Oman, with regional enquiries for Iraq and Jordan, helping match standards, materials, grades and finishes to each project requirement.
             </p>
           </div>
           
@@ -208,8 +206,7 @@ export default function IndustriesPage() {
               <div className="p-6">
                 <h4 className="text-xl font-semibold text-gray-800 mb-3">Construction & Infrastructure</h4>
                 <p className="text-gray-600 mb-4 leading-relaxed">
-                  High-tensile bolts, structural fasteners, and specialized connectors 
-                  for buildings, bridges, and infrastructure projects with superior strength.
+                  High-tensile bolts, structural fasteners, threaded components and accessories for steel structures, buildings and infrastructure work, with options selected to project specifications.
                 </p>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center text-sm text-gray-500">
@@ -248,8 +245,7 @@ export default function IndustriesPage() {
               <div className="p-6">
                 <h4 className="text-xl font-semibold text-gray-800 mb-3">Automotive Industry</h4>
                 <p className="text-gray-600 mb-4 leading-relaxed">
-                  Precision fasteners, engine bolts, and specialized automotive 
-                  components for manufacturing and assembly with strict quality standards.
+                  Precision fasteners and threaded components for automotive assembly, maintenance and supporting production requirements where consistency, fit and traceable specifications matter.
                 </p>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center text-sm text-gray-500">
@@ -288,8 +284,7 @@ export default function IndustriesPage() {
               <div className="p-6">
                 <h4 className="text-xl font-semibold text-gray-800 mb-3">Power & Energy Sector</h4>
                 <p className="text-gray-600 mb-4 leading-relaxed">
-                  High-temperature resistant fasteners for power plants, 
-                  solar installations, and energy infrastructure with durability.
+                  Fasteners for power, solar and energy infrastructure, including material and coating options suited to outdoor exposure, structural connections and demanding service conditions.
                 </p>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center text-sm text-gray-500">
@@ -328,8 +323,7 @@ export default function IndustriesPage() {
               <div className="p-6">
                 <h4 className="text-xl font-semibold text-gray-800 mb-3">Manufacturing Industry</h4>
                 <p className="text-gray-600 mb-4 leading-relaxed">
-                  Industrial fasteners and precision components for 
-                  machinery, equipment, and production lines with reliability.
+                  Industrial bolts, nuts, washers, screws and specialty components for machinery, equipment, maintenance and production-line requirements.
                 </p>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center text-sm text-gray-500">
@@ -368,8 +362,7 @@ export default function IndustriesPage() {
               <div className="p-6">
                 <h4 className="text-xl font-semibold text-gray-800 mb-3">Oil & Gas Industry</h4>
                 <p className="text-gray-600 mb-4 leading-relaxed">
-                  Corrosion-resistant and high-pressure fasteners for 
-                  drilling, refining, and pipeline applications with safety.
+                  Fastener options for oil, gas and petrochemical environments, including corrosion-resistant materials and grades selected according to service conditions and project specifications.
                 </p>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center text-sm text-gray-500">
@@ -408,8 +401,7 @@ export default function IndustriesPage() {
               <div className="p-6">
                 <h4 className="text-xl font-semibold text-gray-800 mb-3">Aerospace Industry</h4>
                 <p className="text-gray-600 mb-4 leading-relaxed">
-                  Precision aerospace fasteners meeting strict 
-                  quality standards and certification requirements.
+                  Precision fastening requirements supported through specification-led sourcing, with documentation and material requirements reviewed against the customer enquiry.
                 </p>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center text-sm text-gray-500">
@@ -442,23 +434,23 @@ export default function IndustriesPage() {
               </div>
               <div className="text-center">
                 <div className="bg-white rounded-xl p-6 shadow-lg">
-                  <div className="text-4xl font-bold text-red-600 mb-2">25+</div>
-                  <div className="text-gray-600 font-semibold">Years Experience</div>
-                  <div className="text-sm text-gray-500 mt-1">Industry Expertise</div>
+                  <div className="text-4xl font-bold text-red-600 mb-2">10+</div>
+                  <div className="text-gray-600 font-semibold">Years in Business</div>
+                  <div className="text-sm text-gray-500 mt-1">Established 2015</div>
                 </div>
               </div>
               <div className="text-center">
                 <div className="bg-white rounded-xl p-6 shadow-lg">
-                  <div className="text-4xl font-bold text-red-600 mb-2">1000+</div>
-                  <div className="text-gray-600 font-semibold">Projects Completed</div>
-                  <div className="text-sm text-gray-500 mt-1">Across Industries</div>
+                  <div className="text-4xl font-bold text-red-600 mb-2">5k+</div>
+                  <div className="text-gray-600 font-semibold">Fastener SKUs</div>
+                  <div className="text-sm text-gray-500 mt-1">Broad Product Coverage</div>
                 </div>
               </div>
               <div className="text-center">
                 <div className="bg-white rounded-xl p-6 shadow-lg">
-                  <div className="text-4xl font-bold text-red-600 mb-2">50+</div>
-                  <div className="text-gray-600 font-semibold">Countries</div>
-                  <div className="text-sm text-gray-500 mt-1">Global Reach</div>
+                  <div className="text-4xl font-bold text-red-600 mb-2">UAE</div>
+                  <div className="text-gray-600 font-semibold">Regional Supply Base</div>
+                  <div className="text-sm text-gray-500 mt-1">GCC & Export Enquiries</div>
                 </div>
               </div>
             </div>
@@ -475,7 +467,7 @@ export default function IndustriesPage() {
                   </div>
                   <h3 className="text-xl font-semibold text-gray-800 mb-3">Industry Expertise</h3>
                   <p className="text-gray-600 text-sm leading-relaxed">
-                    Deep understanding of industry-specific requirements and challenges across all sectors.
+                    Practical understanding of how standards, grades, materials and coatings change across industrial applications.
                   </p>
                 </div>
               </div>
@@ -484,9 +476,9 @@ export default function IndustriesPage() {
                   <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Zap className="w-8 h-8 text-red-600" />
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-3">Custom Solutions</h3>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-3">Sourcing Flexibility</h3>
                   <p className="text-gray-600 text-sm leading-relaxed">
-                    Tailored fastener solutions designed for specific industry applications and requirements.
+                    Broad sourcing support for standard, specialty and project-specific fastener requirements.
                   </p>
                 </div>
               </div>
@@ -495,9 +487,9 @@ export default function IndustriesPage() {
                   <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Factory className="w-8 h-8 text-red-600" />
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-3">Quality Assurance</h3>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-3">Specification Support</h3>
                   <p className="text-gray-600 text-sm leading-relaxed">
-                    Rigorous testing and quality control processes ensuring reliability in critical applications.
+                    Specification-led sourcing with documentation and certification support where applicable to the enquiry.
                   </p>
                 </div>
               </div>
@@ -506,9 +498,9 @@ export default function IndustriesPage() {
                   <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Plane className="w-8 h-8 text-red-600" />
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-3">Global Support</h3>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-3">UAE, GCC & Regional Support</h3>
                   <p className="text-gray-600 text-sm leading-relaxed">
-                    Worldwide distribution network providing timely delivery and technical support.
+                    UAE-based commercial support for availability, bulk orders, scheduled supply and enquiries across the UAE, Bahrain, Qatar, Kuwait, Saudi Arabia, Oman, Iraq and Jordan.
                   </p>
                 </div>
               </div>
@@ -525,8 +517,7 @@ export default function IndustriesPage() {
               Ready to Partner with SRK Bolt?
             </h2>
             <p className="text-lg mb-8 max-w-2xl mx-auto">
-              Discover how our industry expertise and quality fasteners can support your next project. 
-              Get in touch with our specialists today.
+              Tell us your application, standard, grade, finish and required quantity. Our team can help identify suitable fastener options and prepare an RFQ for your project.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="bg-white text-red-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors flex items-center justify-center">

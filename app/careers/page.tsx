@@ -21,22 +21,22 @@ type Opening = {
     {
       icon: TrendingUp,
       title: "Growth Opportunities",
-    description: "Career advancement and skill development programs",
+    description: "Opportunities to build practical skills and grow with an expanding industrial supply business",
     },
     {
       icon: Users,
       title: "Competitive Benefits",
-    description: "Attractive salary packages and comprehensive benefits",
+    description: "Competitive packages aligned with role, experience and business requirements",
     },
     {
       icon: Users,
       title: "Team Environment",
-    description: "Collaborative and supportive work culture",
+    description: "A collaborative environment focused on customer service, accountability and teamwork",
     },
     {
       icon: BookOpen,
       title: "Learning & Development",
-    description: "Training programs and industry certifications",
+    description: "Hands-on learning across fastener products, standards, sourcing and industrial applications",
   },
   ]
 
@@ -107,8 +107,7 @@ export default async function CareersPage() {
               Shape Your Future at SRK Bolt
             </h1>
             <p className="text-lg text-gray-200 mb-6">
-              Join India&apos;s leading fastener solutions provider and grow your career with us. We&apos;re looking for talented
-              individuals to join our dynamic team.
+              Join a growing UAE-based industrial fastener supplier and build your career in sales, sourcing, operations and customer support. We welcome people who value reliability, learning and practical problem-solving.
             </p>
             <button className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold transition-all transform hover:scale-105">
               Explore Opportunities

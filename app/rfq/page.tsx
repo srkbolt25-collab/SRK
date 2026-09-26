@@ -202,13 +202,13 @@ export default function RFQPage() {
                           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
                         >
                           <option>United Arab Emirates</option>
-                          <option>Saudi Arabia</option>
-                          <option>Kuwait</option>
                           <option>Bahrain</option>
                           <option>Qatar</option>
+                          <option>Kuwait</option>
+                          <option>Saudi Arabia</option>
                           <option>Oman</option>
-                          <option>Egypt</option>
-                          <option>India</option>
+                          <option>Iraq</option>
+                          <option>Jordan</option>
                           <option>Other</option>
                         </select>
                       </div>

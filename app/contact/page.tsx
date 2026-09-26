@@ -47,10 +47,9 @@ export default function ContactPage() {
       <section className="bg-[#F7F7FA] py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 max-w-3xl mx-auto space-y-4">
-            <h1 className="text-4xl font-bold text-[#2E1F44]">Speak With SRK Bolt</h1>
+            <h1 className="text-4xl font-bold text-[#2E1F44]">Request a Fastener Quote for UAE & GCC Supply</h1>
             <p className="text-[rgba(46,31,68,0.85)] text-lg">
-              Tell us what you need and our fastener specialists will get back within one business day with solutions, pricing, and
-              availability tailored to your project.
+              Send us the product name or standard, size, material or grade, finish and required quantity. Our sales team will review your enquiry and respond with suitable options, availability and commercial details for project or bulk requirements.
             </p>
             <a
               href="/srk-fastener.pdf"
@@ -154,7 +153,7 @@ export default function ContactPage() {
               <div className="space-y-3">
                 <h2 className="text-2xl font-semibold text-[#2E1F44]">Contact Information</h2>
                 <p className="text-[rgba(46,31,68,0.7)]">
-                  Reach us via phone or email for immediate assistance or drop by our office for an in-person consultation.
+                  Contact SRK Bolt for product availability, RFQs, bulk-order enquiries, fastener standards, materials, grades and sourcing support for the UAE, Bahrain, Qatar, Kuwait, Saudi Arabia, Oman, Iraq and Jordan from our Sharjah office.
                 </p>
               </div>
               

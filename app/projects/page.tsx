@@ -175,10 +175,10 @@ export default function ProjectsPage() {
   ]
 
   const stats = [
-    { label: "Projects Completed", value: "500+" },
-    { label: "Years Experience", value: "25+" },
-    { label: "Cities Served", value: "50+" },
-    { label: "Quality Assurance", value: "100%" },
+    { label: "Customers Served", value: "500+" },
+    { label: "Years in Business", value: "10+" },
+    { label: "Fastener SKUs", value: "5k+" },
+    { label: "UAE Supply Base", value: "Sharjah" },
   ]
 
   return (
@@ -236,8 +236,7 @@ export default function ProjectsPage() {
           <div className="text-center mb-16">
             <h1 className="text-4xl font-bold text-[#2E1F44] mb-6">Major Projects</h1>
             <p className="text-[rgba(46,31,68,0.85)] text-xl max-w-4xl mx-auto leading-relaxed">
-              SRK Bolt has been proud to supply fasteners for numerous major infrastructure and industrial projects across India and
-              internationally. Our expertise spans multiple sectors, delivering quality solutions for complex engineering challenges.
+              Explore selected project references and application experience across infrastructure, marine, renewable energy, automotive, petrochemical and structural requirements. SRK Bolt supports project procurement with standards-based fastener sourcing, bulk-order coordination and responsive RFQ service.
             </p>
           </div>
           
@@ -291,8 +290,7 @@ export default function ProjectsPage() {
           <div className="bg-[#A02222] text-white rounded-2xl p-12 text-center shadow-[0_12px_24px_rgba(46,31,68,0.15)]">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Start Your Next Project?</h2>
             <p className="text-lg text-white/85 max-w-3xl mx-auto mb-6">
-              Join our portfolio of successful projects. Let SRK Bolt provide the quality fasteners and engineering solutions your
-              project needs.
+              Planning a project or bulk procurement requirement? Share your fastener list, BOQ, standard, grade, finish and quantities with SRK Bolt for sourcing and quotation support.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
@@ -302,7 +300,7 @@ export default function ProjectsPage() {
                 Get Project Quote
               </a>
               <a
-                href="/collections"
+                href="/products"
                 className="border-[1.5px] border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-[#A02222] transition-colors"
               >
                 Explore Products

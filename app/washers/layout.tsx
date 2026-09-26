@@ -3,11 +3,11 @@ import type { ReactNode } from "react"
 import Script from "next/script"
 
 export const metadata: Metadata = {
-  title: "Washer suppliers in Dubai, UAE - SRK BOLT",
+  title: "Washer Supplier in UAE & GCC | Industrial Washers | SRK Bolt",
   description:
-    "Find top washer suppliers and manufacturers in Dubai, UAE offering high-quality flat washers, spring washers, and stainless-steel washers with competitive price. Contact us for more +971 58 871 3064.",
+    "SRK Bolt supplies plain, spring, locking, sealing and stainless steel washers across the UAE and GCC for construction, steel, machinery and industrial fastening requirements.",
   keywords:
-    "washer suppliers in Dubai, washer manufacturers UAE, flat washers Dubai, spring washers UAE, stainless steel washers Dubai, industrial washers UAE, lock washers suppliers Dubai, plain washers UAE, fasteners suppliers Dubai",
+    "washer supplier Dubai, washers supplier UAE, plain washers UAE, spring washers Dubai, lock washers UAE, stainless steel washers UAE, sealing washers UAE",
 }
 
 export default function SegmentLayout({ children }: { children: ReactNode }) {

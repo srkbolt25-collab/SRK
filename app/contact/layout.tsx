@@ -1,6 +1,12 @@
+import type { Metadata } from "next"
 import type { ReactNode } from "react"
 import Script from "next/script"
 
+
+export const metadata: Metadata = {
+  title: "Contact SRK Bolt | Fastener RFQ UAE & GCC",
+  description: "Contact SRK Bolt in Sharjah for industrial fastener RFQs and supply enquiries across the UAE, Saudi Arabia, Qatar, Kuwait, Bahrain, Oman, Iraq and Jordan.",
+}
 export default function ContactLayout({ children }: { children: ReactNode }) {
   return (
     <>

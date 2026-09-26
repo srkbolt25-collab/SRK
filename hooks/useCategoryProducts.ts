@@ -34,10 +34,7 @@ type ApiProduct = {
   }
 }
 
-const formatPrice = (value?: number) => {
-  if (value === undefined || value === null || Number.isNaN(value)) return undefined
-  return `₹${value.toLocaleString("en-IN", { maximumFractionDigits: 2 })}`
-}
+const formatPrice = (_value?: number) => "Price on Request"
 
 const mapApiProductToCard = (product: ApiProduct): CategoryProductCard => {
   const gallery = Array.isArray(product.images)

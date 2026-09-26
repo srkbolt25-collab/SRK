@@ -1,12 +1,16 @@
 import { MongoClient, Db } from 'mongodb'
 
-const uri = process.env.MONGODB_URI!
-const dbName = process.env.MONGODB_DB_NAME!
+const uri = process.env.MONGODB_URI
+const dbName = process.env.MONGODB_DB_NAME
 
 let client: MongoClient
 let db: Db
 
 export async function connectToDatabase() {
+  if (!uri || !dbName) {
+    throw new Error('MongoDB is not configured. Set MONGODB_URI and MONGODB_DB_NAME.')
+  }
+
   if (db) {
     return { client, db }
   }

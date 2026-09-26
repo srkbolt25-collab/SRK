@@ -37,8 +37,8 @@ export const getCategoryRoute = (category: string): string => {
     "WASHERS": "/washers",
     "SCREWS": "/screws",
     "HOOK & EYE": "/hook-eye",
-    "RIVETS": "/rivets-pin-inserts",
-    "ATTACHMENTS": "/heavy-load-attachments",
+    "RIVETS": "/rivets",
+    "ATTACHMENTS": "/attachments",
     "OTHER": "/products"
   }
   return routes[category] || "/products"

@@ -70,13 +70,13 @@ export function JobOpeningsGrid({ openings }: JobOpeningsProps) {
   const uploadResume = async (file: File) => {
     const formData = new FormData()
     formData.append("file", file)
-    const response = await fetch("/api/upload", { method: "POST", body: formData })
+    const response = await fetch("/api/applications/upload", { method: "POST", body: formData })
     if (!response.ok) {
       const errorData = await response.json()
       throw new Error(errorData.error || "Failed to upload resume")
     }
     const data = await response.json()
-    return data.imageUrl as string
+    return data.fileUrl as string
   }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

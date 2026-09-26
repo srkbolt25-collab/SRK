@@ -3,11 +3,11 @@ import type { ReactNode } from "react"
 import Script from "next/script"
 
 export const metadata: Metadata = {
-  title: "Screw suppliers in Dubai, UAE - SRK BOLT",
+  title: "Screw Supplier in UAE & GCC | Industrial Screws | SRK Bolt",
   description:
-    "We provide premium quality self-tapping screws, machine screws, wood screws, and stainless-steel screws for construction, industrial, and engineering applications with fast delivery across the UAE.",
+    "Source machine screws, self-tapping screws and specialty screws across the UAE and GCC for metal, construction, manufacturing and engineering applications.",
   keywords:
-    "screw suppliers in Dubai, screw manufacturers UAE, stainless steel screws Dubai, self-tapping screws UAE, machine screws Dubai, wood screws UAE, industrial screws Dubai, fasteners suppliers UAE, drywall screws Dubai",
+    "screw supplier Dubai, screws supplier UAE, self tapping screws UAE, machine screws Dubai, stainless steel screws UAE, industrial screws UAE",
 }
 
 export default function SegmentLayout({ children }: { children: ReactNode }) {

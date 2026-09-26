@@ -3,6 +3,8 @@ import { getCollection } from '@/lib/mongodb'
 import { ObjectId } from 'mongodb'
 import { createSlug } from '@/lib/slug'
 
+export const dynamic = "force-dynamic"
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -85,7 +87,9 @@ export async function PUT(
     })
 
     if (typeof setData.name === 'string' && setData.name.trim() !== '') {
-      setData.slug = createSlug(setData.name)
+      // Keep an established product URL stable when an admin edits the display name.
+      // Only create a slug for legacy records that do not already have one.
+      setData.slug = existingProduct?.slug || createSlug(setData.name)
     }
     
     // Double-check: if technicalInformation was in body but is empty - need to remove it

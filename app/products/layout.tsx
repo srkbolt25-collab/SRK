@@ -1,6 +1,12 @@
+import type { Metadata } from "next"
 import type { ReactNode } from "react"
 import Script from "next/script"
 
+
+export const metadata: Metadata = {
+  title: "Industrial Fasteners & Fixings UAE & GCC | SRK Bolt",
+  description: "Browse SRK Bolt industrial fasteners including bolts, nuts, washers, screws, rivets, hook & eye products, heavy-load attachments and specialty fasteners.",
+}
 export default function ProductsLayout({ children }: { children: ReactNode }) {
   return (
     <>

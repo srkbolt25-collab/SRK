@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getCollection } from '@/lib/mongodb'
 import { createSlug } from '@/lib/slug'
+import { getCategoryAliases } from '@/lib/categories'
+
+export const dynamic = "force-dynamic"
 
 const escapeRegex = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 const MAX_IMAGES = 5
@@ -16,7 +19,13 @@ export async function GET(request: NextRequest) {
     const query: Record<string, any> = {}
 
     if (category) {
-      query.category = category
+      const aliases = getCategoryAliases(category)
+      query.category = {
+        $in: aliases.map((alias) => {
+          const flexibleWhitespace = escapeRegex(alias).replace(/\s+/g, '\\s+')
+          return new RegExp(`^${flexibleWhitespace}$`, 'i')
+        }),
+      }
     }
 
     if (slug) {

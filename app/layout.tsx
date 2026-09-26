@@ -3,7 +3,6 @@ import type { Metadata } from "next"
 import { Space_Grotesk, DM_Sans } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
-import { CartProvider } from "@/contexts/CartContext"
 import { ToastProvider } from "@/contexts/ToastContext"
 import { Toaster } from "@/components/ui/simple-toaster"
 import "./globals.css"
@@ -24,12 +23,12 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
-  title: "Best fasteners suppliers in Dubai, UAE - SRK BOLT",
+  metadataBase: new URL("https://www.srkbolt.com"),
+  title: "Industrial Fasteners Supplier in UAE & GCC | SRK Bolt",
   description:
-    "We are one of the best fasteners suppliers and manufacturers in Dubai, UAE. Contact us for more +971 58 871 3064",
+    "SRK Bolt is a UAE-based industrial fasteners supplier serving the UAE, Saudi Arabia, Qatar, Kuwait, Bahrain and Oman, with regional supply support for Iraq and Jordan. Source bolts, nuts, washers, screws, rivets and engineered fastening solutions for industrial projects.",
   keywords:
-    "best fasteners suppliers in Dubai, fasteners suppliers UAE, industrial fasteners Dubai, bolts and nuts suppliers UAE, stainless steel fasteners Dubai, screw suppliers UAE, anchor bolts suppliers Dubai, high tensile fasteners UAE, fastener companies Dubai",
-  generator: "v0.app",
+    "industrial fasteners supplier UAE, fasteners supplier GCC, fasteners supplier Saudi Arabia, fasteners supplier Qatar, fasteners supplier Kuwait, fasteners supplier Bahrain, fasteners supplier Oman, fasteners supplier Iraq, fasteners supplier Jordan, bolts and nuts supplier UAE",
 }
 
 export default function RootLayout({
@@ -40,14 +39,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans ${spaceGrotesk.variable} ${dmSans.variable} antialiased`}>
-        <CartProvider>
-          <ToastProvider>
-            <RFQProvider>
-              <Suspense fallback={null}>{children}</Suspense>
-              <Toaster />
-            </RFQProvider>
-          </ToastProvider>
-        </CartProvider>
+        <ToastProvider>
+          <RFQProvider>
+            <Suspense fallback={null}>{children}</Suspense>
+            <Toaster />
+          </RFQProvider>
+        </ToastProvider>
         <Analytics />
       </body>
     </html>

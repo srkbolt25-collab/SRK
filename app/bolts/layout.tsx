@@ -3,11 +3,11 @@ import type { ReactNode } from "react"
 import Script from "next/script"
 
 export const metadata: Metadata = {
-  title: "Bolt suppliers in Dubai, UAE - SRK BOLT",
+  title: "Bolt Supplier in UAE & GCC | Industrial Bolts | SRK Bolt",
   description:
-    "Find trusted bolts suppliers and manufacturers in Dubai offering high-quality fasteners, stainless steel bolts, anchor bolts, and industrial hardware. Contact us for more +971 58 871 3064",
+    "SRK Bolt supplies industrial bolts across the UAE and GCC, including hex, high-tensile, anchor, stainless steel and specialty bolts for construction, steel and engineering applications.",
   keywords:
-    "bolts suppliers in Dubai, fasteners suppliers UAE, bolt manufacturers Dubai, stainless steel bolts Dubai, anchor bolts UAE, industrial fasteners Dubai, hex bolts suppliers UAE, high tensile bolts Dubai, nuts and bolts suppliers UAE",
+    "bolt supplier Dubai, bolts supplier UAE, industrial bolts UAE, high tensile bolts Dubai, hex bolts UAE, anchor bolts UAE, stainless steel bolts UAE",
 }
 
 export default function SegmentLayout({ children }: { children: ReactNode }) {

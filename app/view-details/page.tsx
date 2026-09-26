@@ -580,15 +580,15 @@ export default function ProductDetailsPage() {
                 <div className="space-y-4 text-[#2E1F44]/80">
                   <div>
                     <h4 className="font-bold mb-2 text-[#2E1F44]">Shipping:</h4>
-                    <p>{(product as any).shippingInfo || "Free shipping on orders over ₹2,499. Standard delivery takes 5-7 business days."}</p>
+                    <p>{(product as any).shippingInfo || "Delivery lead time and freight are confirmed against destination, quantity, stock status and agreed order terms."}</p>
                   </div>
                   <div>
                     <h4 className="font-bold mb-2 text-[#2E1F44]">Returns:</h4>
-                    <p>{(product as any).returnsInfo || "30-day return policy with no questions asked. Products must be in original condition."}</p>
+                    <p>{(product as any).returnsInfo || "Returns or replacements are reviewed against the agreed quotation, product specification, order terms and condition of supplied goods."}</p>
                   </div>
                   <div>
                     <h4 className="font-bold mb-2 text-[#2E1F44]">Warranty:</h4>
-                    <p>{(product as any).warrantyInfo || "All products come with manufacturer's warranty. Contact us for warranty details."}</p>
+                    <p>{(product as any).warrantyInfo || "Applicable certification, inspection and product documentation can be confirmed against the specific item and agreed order requirements."}</p>
                   </div>
                 </div>
               </TabsContent>
@@ -611,7 +611,7 @@ export default function ProductDetailsPage() {
               {product.name}
             </p>
             <p className="text-[#2E1F44]/60 text-sm mb-6">
-              The product has been added to your RFQ list. You can continue shopping or proceed to checkout.
+              The product has been added to your RFQ list. You can continue browsing or open the RFQ list to submit your enquiry.
             </p>
             <div className="space-y-3">
               <button

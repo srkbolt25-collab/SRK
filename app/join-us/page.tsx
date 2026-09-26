@@ -6,7 +6,7 @@ const partnershipBenefits = [
     icon: Handshake,
     title: "Strategic Collaboration",
     description:
-      "Partner with SRK Bolt to deliver certified fastening solutions backed by decades of manufacturing expertise.",
+      "Partner with SRK Bolt to support industrial fastening requirements through established sourcing, technical product knowledge and responsive regional supply service.",
   },
   {
     icon: ShieldCheck,
@@ -135,7 +135,7 @@ export default function JoinUsPage() {
           <div className="max-w-5xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-[#2E1F44]">Why Partner With SRK Bolt?</h2>
             <p className="mt-4 text-[#2E1F44]/70 text-lg">
-              Leverage our manufacturing depth, technical know-how, and market intelligence to deliver seamless
+              Leverage our sourcing network, technical product knowledge, and market intelligence to deliver seamless
               fastening programs for enterprises of every scale.
             </p>
           </div>

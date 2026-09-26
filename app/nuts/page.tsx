@@ -127,9 +127,9 @@ export default function NutsPage() {
         <div className="max-w-7xl mx-auto">
           {/* Page Header */}
           <div className="text-center mb-16">
-            <h1 className="text-4xl font-bold text-[#2E1F44] mb-6">Nuts Collection</h1>
+            <h1 className="text-4xl font-bold text-[#2E1F44] mb-6">Industrial Nuts Supplier in UAE & GCC</h1>
             <p className="text-[rgba(46,31,68,0.85)] text-xl max-w-4xl mx-auto leading-relaxed">
-              Explore our comprehensive range of nuts designed for every fastening need, from heavy-duty industrial applications to precision assemblies.
+              Explore industrial nuts for construction, structural, machinery and engineering applications. SRK Bolt supports enquiries for hex, lock, flange, coupling and specialty nuts in multiple materials, grades, threads and finishes, with UAE-based bulk-order and project RFQ support for customers across the GCC, Iraq and Jordan.
             </p>
           </div>
 
@@ -147,7 +147,7 @@ export default function NutsPage() {
           {/* Product Grid */}
           {(!nutsLoading && nutsProducts.length === 0) ? (
             <div className="mb-16 rounded-2xl border border-dashed border-gray-300 bg-gray-50 p-12 text-center text-gray-500">
-              No nuts are currently available. Add new products from the admin dashboard to populate this collection.
+              Our online nut listings are being updated. Send us the required standard, thread, size, grade, material, finish and quantity for current availability and quotation.
             </div>
           ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
@@ -214,9 +214,9 @@ export default function NutsPage() {
                   <div className="w-16 h-16 bg-[#A02222]/15 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Shield className="w-8 h-8 text-[#A02222]" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">High Strength</h3>
+                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Grades & Materials</h3>
                   <p className="text-[rgba(46,31,68,0.85)] text-sm leading-relaxed">
-                    Manufactured from premium alloys to ensure excellent tensile strength and durability.
+                    Multiple grade, material and coating options can be sourced to suit industrial, structural and corrosion-related requirements.
                   </p>
                 </div>
               </div>
@@ -225,9 +225,9 @@ export default function NutsPage() {
                   <div className="w-16 h-16 bg-[#A02222]/15 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Settings className="w-8 h-8 text-[#A02222]" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Precision Threads</h3>
+                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Thread & Standard Matching</h3>
                   <p className="text-[rgba(46,31,68,0.85)] text-sm leading-relaxed">
-                    Achieves consistent engagement with bolts for reliable fastening performance.
+                    Thread form, pitch, standard and matching bolt requirements are reviewed to support correct joint compatibility.
                   </p>
                 </div>
               </div>
@@ -236,9 +236,9 @@ export default function NutsPage() {
                   <div className="w-16 h-16 bg-[#A02222]/15 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Factory className="w-8 h-8 text-[#A02222]" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Wide Applications</h3>
+                  <h3 className="text-xl font-semibold text-[#2E1F44] mb-3">Project & Bulk Supply</h3>
                   <p className="text-[rgba(46,31,68,0.85)] text-sm leading-relaxed">
-                    Ideal for manufacturing, construction, automotive, and heavy engineering industries.
+                    Support for construction, fabrication, machinery, maintenance and other industrial requirements across the UAE.
                   </p>
                 </div>
                 </div>
@@ -252,14 +252,14 @@ export default function NutsPage() {
       <section className="py-16 bg-[#A02222] text-white">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto space-y-6">
-            <h2 className="text-3xl md:text-4xl font-bold">Need Custom Nuts?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold">Need Nuts for a Project or Bulk Order?</h2>
             <p className="text-lg text-white/85 max-w-2xl mx-auto">
-              Contact our engineering team for custom nut specifications and bulk orders. We provide tailored fastening solutions for your specific requirements.
+              Share the required nut standard, thread, size, grade, finish and quantity. Our team can help identify suitable options and prepare an RFQ for your requirement.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2">
               <button className="bg-white text-[#A02222] border border-white hover:bg-[#2E1F44] hover:text-white transition-colors duration-300 font-semibold px-8 py-3 rounded-lg flex items-center justify-center gap-2 shadow-lg">
                 <ExternalLink className="w-5 h-5" />
-                Get Custom Quote
+                Request Quote
               </button>
               <button className="border-[1.5px] border-white text-white hover:bg-white hover:text-[#A02222] transition-colors duration-300 font-semibold px-8 py-3 rounded-lg flex items-center justify-center gap-2">
                 <ExternalLink className="w-5 h-5" />
@@ -284,7 +284,7 @@ export default function NutsPage() {
               {rfqProductName}
             </p>
             <p className="text-gray-500 text-sm mb-6">
-              The product has been added to your RFQ list. You can continue shopping or proceed to checkout.
+              The product has been added to your RFQ list. You can continue browsing or open the RFQ list to submit your enquiry.
             </p>
             <div className="space-y-3">
               <button

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server"
 import { getCollection } from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
 
+export const dynamic = "force-dynamic"
+
 const sanitizeString = (value: unknown, fallback = ""): string => {
   if (typeof value !== "string") return fallback
   return value.trim()

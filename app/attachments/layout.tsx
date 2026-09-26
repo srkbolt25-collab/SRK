@@ -3,11 +3,11 @@ import type { ReactNode } from "react"
 import Script from "next/script"
 
 export const metadata: Metadata = {
-  title: "Heavy load attachment suppliers in Dubai, UAE - SRK BOLT",
+  title: "Heavy Load Attachments Supplier in UAE & GCC | SRK Bolt",
   description:
-    "Heavy load attachment suppliers in Dubai, UAE offering high-quality lifting anchors, eye bolts, shackles, and rigging hardware with fast delivery across the UAE.",
+    "SRK Bolt supplies heavy-load attachments and industrial fastening hardware across the UAE and GCC for construction, structural and engineering requirements.",
   keywords:
-    "heavy load attachment suppliers Dubai, lifting equipment suppliers UAE, rigging hardware Dubai, eye bolts and shackles UAE, lifting anchors Dubai, heavy duty fasteners UAE, industrial lifting solutions Dubai, turnbuckles suppliers UAE, load lifting accessories Dubai",
+    "heavy load attachments UAE, industrial attachments Dubai, heavy duty fasteners UAE, structural fastening hardware Dubai, project fasteners UAE",
 }
 
 export default function SegmentLayout({ children }: { children: ReactNode }) {
