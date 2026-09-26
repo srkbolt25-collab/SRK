@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ChevronRight, Settings, Map, Menu, X } from "lucide-react"
+import { ChevronRight, Settings, Map, Menu, X, Globe2 } from "lucide-react"
 
 export default function ProductCategoriesNav() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -138,6 +138,33 @@ export default function ProductCategoriesNav() {
                 label="OTHER PRODUCTS"
                 onClick={closeMobileMenu}
               />
+              <div className="border-t border-white/20 mt-2 pt-2">
+                <MobileCategoryLink
+                  href="/countries"
+                  icon={<Globe2 className="w-4 h-4" />}
+                  label="COUNTRIES WE SERVE"
+                  onClick={closeMobileMenu}
+                />
+                {[
+                  ["UAE", "/uae/products"],
+                  ["Saudi Arabia", "/saudi-arabia/products"],
+                  ["Qatar", "/qatar/products"],
+                  ["Kuwait", "/kuwait/products"],
+                  ["Bahrain", "/bahrain/products"],
+                  ["Oman", "/oman/products"],
+                  ["Iraq", "/iraq/products"],
+                  ["Jordan", "/jordan/products"],
+                ].map(([label, href]) => (
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={closeMobileMenu}
+                    className="block pl-11 pr-4 py-2 text-sm text-white/90 hover:bg-white/10 hover:text-white"
+                  >
+                    {label}
+                  </Link>
+                ))}
+              </div>
               <MobileCategoryLink
                 href="/contact"
                 icon={<Map className="w-4 h-4" />}

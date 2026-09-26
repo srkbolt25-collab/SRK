@@ -35,6 +35,8 @@ export default function Footer() {
               <Link href="/oman/products" className="hover:text-[#A02222]">Oman</Link> •{" "}
               <Link href="/iraq/products" className="hover:text-[#A02222]">Iraq</Link> •{" "}
               <Link href="/jordan/products" className="hover:text-[#A02222]">Jordan</Link>
+              <span className="mx-1">•</span>
+              <Link href="/countries" className="font-semibold hover:text-[#A02222]">All Countries</Link>
             </div>
 
           </div>
