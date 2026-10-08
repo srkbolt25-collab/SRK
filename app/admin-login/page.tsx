@@ -41,25 +41,42 @@ export default function AdminLoginPage() {
     setLoading(true)
 
     try {
-      const response = await fetch("/api/admin/login", {
+      const response = await fetch("/api/admin-login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          username: formData.username.trim(),
+          password: formData.password,
+        }),
       })
-      const data = await response.json()
-      if (!response.ok) throw new Error(data.error || "Login failed")
+
+      const result = await response.json().catch(() => null)
+
+      if (!response.ok || !result?.success) {
+        toast({
+          title: "Error",
+          description: result?.message || "Invalid username or password",
+          variant: "destructive"
+        })
+        return
+      }
+
+      localStorage.setItem("adminLoggedIn", "true")
+      localStorage.setItem("adminSession", result.session || Date.now().toString())
 
       toast({
         title: "Success",
         description: "Login successful! Redirecting to dashboard...",
         variant: "success"
       })
-      router.push("/admin-dashboard")
-      router.refresh()
+
+      setTimeout(() => {
+        router.push("/admin-dashboard")
+      }, 700)
     } catch (error) {
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Invalid username or password",
+        description: "Login service error. Please try again.",
         variant: "destructive"
       })
     } finally {
@@ -169,7 +186,7 @@ export default function AdminLoginPage() {
         {/* Footer */}
         <div className="mt-6 text-center">
           <p className="text-white/80 text-sm">
-            © {new Date().getFullYear()} SRK BOLT. All rights reserved.
+            © 2024 SRK BOLT. All rights reserved.
           </p>
         </div>
       </div>
