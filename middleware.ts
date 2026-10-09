@@ -1,9 +1,16 @@
 import { NextRequest, NextResponse } from "next/server"
 
+function getAdminPassword() {
+  return process.env.ADMIN_PASSWORD || "srk@bolt@2026*#"
+}
+
+function getAdminSessionToken() {
+  return process.env.ADMIN_SESSION_TOKEN || `srk-admin-session-${getAdminPassword()}`
+}
+
 function isAdmin(request: NextRequest) {
-  const expected = process.env.ADMIN_SESSION_TOKEN
   const current = request.cookies.get("srk_admin_session")?.value
-  return Boolean(expected && current === expected)
+  return current === getAdminSessionToken()
 }
 
 function apiRequiresAdmin(request: NextRequest) {
