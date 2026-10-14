@@ -7,6 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import WysiwygEditor from "@/components/admin/WysiwygEditor"
+import { stripHtml } from "@/components/RichTextRenderer"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
@@ -1430,7 +1432,7 @@ export default function AdminDashboard() {
         ...blogForm,
         slug: blogForm.slug.trim() || slugify(blogForm.title),
         metaTitle: blogForm.metaTitle || blogForm.title,
-        metaDescription: blogForm.metaDescription || (contentParagraphs[0] ? contentParagraphs[0].slice(0, 160) : ""),
+        metaDescription: blogForm.metaDescription || (contentParagraphs[0] ? stripHtml(contentParagraphs[0]).slice(0, 160) : ""),
         publishedAt: blogForm.publishedAt || new Date().toISOString(),
       }
 
@@ -2512,12 +2514,11 @@ export default function AdminDashboard() {
                   {/* Product Description */}
                   <div className="space-y-2">
                     <Label htmlFor="description">Product Description</Label>
-                    <Textarea
-                      id="description"
+                    <WysiwygEditor
                       value={editingProduct ? editFormData.description : formData.description}
-                      onChange={(e) => editingProduct ? handleEditInputChange("description", e.target.value) : handleInputChange("description", e.target.value)}
+                      onChange={(value) => editingProduct ? handleEditInputChange("description", value) : handleInputChange("description", value)}
                       placeholder="Enter product description"
-                      rows={4}
+                      minHeight="190px"
                     />
                   </div>
 
@@ -2557,12 +2558,11 @@ export default function AdminDashboard() {
                   {/* Technical Information */}
                   <div className="space-y-2">
                     <Label htmlFor="technicalInformation">Technical Information</Label>
-                    <Textarea
-                      id="technicalInformation"
+                    <WysiwygEditor
                       value={editingProduct ? editFormData.technicalInformation : formData.technicalInformation}
-                      onChange={(e) => editingProduct ? handleEditInputChange("technicalInformation", e.target.value) : handleInputChange("technicalInformation", e.target.value)}
+                      onChange={(value) => editingProduct ? handleEditInputChange("technicalInformation", value) : handleInputChange("technicalInformation", value)}
                       placeholder="Enter technical information and specifications"
-                      rows={4}
+                      minHeight="190px"
                     />
                   </div>
 
@@ -2623,34 +2623,31 @@ export default function AdminDashboard() {
 
                     <div className="space-y-2">
                       <Label htmlFor="shippingInfo">Shipping:</Label>
-                      <Textarea
-                        id="shippingInfo"
+                      <WysiwygEditor
                         value={editingProduct ? editFormData.shippingInfo : formData.shippingInfo}
-                        onChange={(e) => editingProduct ? handleEditInputChange("shippingInfo", e.target.value) : handleInputChange("shippingInfo", e.target.value)}
+                        onChange={(value) => editingProduct ? handleEditInputChange("shippingInfo", value) : handleInputChange("shippingInfo", value)}
                         placeholder="Delivery lead time and freight are confirmed against destination, quantity, stock status and agreed order terms."
-                        rows={2}
+                        minHeight="120px"
                       />
                     </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="returnsInfo">Returns:</Label>
-                      <Textarea
-                        id="returnsInfo"
+                      <WysiwygEditor
                         value={editingProduct ? editFormData.returnsInfo : formData.returnsInfo}
-                        onChange={(e) => editingProduct ? handleEditInputChange("returnsInfo", e.target.value) : handleInputChange("returnsInfo", e.target.value)}
+                        onChange={(value) => editingProduct ? handleEditInputChange("returnsInfo", value) : handleInputChange("returnsInfo", value)}
                         placeholder="Returns or replacements are reviewed against the agreed quotation, product specification, order terms and condition of supplied goods."
-                        rows={2}
+                        minHeight="120px"
                       />
                     </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="warrantyInfo">Warranty:</Label>
-                      <Textarea
-                        id="warrantyInfo"
+                      <WysiwygEditor
                         value={editingProduct ? editFormData.warrantyInfo : formData.warrantyInfo}
-                        onChange={(e) => editingProduct ? handleEditInputChange("warrantyInfo", e.target.value) : handleInputChange("warrantyInfo", e.target.value)}
+                        onChange={(value) => editingProduct ? handleEditInputChange("warrantyInfo", value) : handleInputChange("warrantyInfo", value)}
                         placeholder="Applicable certification, inspection and product documentation can be confirmed against the specific item and agreed order requirements."
-                        rows={2}
+                        minHeight="120px"
                       />
                     </div>
                   </div>
@@ -3582,24 +3579,12 @@ export default function AdminDashboard() {
                         <div key={index} className="flex gap-2 items-start">
                           <div className="flex-1 space-y-2">
                             <div className="relative">
-                              <Textarea
-                                id={`paragraph-${index}`}
+                              <WysiwygEditor
                                 value={paragraph}
-                                onChange={(e) => handleParagraphChange(index, e.target.value)}
+                                onChange={(value) => handleParagraphChange(index, value)}
                                 placeholder={`Paragraph ${index + 1}`}
-                                rows={4}
-                                className="min-h-[100px] pr-12"
+                                minHeight="160px"
                               />
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                size="sm"
-                                className="absolute top-2 right-2 h-8 w-8 p-0 hover:bg-gray-100"
-                                onClick={() => toggleBold(index)}
-                                title="Bold Text"
-                              >
-                                <Bold className="h-4 w-4" />
-                              </Button>
                             </div>
                           </div>
                           <div className="pt-2">
