@@ -5,6 +5,7 @@ import Link from "next/link"
 import { notFound, redirect } from "next/navigation"
 import Layout from "@/components/Layout"
 import { blogExcerpt, getBlogByIdentifier, getRecentBlogs } from "@/lib/blogs"
+import { containsHtml, sanitizeRichText } from "@/components/RichTextRenderer"
 
 export const dynamic = "force-dynamic"
 
@@ -40,6 +41,10 @@ function renderInline(text: string): ReactNode[] {
 }
 
 function renderContent(content: string) {
+  if (containsHtml(content)) {
+    return [<div key="html-content" dangerouslySetInnerHTML={{ __html: sanitizeRichText(content) }} />]
+  }
+
   const blocks = content.split(/\n\s*\n/).map((block) => block.trim()).filter(Boolean)
 
   return blocks.map((block, index) => {
