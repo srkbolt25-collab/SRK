@@ -3,11 +3,13 @@ import type { ReactNode } from "react"
 import Script from "next/script"
 
 export const metadata: Metadata = {
-  title: "Rivets, Pins & Inserts Supplier in UAE & GCC | SRK Bolt",
+  alternates: { canonical: "/rivets-pin-inserts" },
+  robots: { index: false, follow: true },
+  title: "Rivets pin and inserts suppliers in Dubai, UAE - SRK BOLT",
   description:
-    "Source rivets, pins and threaded inserts across the UAE and GCC for industrial assembly, fabrication, automotive and engineering applications.",
+    "We are one of the best Rivets, pin and inserts suppliers and manufacturers in Dubai, UAE. Contact us for more +971 58 871 3064",
   keywords:
-    "rivets supplier UAE, pins supplier Dubai, threaded inserts UAE, blind rivets Dubai, industrial rivets UAE, fastening inserts UAE",
+    "rivets suppliers in Dubai, rivet manufacturers UAE, blind rivets Dubai, pins suppliers UAE, dowel pins Dubai, spring pins UAE, threaded inserts Dubai, industrial fasteners UAE, pop rivets suppliers Dubai",
 }
 
 export default function SegmentLayout({ children }: { children: ReactNode }) {
