@@ -29,6 +29,7 @@ import {
 import { findProductByName, findProductById, getCategoryRoute, type HusainiProduct } from "@/data/husaini-products"
 import { useRFQ } from "@/contexts/RFQContext"
 import { createSlug } from "@/lib/slug"
+import RichTextRenderer from "@/components/RichTextRenderer"
 
 export default function ProductDetailsPage() {
   const searchParams = useSearchParams()
@@ -526,9 +527,10 @@ export default function ProductDetailsPage() {
 
               <TabsContent value="description" className="space-y-4">
                 <h3 className="text-2xl font-bold text-[#2E1F44]">Product Description</h3>
-                <p className="text-[#2E1F44]/80 leading-relaxed">
-                  {product.description}
-                </p>
+                <RichTextRenderer
+                  content={product.description}
+                  className="rich-text-content text-[#2E1F44]/80 leading-relaxed space-y-3"
+                />
                 
                 {/* Material Specifications */}
                 {(product.specifications?.material || product.material || product.specifications?.coating || product.coating || product.specifications?.grades || product.grades || product.specifications?.tensileStrength) && (
@@ -569,9 +571,10 @@ export default function ProductDetailsPage() {
                rawProductData.technicalInformation.trim() !== "" && (
                 <TabsContent value="technical" className="space-y-4">
                   <h3 className="text-2xl font-bold text-[#2E1F44]">Technical Information</h3>
-                  <div className="text-[#2E1F44]/80 leading-relaxed whitespace-pre-wrap">
-                    {rawProductData.technicalInformation}
-                  </div>
+                  <RichTextRenderer
+                    content={rawProductData.technicalInformation}
+                    className="rich-text-content text-[#2E1F44]/80 leading-relaxed space-y-3"
+                  />
                 </TabsContent>
               )}
 
@@ -580,15 +583,24 @@ export default function ProductDetailsPage() {
                 <div className="space-y-4 text-[#2E1F44]/80">
                   <div>
                     <h4 className="font-bold mb-2 text-[#2E1F44]">Shipping:</h4>
-                    <p>{(product as any).shippingInfo || "Delivery lead time and freight are confirmed against destination, quantity, stock status and agreed order terms."}</p>
+                    <RichTextRenderer
+                      content={(product as any).shippingInfo || "Delivery lead time and freight are confirmed against destination, quantity, stock status and agreed order terms."}
+                      className="rich-text-content space-y-2"
+                    />
                   </div>
                   <div>
                     <h4 className="font-bold mb-2 text-[#2E1F44]">Returns:</h4>
-                    <p>{(product as any).returnsInfo || "Returns or replacements are reviewed against the agreed quotation, product specification, order terms and condition of supplied goods."}</p>
+                    <RichTextRenderer
+                      content={(product as any).returnsInfo || "Returns or replacements are reviewed against the agreed quotation, product specification, order terms and condition of supplied goods."}
+                      className="rich-text-content space-y-2"
+                    />
                   </div>
                   <div>
                     <h4 className="font-bold mb-2 text-[#2E1F44]">Warranty:</h4>
-                    <p>{(product as any).warrantyInfo || "Applicable certification, inspection and product documentation can be confirmed against the specific item and agreed order requirements."}</p>
+                    <RichTextRenderer
+                      content={(product as any).warrantyInfo || "Applicable certification, inspection and product documentation can be confirmed against the specific item and agreed order requirements."}
+                      className="rich-text-content space-y-2"
+                    />
                   </div>
                 </div>
               </TabsContent>
