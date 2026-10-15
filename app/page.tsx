@@ -457,6 +457,18 @@ export default function SRKBoltHomepage() {
                 <div className="text-4xl font-bold mb-2">500+</div>
                 <div className="text-sm">Happy Customers</div>
               </div>
+              <a href="/certificates" className="block mt-4 group" aria-label="View SRK Metals ISO certificates">
+                <div className="overflow-hidden rounded-md bg-white border border-gray-200 shadow-sm transition-shadow group-hover:shadow-lg">
+                  <img
+                    src="/certificates/srk-metals-iso-accreditation-graphic.png"
+                    alt="IAF and EIAC marks with ISO 9001, ISO 14001 and ISO 45001 standards for SRK Metals FZE-LLC"
+                    width="1901"
+                    height="767"
+                    className="w-full h-auto object-contain block"
+                    loading="lazy"
+                  />
+                </div>
+              </a>
             </div>
           </div>
         </div>
