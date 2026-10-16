@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import WysiwygEditor from "@/components/admin/WysiwygEditor"
+import RichTextEditor from "@/components/admin/RichTextEditor"
 import { stripHtml } from "@/components/RichTextRenderer"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -227,6 +228,7 @@ export default function AdminDashboard() {
   const [submittingBlog, setSubmittingBlog] = useState(false)
   const [editingBlog, setEditingBlog] = useState<Blog | null>(null)
   const [blogForm, setBlogForm] = useState(emptyBlogForm)
+  const [uploadingBlogCover, setUploadingBlogCover] = useState(false)
   const [openings, setOpenings] = useState<Opening[]>([])
   const [loadingOpenings, setLoadingOpenings] = useState(false)
   const [submittingOpening, setSubmittingOpening] = useState(false)
@@ -1364,6 +1366,37 @@ export default function AdminDashboard() {
     }))
   }
 
+  const handleBlogCoverUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+    event.target.value = ""
+    if (!["image/jpeg", "image/png", "image/webp", "image/gif"].includes(file.type)) {
+      toast({ title: "Unsupported image", description: "Choose a JPG, PNG, WebP or GIF image.", variant: "error" })
+      return
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      toast({ title: "Image too large", description: "Maximum file size is 5 MB.", variant: "error" })
+      return
+    }
+    try {
+      setUploadingBlogCover(true)
+      const body = new FormData()
+      body.append("file", file)
+      body.append("folder", "blogs")
+      const response = await fetch("/api/upload", { method: "POST", body })
+      const payload = await response.json().catch(() => ({}))
+      if (!response.ok || !payload.imageUrl) {
+        throw new Error(payload.error || payload.details || `Upload failed (${response.status})`)
+      }
+      setBlogForm((previous) => ({ ...previous, coverImage: payload.imageUrl }))
+      toast({ title: "Blog image uploaded", description: "The cover image is ready. Save the blog to publish the change.", variant: "success" })
+    } catch (error) {
+      toast({ title: "Blog image upload failed", description: error instanceof Error ? error.message : "Please try again.", variant: "error" })
+    } finally {
+      setUploadingBlogCover(false)
+    }
+  }
+
   const handleBlogInputChange = (field: string, value: string) => {
     setBlogForm((prev) => ({
       ...prev,
@@ -1432,7 +1465,7 @@ export default function AdminDashboard() {
         ...blogForm,
         slug: blogForm.slug.trim() || slugify(blogForm.title),
         metaTitle: blogForm.metaTitle || blogForm.title,
-        metaDescription: blogForm.metaDescription || (contentParagraphs[0] ? stripHtml(contentParagraphs[0]).slice(0, 160) : ""),
+        metaDescription: blogForm.metaDescription || stripHtml(blogForm.content).slice(0, 160),
         publishedAt: blogForm.publishedAt || new Date().toISOString(),
       }
 
@@ -3574,44 +3607,12 @@ export default function AdminDashboard() {
                     </div>
 
                     <div className="space-y-4">
-                      <Label>Content (Paragraphs)</Label>
-                      {contentParagraphs.map((paragraph, index) => (
-                        <div key={index} className="flex gap-2 items-start">
-                          <div className="flex-1 space-y-2">
-                            <div className="relative">
-                              <WysiwygEditor
-                                value={paragraph}
-                                onChange={(value) => handleParagraphChange(index, value)}
-                                placeholder={`Paragraph ${index + 1}`}
-                                minHeight="160px"
-                              />
-                            </div>
-                          </div>
-                          <div className="pt-2">
-                            {contentParagraphs.length > 1 && (
-                              <Button
-                                type="button"
-                                variant="outline"
-                                size="icon"
-                                onClick={() => removeParagraph(index)}
-                                className="h-9 w-9 text-red-600 hover:text-red-700 hover:bg-red-50"
-                              >
-                                <X className="h-4 w-4" />
-                              </Button>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={addParagraph}
-                        className="w-full border-dashed"
-                      >
-                        <Plus className="h-4 w-4 mr-2" />
-                        Add Paragraph
-                      </Button>
+                      <Label>Blog Content (Visual / HTML Editor)</Label>
+                      <RichTextEditor
+                        value={blogForm.content}
+                        onChange={(value) => handleBlogInputChange("content", value)}
+                        placeholder="Write your full blog here..."
+                      />
                     </div>
 
                     <div className="space-y-2">
@@ -3622,6 +3623,20 @@ export default function AdminDashboard() {
                         onChange={(e) => handleBlogInputChange("coverImage", e.target.value)}
                         placeholder="https://example.com/blog-cover.jpg"
                       />
+                      <Input
+                        id="blog-cover-upload"
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp,image/gif"
+                        onChange={handleBlogCoverUpload}
+                        disabled={uploadingBlogCover}
+                      />
+                      <p className="text-xs text-gray-500">Upload a JPG, PNG, WebP or GIF (up to 5 MB). This uses the website's Cloudinary upload service.</p>
+                      {uploadingBlogCover && <p className="text-sm text-blue-600">Uploading blog image...</p>}
+                      {blogForm.coverImage && (
+                        <div className="rounded-lg border p-2">
+                          <img src={blogForm.coverImage} alt="Blog cover preview" className="max-h-48 w-auto max-w-full rounded object-contain" />
+                        </div>
+                      )}
                     </div>
 
                     <div className="space-y-2">
