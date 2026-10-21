@@ -36,6 +36,24 @@ interface Blog {
   publishedAt?: string
 }
 
+// Convert rich HTML blog content into a readable plain-text card summary.
+// This is presentation-only: it never changes saved blog content.
+function plainTextExcerpt(value: string): string {
+  return value
+    .replace(/<!--[\s\S]*?-->/g, " ")
+    .replace(/<\s*br\s*\/?\s*>/gi, " ")
+    .replace(/<\/\s*(?:p|div|h[1-6]|li|blockquote)\s*>/gi, " ")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&(?:nbsp|#160);/gi, " ")
+    .replace(/&(?:amp|#38);/gi, "&")
+    .replace(/&(?:lt|#60);/gi, "<")
+    .replace(/&(?:gt|#62);/gi, ">")
+    .replace(/&(?:quot|#34);/gi, '\"')
+    .replace(/&#(?:39|x27);/gi, "'")
+    .replace(/\s+/g, " ")
+    .trim()
+}
+
 export default function BlogsPage() {
   const [blogs, setBlogs] = useState<Blog[]>([])
   const [loading, setLoading] = useState(true)
@@ -216,8 +234,9 @@ export default function BlogsPage() {
               {blogs.map((post) => {
                 const previewSource =
                   (post.content && post.content.trim().length > 0 ? post.content : (post as any).excerpt || "") || ""
+                const previewText = plainTextExcerpt(previewSource)
                 const preview =
-                  previewSource.length > 150 ? `${previewSource.slice(0, 150)}…` : previewSource
+                  previewText.length > 150 ? `${previewText.slice(0, 150).trimEnd()}…` : previewText
                 const formattedDate = post.publishedAt
                   ? new Date(post.publishedAt).toLocaleDateString("en-IN", {
                     day: "numeric",
