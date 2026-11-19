@@ -252,19 +252,19 @@ export default function MainHeader() {
             <div className="flex items-center">
               <span className="bg-[#A02222] hover:bg-[#2E1F44] transition-colors px-3 py-2 rounded-lg flex items-center gap-2 text-white">
                 <Phone className="w-4 h-4" />
-                +971 58 871 3064
+                +971 58 660 0485
               </span>
             </div>
             <button
               onClick={() => {
-                const phoneNumber = "971588713064"
+                const phoneNumber = "971586600485"
                 const whatsappUrl = `https://wa.me/${phoneNumber}`
                 window.open(whatsappUrl, "_blank")
               }}
               className="bg-[#A02222] hover:bg-[#2E1F44] transition-colors px-3 py-2 rounded-lg flex items-center gap-2 text-white"
             >
               <MessageCircle className="w-4 h-4" />
-              Message Us
+              Chat With Us
             </button>
             <Link href="/rfq" className="relative">
               <span className="bg-[#A02222] hover:bg-[#2E1F44] transition-colors px-3 py-2 rounded-lg flex items-center gap-2 text-white">

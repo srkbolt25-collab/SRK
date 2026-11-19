@@ -225,7 +225,7 @@ export function JobOpeningsGrid({ openings }: JobOpeningsProps) {
                   id="applicant-phone"
                   value={formState.phone}
                   onChange={(e) => handleInputChange("phone", e.target.value)}
-                  placeholder="+971 58 871 3064"
+                  placeholder="+971 58 660 0485"
                   required
                 />
               </div>
