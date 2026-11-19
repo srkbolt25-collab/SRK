@@ -3,7 +3,7 @@ import { srkProducts, type SRKProduct } from "@/data/srk-products"
 
 export const siteUrl = "https://www.srkbolt.com"
 export const companyName = "SRK Bolts"
-export const phone = "+971 58 871 3064"
+export const phone = "+971 58 660 0485"
 export const email = "sales@srkbolt.com"
 
 export type SeoCategory = {

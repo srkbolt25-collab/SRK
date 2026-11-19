@@ -32,7 +32,7 @@ const updates = [
     name: "DIN 603 Carriage Bolt/ Mushroom Head Bolt",
     title: "DIN 603 Carriage Bolt and Mushroom Head Bolt - SRK BOLT",
     description:
-      "High-quality DIN 603 Carriage Bolts Mushroom Head Bolts designed for secure fastening in wood, metal, and construction applications. Manufactured from durable steel with a smooth rounded head and square neck to prevent rotation, these mushroom head bolts. Contact us for more +971 58 871 3064",
+      "High-quality DIN 603 Carriage Bolts Mushroom Head Bolts designed for secure fastening in wood, metal, and construction applications. Manufactured from durable steel with a smooth rounded head and square neck to prevent rotation, these mushroom head bolts. Contact us for more +971 58 660 0485",
     keywords:
       "DIN 603 Carriage Bolt and Mushroom Head Bolt, DIN 603 Carriage Bolt, Mushroom Head Bolt, Square Neck Bolt, Heavy-Duty Fastener, Steel Carriage Bolt.",
   },
@@ -56,7 +56,7 @@ const updates = [
     name: "DIN 7380 Button Head Allen Bolt",
     title: "DIN 7380 Button Head Allen Bolt - SRK BOLT",
     description:
-      "Premium DIN 7380 Button Head Allen Bolts designed for precise and secure fastening in machinery, automotive, and industrial applications. Featuring a smooth button head and hex socket drive, these bolts provide a sleek appearance and strong holding power. Contact us for more +971 58 871 3064",
+      "Premium DIN 7380 Button Head Allen Bolts designed for precise and secure fastening in machinery, automotive, and industrial applications. Featuring a smooth button head and hex socket drive, these bolts provide a sleek appearance and strong holding power. Contact us for more +971 58 660 0485",
     keywords:
       "DIN 7380 Button Head Allen Bolt, Button Head Hex Socket Bolt, Allen Bolt for Machinery, High Strength Allen Bolts, Industrial Fasteners.",
   },
