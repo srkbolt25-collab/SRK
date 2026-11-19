@@ -149,7 +149,7 @@ export default function CountryProductsClient({
   }, [products])
 
   const handleWhatsApp = (product: CountryProduct) => {
-    const phoneNumber = "971588713064"
+    const phoneNumber = "971586600485"
     const message = `Hello SRK Bolt, I need a quotation for ${product.name} for ${market.country}.\n\nProduct: ${product.name}\nCategory: ${product.category}\nDestination market: ${market.country}\n\nPlease share availability and quotation.`
     window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer")
   }

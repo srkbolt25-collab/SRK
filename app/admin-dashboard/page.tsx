@@ -3953,7 +3953,7 @@ export default function AdminDashboard() {
                           id="contact-tel"
                           value={contactForm.tel}
                           onChange={(e) => handleContactInputChange("tel", e.target.value)}
-                          placeholder="e.g., +971 58 871 3064"
+                          placeholder="e.g., +971 58 660 0485"
                           required
                         />
                       </div>

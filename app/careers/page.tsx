@@ -210,10 +210,10 @@ export default async function CareersPage() {
                   <ArrowRight className="w-5 h-5" />
                 </a>
                 <a
-                  href="tel:+971588713064"
+                  href="tel:+971586600485"
                   className="inline-flex items-center justify-center gap-2 border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-red-600 font-bold transition-all transform hover:scale-105"
                 >
-                  +971 58 871 3064
+                  +971 58 660 0485
                   <ArrowRight className="w-5 h-5" />
                 </a>
               </div>

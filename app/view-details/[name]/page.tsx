@@ -203,7 +203,7 @@ export default function ProductDetailsPage() {
 
   // Function to generate WhatsApp URL with product information
   const handleWhatsAppClick = () => {
-    const phoneNumber = "971588713064"
+    const phoneNumber = "971586600485"
     const message = `Hello! I'm interested in this product:\n\nProduct Name: ${product.name}\nCategory: ${product.category}\nStandard: ${product.standard || 'N/A'}\n\nPlease provide more information, pricing, and availability.`
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank')

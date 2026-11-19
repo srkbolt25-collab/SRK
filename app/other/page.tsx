@@ -15,7 +15,7 @@ export default function OtherFastenersPage() {
   const [rfqProductName, setRfqProductName] = useState("")
 
   const handleWhatsAppClick = (product: { name: string; category: string }) => {
-    const phoneNumber = "971588713064"
+    const phoneNumber = "971586600485"
     const message = `Hello! I'm interested in this product:\n\nProduct Name: ${product.name}\nCategory: ${product.category}\n\nPlease provide more information about this product.`
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, "_blank")

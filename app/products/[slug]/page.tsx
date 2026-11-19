@@ -99,7 +99,7 @@ export default function ProductCleanPage({ params }: { params: { slug: string } 
               </div>
               <div className="flex flex-col gap-3 sm:flex-row">
                 <Link href="/rfq" className="inline-flex items-center justify-center rounded-lg bg-[#A02222] px-5 py-3 text-sm font-bold text-white hover:bg-[#2E1F44]"><FileText className="mr-2 h-4 w-4" /> Add to RFQ</Link>
-                <a href={`https://wa.me/971588713064?text=${encodeURIComponent(`Hello SRK Bolts, I need quotation for ${product.name}.`)}`} className="inline-flex items-center justify-center rounded-lg bg-[#25D366] px-5 py-3 text-sm font-bold text-white hover:bg-[#1ebe5a]"><MessageCircle className="mr-2 h-4 w-4" /> WhatsApp</a>
+                <a href={`https://wa.me/971586600485?text=${encodeURIComponent(`Hello SRK Bolts, I need quotation for ${product.name}.`)}`} className="inline-flex items-center justify-center rounded-lg bg-[#25D366] px-5 py-3 text-sm font-bold text-white hover:bg-[#1ebe5a]"><MessageCircle className="mr-2 h-4 w-4" /> WhatsApp</a>
               </div>
             </div>
           </div>

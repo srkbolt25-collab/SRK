@@ -52,7 +52,7 @@ export default function ScrewsPage() {
 
   // Function to generate WhatsApp URL with product information
   const handleWhatsAppClick = (product: { name: string; category: string }) => {
-    const phoneNumber = "971588713064" // WhatsApp number with country code
+    const phoneNumber = "971586600485" // WhatsApp number with country code
     const message = `Hello! I'm interested in this product:\n\nProduct Name: ${product.name}\nCategory: ${product.category}\n\nPlease provide more information about this product.`
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank')

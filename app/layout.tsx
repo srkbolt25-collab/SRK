@@ -7,6 +7,7 @@ import { ToastProvider } from "@/contexts/ToastContext"
 import { Toaster } from "@/components/ui/simple-toaster"
 import "./globals.css"
 import { RFQProvider } from "@/contexts/RFQContext"
+import WhatsAppChatWidget from "@/components/WhatsAppChatWidget"
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -43,6 +44,7 @@ export default function RootLayout({
           <RFQProvider>
             <Suspense fallback={null}>{children}</Suspense>
             <Toaster />
+            <WhatsAppChatWidget />
           </RFQProvider>
         </ToastProvider>
         <Analytics />

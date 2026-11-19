@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
   title: "Rivets pin and inserts suppliers in Dubai, UAE - SRK BOLT",
   description:
-    "We are one of the best Rivets, pin and inserts suppliers and manufacturers in Dubai, UAE. Contact us for more +971 58 871 3064",
+    "We are one of the best Rivets, pin and inserts suppliers and manufacturers in Dubai, UAE. Contact us for more +971 58 660 0485",
   keywords:
     "rivets suppliers in Dubai, rivet manufacturers UAE, blind rivets Dubai, pins suppliers UAE, dowel pins Dubai, spring pins UAE, threaded inserts Dubai, industrial fasteners UAE, pop rivets suppliers Dubai",
 }

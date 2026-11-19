@@ -241,7 +241,7 @@ export default function JoinUsPage() {
                 partnerships@srkbolt.com
               </a>
               <a
-                href="https://wa.me/971588713064"
+                href="https://wa.me/971586600485"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center justify-center gap-2 border border-white/70 text-white hover:bg-white hover:text-[#A02222] transition-colors px-6 py-3 rounded-lg font-semibold"
